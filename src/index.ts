@@ -3,7 +3,7 @@ import { GraphQLServer } from 'graphql-yoga'
 import { makeSchema } from '@nexus/schema'
 
 import * as vrchatTypes from './graphql/components/vrchat-api'
-import { VRChatAPI } from './data-sources/vrchat'
+import { makeContext } from './graphql/context'
 
 const schema = makeSchema({
   shouldGenerateArtifacts: process.env.NODE_ENV !== 'production',
@@ -28,11 +28,7 @@ const schema = makeSchema({
 
 const server = new GraphQLServer({
   schema,
-  context: ({ request }) => ({
-    dataSources: {
-      vrchat: new VRChatAPI(request.connection.remoteAddress),
-    },
-  }),
+  context: makeContext,
 })
 
 server.start(({ port }) => console.log(`Server running on port ${port}`))

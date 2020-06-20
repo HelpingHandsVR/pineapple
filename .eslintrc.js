@@ -13,5 +13,11 @@ module.exports = {
   rules: {
     'comma-dangle': ['error', 'always-multiline'],
     'unicorn/prevent-abbreviations': 0,
+    'unicorn/no-null': 0,
+    'operator-linebreak': [1, 'before', {
+      overrides: {
+        '=': 'after',
+      },
+    }],
   },
 }

@@ -17,88 +17,19 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  VRChatUserRole: 3 | 1 | 4 | 2 | 0
 }
 
 export interface NexusGenRootTypes {
-  Post: {};
   Query: {};
   VRChatConfig: { // root type
-    address: string; // String!
     announcements: Array<NexusGenRootTypes['VRChatConfigAnnouncement'] | null>; // [VRChatConfigAnnouncement]!
-    apiKey: string; // String!
-    appName: string; // String!
-    buildVersionTag: string; // String!
-    clientApiKez: string; // String!
-    clientBPSCeiling: number; // Int!
-    clientDisconnectTimeout: number; // Int!
-    clientReservedPlayerBPS: number; // Int!
-    clientSentCountAllowance: number; // Int!
-    contactEmail: string; // String!
-    copyrightEmail: string; // String!
-    currentTOSVersion: string; // String!
-    defaultAvatar: string; // String!
-    deploymentGroup: string; // String!
-    devAppVersionStandalone: string; // String!
-    devDownloadLinkWindows: string; // String!
-    devSdkUrl: string; // String!
-    devSdkVersion: string; // String!
-    devServerVersionStandalone: string; // String!
-    disableAvatarCopying: boolean; // Boolean!
-    disableAvatarGating: boolean; // Boolean!
-    disableCommunityLabs: boolean; // Boolean!
-    disableCommunityLabsPromotion: boolean; // Boolean!
-    disableEmail: boolean; // Boolean!
-    disableEventStream: string; // String!
-    disableFeedbackGating: boolean; // Boolean!
-    disableRegistration: string; // String!
-    disableSteamNetworking: boolean; // Boolean!
-    disableTwoFactorAuth: boolean; // Boolean!
-    disableUdon: boolean; // Boolean!
-    disableUpgradeAccount: boolean; // Boolean!
-    downloadLinkWindows: string; // String!
-    downloadUrls: NexusGenRootTypes['VRChatConfigDownloadUrls']; // VRChatConfigDownloadUrls!
     dynamicWorldRows: Array<NexusGenRootTypes['VRChatConfigDynamicWorldRow'] | null>; // [VRChatConfigDynamicWorldRow]!
-    gearDemoRoomId: string; // String!
-    homeWorldId: string; // String!
-    hubWorldId: string; // String!
-    jobsEmail: string; // String!
     messageOfTheDay: string; // String!
-    moderationEmail: string; // String!
-    moderationQueryPeriod: number; // Int!
-    notAllowedToSelectAvatarInPrivateWorldMessage: string; // String!
-    plugin: string; // String!
-    releaseAppVersionStandalone: string; // String!
-    releaseSdkUrl: string; // String!
-    releaseSdkVersion: string; // String!
-    releaseServerVersionStandalone: string; // String!
-    sdkDeveloperFaqUrl: string; // String!
-    sdkDiscordUrl: string; // String!
-    sdkNotAllowedToPublishMessage: string; // String!
-    sdkUnityVersion: string; // String!
-    serverName: string; // String!
-    supportEmail: string; // String!
-    timeOutWorldId: string; // String!
-    tutorialWorldId: string; // String!
-    updateRateMsMaximum: number; // Int!
-    updateRateMsMinimum: number; // Int!
-    updateRateMsNormal: number; // Int!
-    uploadAnalysisPercent: number; // Int!
-    useReliableUdpForVoice: boolean; // Boolean!
-    userUpdatePeriod: number; // Int!
-    userVerificationDelay: number; // Int!
-    userVerificationRetry: number; // Int!
-    userVerificationTimeout: number; // Int!
-    viveWindowsUrl: string; // String!
-    whiteListedAssetUrls: Array<string | null>; // [String]!
-    worldUpdatePeriod: number; // Int!
   }
   VRChatConfigAnnouncement: { // root type
     name: string; // String!
     text: string; // String!
-  }
-  VRChatConfigDownloadUrls: { // root type
-    sdk2: string; // String!
-    sdk3: string; // String!
   }
   VRChatConfigDynamicWorldRow: { // root type
     index: number; // Int!
@@ -108,6 +39,48 @@ export interface NexusGenRootTypes {
     sortOrder: string; // String!
     sortOwnership: string; // String!
   }
+  VRChatExtendedUser: { // root type
+    activeFriends: Array<string | null>; // [String]!
+    allowAvatarCopying: boolean; // Boolean!
+    bio: string; // String!
+    bioLinks: string; // String!
+    currentAvatar: string; // String!
+    currentAvatarImageUrl: string; // String!
+    currentAvatarThumbnailImageUrl: string; // String!
+    displayName: string; // String!
+    email?: string | null; // String
+    id: string; // ID!
+    isFriend: boolean; // Boolean!
+    last_login: string; // String!
+    last_platform: string; // String!
+    obfuscatedEmail: string; // String!
+    offlineFriends: Array<string | null>; // [String]!
+    onlineFriends: Array<string | null>; // [String]!
+    state: string; // String!
+    status: string; // String!
+    statusDescription: string; // String!
+    twoFactorAuthEnabled: boolean; // Boolean!
+    username: string; // String!
+  }
+  VRChatUser: { // root type
+    allowAvatarCopying: boolean; // Boolean!
+    bio: string; // String!
+    bioLinks: string; // String!
+    currentAvatarImageUrl: string; // String!
+    currentAvatarThumbnailImageUrl: string; // String!
+    displayName: string; // String!
+    id: string; // ID!
+    isFriend: boolean; // Boolean!
+    last_login: string; // String!
+    last_platform: string; // String!
+    location: string; // String!
+    state: string; // String!
+    status: string; // String!
+    statusDescription: string; // String!
+    username: string; // String!
+    worldId: string; // String!
+  }
+  VRChatUserBase: NexusGenRootTypes['VRChatExtendedUser'] | NexusGenRootTypes['VRChatUser'];
   String: string;
   Int: number;
   Float: number;
@@ -116,93 +89,21 @@ export interface NexusGenRootTypes {
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  VRChatUserRole: NexusGenEnums['VRChatUserRole'];
 }
 
 export interface NexusGenFieldTypes {
-  Post: { // field return type
-    id: string; // ID!
-    test: string; // String!
-  }
   Query: { // field return type
-    test: NexusGenRootTypes['VRChatConfig']; // VRChatConfig!
+    vrcViewer: NexusGenRootTypes['VRChatExtendedUser']; // VRChatExtendedUser!
   }
   VRChatConfig: { // field return type
-    address: string; // String!
     announcements: Array<NexusGenRootTypes['VRChatConfigAnnouncement'] | null>; // [VRChatConfigAnnouncement]!
-    apiKey: string; // String!
-    appName: string; // String!
-    buildVersionTag: string; // String!
-    clientApiKez: string; // String!
-    clientBPSCeiling: number; // Int!
-    clientDisconnectTimeout: number; // Int!
-    clientReservedPlayerBPS: number; // Int!
-    clientSentCountAllowance: number; // Int!
-    contactEmail: string; // String!
-    copyrightEmail: string; // String!
-    currentTOSVersion: string; // String!
-    defaultAvatar: string; // String!
-    deploymentGroup: string; // String!
-    devAppVersionStandalone: string; // String!
-    devDownloadLinkWindows: string; // String!
-    devSdkUrl: string; // String!
-    devSdkVersion: string; // String!
-    devServerVersionStandalone: string; // String!
-    disableAvatarCopying: boolean; // Boolean!
-    disableAvatarGating: boolean; // Boolean!
-    disableCommunityLabs: boolean; // Boolean!
-    disableCommunityLabsPromotion: boolean; // Boolean!
-    disableEmail: boolean; // Boolean!
-    disableEventStream: string; // String!
-    disableFeedbackGating: boolean; // Boolean!
-    disableRegistration: string; // String!
-    disableSteamNetworking: boolean; // Boolean!
-    disableTwoFactorAuth: boolean; // Boolean!
-    disableUdon: boolean; // Boolean!
-    disableUpgradeAccount: boolean; // Boolean!
-    downloadLinkWindows: string; // String!
-    downloadUrls: NexusGenRootTypes['VRChatConfigDownloadUrls']; // VRChatConfigDownloadUrls!
     dynamicWorldRows: Array<NexusGenRootTypes['VRChatConfigDynamicWorldRow'] | null>; // [VRChatConfigDynamicWorldRow]!
-    gearDemoRoomId: string; // String!
-    homeWorldId: string; // String!
-    hubWorldId: string; // String!
-    jobsEmail: string; // String!
     messageOfTheDay: string; // String!
-    moderationEmail: string; // String!
-    moderationQueryPeriod: number; // Int!
-    notAllowedToSelectAvatarInPrivateWorldMessage: string; // String!
-    plugin: string; // String!
-    releaseAppVersionStandalone: string; // String!
-    releaseSdkUrl: string; // String!
-    releaseSdkVersion: string; // String!
-    releaseServerVersionStandalone: string; // String!
-    sdkDeveloperFaqUrl: string; // String!
-    sdkDiscordUrl: string; // String!
-    sdkNotAllowedToPublishMessage: string; // String!
-    sdkUnityVersion: string; // String!
-    serverName: string; // String!
-    supportEmail: string; // String!
-    timeOutWorldId: string; // String!
-    tutorialWorldId: string; // String!
-    updateRateMsMaximum: number; // Int!
-    updateRateMsMinimum: number; // Int!
-    updateRateMsNormal: number; // Int!
-    uploadAnalysisPercent: number; // Int!
-    useReliableUdpForVoice: boolean; // Boolean!
-    userUpdatePeriod: number; // Int!
-    userVerificationDelay: number; // Int!
-    userVerificationRetry: number; // Int!
-    userVerificationTimeout: number; // Int!
-    viveWindowsUrl: string; // String!
-    whiteListedAssetUrls: Array<string | null>; // [String]!
-    worldUpdatePeriod: number; // Int!
   }
   VRChatConfigAnnouncement: { // field return type
     name: string; // String!
     text: string; // String!
-  }
-  VRChatConfigDownloadUrls: { // field return type
-    sdk2: string; // String!
-    sdk3: string; // String!
   }
   VRChatConfigDynamicWorldRow: { // field return type
     index: number; // Int!
@@ -212,23 +113,84 @@ export interface NexusGenFieldTypes {
     sortOrder: string; // String!
     sortOwnership: string; // String!
   }
+  VRChatExtendedUser: { // field return type
+    activeFriends: Array<string | null>; // [String]!
+    allowAvatarCopying: boolean; // Boolean!
+    bio: string; // String!
+    bioLinks: string; // String!
+    currentAvatar: string; // String!
+    currentAvatarImageUrl: string; // String!
+    currentAvatarThumbnailImageUrl: string; // String!
+    displayName: string; // String!
+    email: string | null; // String
+    id: string; // ID!
+    isFriend: boolean; // Boolean!
+    last_login: string; // String!
+    last_platform: string; // String!
+    obfuscatedEmail: string; // String!
+    offlineFriends: Array<string | null>; // [String]!
+    onlineFriends: Array<string | null>; // [String]!
+    role: NexusGenEnums['VRChatUserRole']; // VRChatUserRole!
+    state: string; // String!
+    status: string; // String!
+    statusDescription: string; // String!
+    twoFactorAuthEnabled: boolean; // Boolean!
+    username: string; // String!
+  }
+  VRChatUser: { // field return type
+    allowAvatarCopying: boolean; // Boolean!
+    bio: string; // String!
+    bioLinks: string; // String!
+    currentAvatarImageUrl: string; // String!
+    currentAvatarThumbnailImageUrl: string; // String!
+    displayName: string; // String!
+    id: string; // ID!
+    isFriend: boolean; // Boolean!
+    last_login: string; // String!
+    last_platform: string; // String!
+    location: string; // String!
+    role: NexusGenEnums['VRChatUserRole']; // VRChatUserRole!
+    state: string; // String!
+    status: string; // String!
+    statusDescription: string; // String!
+    username: string; // String!
+    worldId: string; // String!
+  }
+  VRChatUserBase: { // field return type
+    allowAvatarCopying: boolean; // Boolean!
+    bio: string; // String!
+    bioLinks: string; // String!
+    currentAvatarImageUrl: string; // String!
+    currentAvatarThumbnailImageUrl: string; // String!
+    displayName: string; // String!
+    id: string; // ID!
+    isFriend: boolean; // Boolean!
+    last_login: string; // String!
+    last_platform: string; // String!
+    role: NexusGenEnums['VRChatUserRole']; // VRChatUserRole!
+    state: string; // String!
+    status: string; // String!
+    statusDescription: string; // String!
+    username: string; // String!
+  }
 }
 
 export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
+  VRChatUserBase: "VRChatExtendedUser" | "VRChatUser"
 }
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Post" | "Query" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDownloadUrls" | "VRChatConfigDynamicWorldRow";
+export type NexusGenObjectNames = "Query" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatUser";
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = "VRChatUserRole";
 
-export type NexusGenInterfaceNames = never;
+export type NexusGenInterfaceNames = "VRChatUserBase";
 
 export type NexusGenScalarNames = "Boolean" | "Float" | "ID" | "Int" | "String";
 

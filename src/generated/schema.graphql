@@ -2,94 +2,19 @@
 ### Do not make changes to this file directly
 
 
-type Post {
-  id: ID!
-  test: String!
-}
-
 type Query {
-  test: VRChatConfig!
+  vrcViewer: VRChatExtendedUser!
 }
 
 type VRChatConfig {
-  address: String!
   announcements: [VRChatConfigAnnouncement]!
-  apiKey: String!
-  appName: String!
-  buildVersionTag: String!
-  clientApiKez: String!
-  clientBPSCeiling: Int!
-  clientDisconnectTimeout: Int!
-  clientReservedPlayerBPS: Int!
-  clientSentCountAllowance: Int!
-  contactEmail: String!
-  copyrightEmail: String!
-  currentTOSVersion: String!
-  defaultAvatar: String!
-  deploymentGroup: String!
-  devAppVersionStandalone: String!
-  devDownloadLinkWindows: String!
-  devSdkUrl: String!
-  devSdkVersion: String!
-  devServerVersionStandalone: String!
-  disableAvatarCopying: Boolean!
-  disableAvatarGating: Boolean!
-  disableCommunityLabs: Boolean!
-  disableCommunityLabsPromotion: Boolean!
-  disableEmail: Boolean!
-  disableEventStream: String!
-  disableFeedbackGating: Boolean!
-  disableRegistration: String!
-  disableSteamNetworking: Boolean!
-  disableTwoFactorAuth: Boolean!
-  disableUdon: Boolean!
-  disableUpgradeAccount: Boolean!
-  downloadLinkWindows: String!
-  downloadUrls: VRChatConfigDownloadUrls!
   dynamicWorldRows: [VRChatConfigDynamicWorldRow]!
-  gearDemoRoomId: String!
-  homeWorldId: String!
-  hubWorldId: String!
-  jobsEmail: String!
   messageOfTheDay: String!
-  moderationEmail: String!
-  moderationQueryPeriod: Int!
-  notAllowedToSelectAvatarInPrivateWorldMessage: String!
-  plugin: String!
-  releaseAppVersionStandalone: String!
-  releaseSdkUrl: String!
-  releaseSdkVersion: String!
-  releaseServerVersionStandalone: String!
-  sdkDeveloperFaqUrl: String!
-  sdkDiscordUrl: String!
-  sdkNotAllowedToPublishMessage: String!
-  sdkUnityVersion: String!
-  serverName: String!
-  supportEmail: String!
-  timeOutWorldId: String!
-  tutorialWorldId: String!
-  updateRateMsMaximum: Int!
-  updateRateMsMinimum: Int!
-  updateRateMsNormal: Int!
-  uploadAnalysisPercent: Int!
-  useReliableUdpForVoice: Boolean!
-  userUpdatePeriod: Int!
-  userVerificationDelay: Int!
-  userVerificationRetry: Int!
-  userVerificationTimeout: Int!
-  viveWindowsUrl: String!
-  whiteListedAssetUrls: [String]!
-  worldUpdatePeriod: Int!
 }
 
 type VRChatConfigAnnouncement {
   name: String!
   text: String!
-}
-
-type VRChatConfigDownloadUrls {
-  sdk2: String!
-  sdk3: String!
 }
 
 type VRChatConfigDynamicWorldRow {
@@ -99,4 +24,75 @@ type VRChatConfigDynamicWorldRow {
   sortHeading: String!
   sortOrder: String!
   sortOwnership: String!
+}
+
+type VRChatExtendedUser implements VRChatUserBase {
+  activeFriends: [String]!
+  allowAvatarCopying: Boolean!
+  bio: String!
+  bioLinks: String!
+  currentAvatar: String!
+  currentAvatarImageUrl: String!
+  currentAvatarThumbnailImageUrl: String!
+  displayName: String!
+  email: String
+  id: ID!
+  isFriend: Boolean!
+  last_login: String!
+  last_platform: String!
+  obfuscatedEmail: String!
+  offlineFriends: [String]!
+  onlineFriends: [String]!
+  role: VRChatUserRole!
+  state: String!
+  status: String!
+  statusDescription: String!
+  twoFactorAuthEnabled: Boolean!
+  username: String!
+}
+
+type VRChatUser implements VRChatUserBase {
+  allowAvatarCopying: Boolean!
+  bio: String!
+  bioLinks: String!
+  currentAvatarImageUrl: String!
+  currentAvatarThumbnailImageUrl: String!
+  displayName: String!
+  id: ID!
+  isFriend: Boolean!
+  last_login: String!
+  last_platform: String!
+  location: String!
+  role: VRChatUserRole!
+  state: String!
+  status: String!
+  statusDescription: String!
+  username: String!
+  worldId: String!
+}
+
+interface VRChatUserBase {
+  allowAvatarCopying: Boolean!
+  bio: String!
+  bioLinks: String!
+  currentAvatarImageUrl: String!
+  currentAvatarThumbnailImageUrl: String!
+  displayName: String!
+  id: ID!
+  isFriend: Boolean!
+  last_login: String!
+  last_platform: String!
+  role: VRChatUserRole!
+  state: String!
+  status: String!
+  statusDescription: String!
+  username: String!
+}
+
+enum VRChatUserRole {
+  KNOWN
+  NEW_USER
+  TRUSTED
+  USER
+  VISITOR
 }
