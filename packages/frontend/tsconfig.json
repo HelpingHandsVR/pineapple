@@ -1,19 +1,13 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es2018",
     "module": "esnext",
-    "moduleResolution": "node",
     "lib": [
       "esnext",
       "esnext.asynciterable",
       "dom"
     ],
-    "esModuleInterop": true,
-    "allowJs": true,
-    "sourceMap": true,
-    "strict": true,
-    "noEmit": true,
-    "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
       "~/*": [

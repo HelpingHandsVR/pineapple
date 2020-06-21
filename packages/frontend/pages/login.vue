@@ -3,10 +3,11 @@
     v-flex(xs12, sm8, md6)
       v-card
         v-card-title.headline
-          | Pineapple
+          | Authentication
         v-card-text
           p.
-            This page is not used for anything right now.
+            Please log in with your VRChat account. Your username and password will not be
+            stored or transmitted through this app.
         v-card-actions
           v-btn(primary, nuxt, to='/login')
             | Log In

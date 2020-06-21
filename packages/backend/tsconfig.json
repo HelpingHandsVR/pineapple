@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.json",
   "include": [
     "lib/**/*",
     "src/**/*",
@@ -7,15 +8,7 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
-    "strict": false,
-    "sourceMap": true,
-    "noImplicitAny": true,
-    "resolveJsonModule": true,
-
-    "noEmit": true,
-    "rootDir": ".",
     "outDir": "build",
-    "esModuleInterop": true,
     "typeRoots": [
       "node_modules/@types",
       "types"

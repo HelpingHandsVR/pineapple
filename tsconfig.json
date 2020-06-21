@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": false,
+    "noEmit": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "noImplicitAny": true,
+    "resolveJsonModule": true,
+  }
+}

@@ -1,0 +1,14 @@
+overwrite: true
+schema: "../backend/src/generated/schema.graphql"
+documents: "graphql/**/*.gql"
+generates:
+  generated/fragments.json:
+    plugins:
+      - "fragment-matcher"
+  generated/composition.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-vue-apollo"
+    config:
+      withCompositionFunctions: true

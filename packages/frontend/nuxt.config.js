@@ -11,7 +11,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
+    titleTemplate: '%s - Pineapple',
     title: process.env.npm_package_name || '',
     meta: [
       { charset: 'utf-8' },
@@ -32,7 +32,9 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [],
+  plugins: [
+    { src: '~/plugins/vuex-persistedstate.ts', ssr: false },
+  ],
   /*
    ** Nuxt.js dev-modules
    */
@@ -51,6 +53,9 @@ export default {
   /*
    ** Nuxt.js modules
    */
+  modules: [
+    '@nuxtjs/apollo',
+  ],
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -58,18 +63,37 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
       themes: {
+        light: {
+          primary: colors.yellow,
+          accent: colors.grey,
+          secondary: colors.amber,
+          info: colors.teal,
+          warning: colors.amber,
+          error: colors.deepOrange,
+          success: colors.green,
+        },
         dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3,
+          primary: colors.yellow,
+          accent: colors.grey,
+          secondary: colors.amber,
+          info: colors.teal,
+          warning: colors.amber,
+          error: colors.deepOrange,
+          success: colors.green,
         },
       },
+    },
+  },
+  /*
+   ** Configuration for the Apollo module
+   ** See https://github.com/nuxt-community/apollo-module
+   */
+  apollo: {
+    tokenName: 'apollo-auth',
+    errorHandler: '~/plugins/apollo-error-handler.ts',
+    clientConfigs: {
+      default: '~/plugins/apollo-config.ts',
     },
   },
   /*
