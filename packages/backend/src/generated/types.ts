@@ -14,6 +14,11 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  VRChatLoginInput: { // input type
+    password?: string | null; // String
+    totp?: string | null; // String
+    username?: string | null; // String
+  }
 }
 
 export interface NexusGenEnums {
@@ -21,6 +26,7 @@ export interface NexusGenEnums {
 }
 
 export interface NexusGenRootTypes {
+  Mutation: {};
   Query: {};
   VRChatConfig: { // root type
     announcements: Array<NexusGenRootTypes['VRChatConfigAnnouncement'] | null>; // [VRChatConfigAnnouncement]!
@@ -62,6 +68,12 @@ export interface NexusGenRootTypes {
     twoFactorAuthEnabled: boolean; // Boolean!
     username: string; // String!
   }
+  VRChatLoginResult: { // root type
+    authCookie?: string | null; // String
+    complete: boolean; // Boolean!
+    totpNeeded: boolean; // Boolean!
+    user?: NexusGenRootTypes['VRChatExtendedUser'] | null; // VRChatExtendedUser
+  }
   VRChatUser: { // root type
     allowAvatarCopying: boolean; // Boolean!
     bio: string; // String!
@@ -89,10 +101,14 @@ export interface NexusGenRootTypes {
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  VRChatLoginInput: NexusGenInputs['VRChatLoginInput'];
   VRChatUserRole: NexusGenEnums['VRChatUserRole'];
 }
 
 export interface NexusGenFieldTypes {
+  Mutation: { // field return type
+    vrcLogin: NexusGenRootTypes['VRChatLoginResult']; // VRChatLoginResult!
+  }
   Query: { // field return type
     test: string; // String!
     vrcViewer: NexusGenRootTypes['VRChatExtendedUser']; // VRChatExtendedUser!
@@ -138,6 +154,12 @@ export interface NexusGenFieldTypes {
     twoFactorAuthEnabled: boolean; // Boolean!
     username: string; // String!
   }
+  VRChatLoginResult: { // field return type
+    authCookie: string | null; // String
+    complete: boolean; // Boolean!
+    totpNeeded: boolean; // Boolean!
+    user: NexusGenRootTypes['VRChatExtendedUser'] | null; // VRChatExtendedUser
+  }
   VRChatUser: { // field return type
     allowAvatarCopying: boolean; // Boolean!
     bio: string; // String!
@@ -177,6 +199,11 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    vrcLogin: { // args
+      input: NexusGenInputs['VRChatLoginInput']; // VRChatLoginInput!
+    }
+  }
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
@@ -185,9 +212,9 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Query" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatUser";
+export type NexusGenObjectNames = "Mutation" | "Query" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatLoginResult" | "VRChatUser";
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = "VRChatLoginInput";
 
 export type NexusGenEnumNames = "VRChatUserRole";
 

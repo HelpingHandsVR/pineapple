@@ -2,6 +2,12 @@
 // Disabled because these properties are dictated by the VRC API and this is a
 // strict binding. Casing is changed later in resolvers.
 
+import { Response } from "apollo-datasource-rest"
+
+type ResponseBase = {
+  __headers: Response['headers']
+}
+
 type VRCWorldId = string
 type VRCUserId = string
 type VRCAvatarId = string
@@ -27,7 +33,7 @@ type VRCConfigDynamicWorldRow = {
 /**
  * The response shape for the /config call, most of this is not useful for us
  */
-export type VRCConfig = {
+export type VRCConfig = ResponseBase & {
   address: string,
   announcements: VRCConfigAnnouncement[],
   apiKey: string,
@@ -113,7 +119,7 @@ type VRCExtendedUserSteamDetails = {
 /**
  * These properties are sent with responses about yourself and friends also
  */
-type VRCUserBase = {
+type VRCUserBase = ResponseBase & {
   id: VRCUserId,
   username: string,
   displayName: string,
@@ -173,4 +179,17 @@ export type VRCExtendedUser = VRCUserBase & {
 export type VRCUser = VRCUserBase & {
   location: string | 'private',
   worldId: VRCWorldId | 'private',
+}
+
+/**
+ * Authentication
+ */
+export type VRCLoginResultTotpNeeded = ResponseBase & {
+  requiresTwoFactorAuth: string[]
+}
+
+export type VRCLoginResult = VRCLoginResultTotpNeeded | VRCExtendedUser
+
+export type VRCTotpVerificationResult = ResponseBase & {
+  verified: boolean,
 }

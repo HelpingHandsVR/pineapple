@@ -6,6 +6,7 @@ import Redis from 'ioredis'
 
 import pkg from '@/package.json'
 import * as Types from './types'
+import { atob } from '@/lib/base64'
 
 export class VRChatAPI extends RESTDataSource {
   baseURL = 'https://api.vrchat.cloud/api/1'
@@ -71,5 +72,20 @@ export class VRChatAPI extends RESTDataSource {
   // Get other users
   public async getUser (userId: string): Promise<Types.VRCUser> {
     return this.get(`/users/${userId}`)
+  }
+
+  // Authentication
+  public async login (username: string, password: string): Promise<Types.VRCLoginResult> {
+    return this.get('/auth/user', {}, {
+      headers: {
+        Authorization: `Basic ${atob(`${username}:${password}`)}`,
+      },
+    })
+  }
+
+  public async verifyTotp (code: string): Promise<Types.VRCTotpVerificationResult> {
+    return this.post('/auth/twofactorauth/totp/verify', {
+      code,
+    })
   }
 }

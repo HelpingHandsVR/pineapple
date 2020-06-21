@@ -2,6 +2,10 @@
 ### Do not make changes to this file directly
 
 
+type Mutation {
+  vrcLogin(input: VRChatLoginInput!): VRChatLoginResult!
+}
+
 type Query {
   test: String!
   vrcViewer: VRChatExtendedUser!
@@ -50,6 +54,19 @@ type VRChatExtendedUser implements VRChatUserBase {
   statusDescription: String!
   twoFactorAuthEnabled: Boolean!
   username: String!
+}
+
+input VRChatLoginInput {
+  password: String
+  totp: String
+  username: String
+}
+
+type VRChatLoginResult {
+  authCookie: String
+  complete: Boolean!
+  totpNeeded: Boolean!
+  user: VRChatExtendedUser
 }
 
 type VRChatUser implements VRChatUserBase {
