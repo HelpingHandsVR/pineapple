@@ -3,6 +3,7 @@
 
 
 type Mutation {
+  logout: VRChatLogoutMutationResult!
   vrcLogin(input: VRChatLoginInput!): VRChatLoginResult!
 }
 
@@ -65,8 +66,10 @@ input VRChatLoginInput {
 type VRChatLoginResult {
   authCookie: String
   complete: Boolean!
-  totpNeeded: Boolean!
-  user: VRChatExtendedUser
+}
+
+type VRChatLogoutMutationResult {
+  success: Boolean!
 }
 
 type VRChatUser implements VRChatUserBase {

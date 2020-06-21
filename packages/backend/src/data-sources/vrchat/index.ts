@@ -88,4 +88,8 @@ export class VRChatAPI extends RESTDataSource {
       code,
     })
   }
+
+  public async logout (): Promise<Types.VRCLogoutResult> {
+    return this.put('/logout', {})
+  }
 }

@@ -20,13 +20,8 @@ export const VRChatLoginInput = inputObjectType({
 export const VRChatLoginResult = objectType({
   name: 'VRChatLoginResult',
   definition (t) {
-    t.boolean('totpNeeded')
     t.boolean('complete')
     t.string('authCookie', {
-      nullable: true,
-    })
-    t.field('user', {
-      type: 'VRChatExtendedUser',
       nullable: true,
     })
   },
@@ -41,6 +36,9 @@ export const VRChatLoginMutation = extendType({
         input: VRChatLoginInput.asArg({ required: true }),
       },
       async resolve (root, args, context) {
+        // If we have a totp input it means that the user already logged in
+        // using their username/password combo and the session is awaiting
+        // escalation.
         if (args.input.totp) {
           const result = await context.dataSources.vrchat.verifyTotp(args.input.totp)
 
@@ -48,11 +46,7 @@ export const VRChatLoginMutation = extendType({
             throw new AuthenticationError('Invalid two-factor authentication code')
           }
 
-          const user = context.dataSources.vrchat.getViewer()
-
           return {
-            user,
-            totpNeeded: false,
             complete: true,
             authCookie: null,
           }
@@ -64,18 +58,14 @@ export const VRChatLoginMutation = extendType({
 
         if ('requiresTwoFactorAuth' in response) {
           return {
-            totpNeeded: true,
             complete: false,
-            user: null,
             authCookie: auth,
           }
         }
 
         return {
-          totpNeeded: false,
           complete: true,
           user: response,
-          authCookie: auth,
         }
       },
     })

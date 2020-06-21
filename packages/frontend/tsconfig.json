@@ -20,7 +20,8 @@
     "types": [
       "@types/node",
       "@nuxt/types",
-      "@nuxtjs/axios"
+      "@nuxtjs/apollo",
+      "vue-cli-plugin-apollo/types"
     ]
   },
   "exclude": [

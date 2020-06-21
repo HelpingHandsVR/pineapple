@@ -8,9 +8,6 @@ const handleClient = ({ store }: Context): void => {
   (window as any).onNuxtReady(() => {
     createPersistedState({
       key: 'appstate',
-      paths: [
-        'ui',
-      ],
       storage: {
         getItem (key) {
           return cookies.get(key)
@@ -27,13 +24,10 @@ const handleClient = ({ store }: Context): void => {
 }
 
 const handleServer = ({ store, req }: Context): void => {
-  const userCookie = cookie.parse(req.headers.cookie)
+  const userCookie = cookie.parse(req.headers.cookie || '')
 
   return createPersistedState({
     key: 'appstate',
-    paths: [
-      'ui',
-    ],
     storage: {
       getItem (key) {
         return userCookie[key]

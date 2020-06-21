@@ -1,12 +1,14 @@
 <script lang="ts">
-import Vue from 'vue'
 import LoginForm from '~/components/authentication/vrchat/login-form/index.vue'
 
-export default Vue.extend({
+export default {
+  middleware: [
+    'no-auth',
+  ],
   components: {
     LoginForm,
   }
-})
+}
 </script>
 
 <template lang="pug">

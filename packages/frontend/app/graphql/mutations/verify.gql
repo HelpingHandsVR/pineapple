@@ -1,0 +1,8 @@
+mutation vrcLoginTotp ($code: String) {
+  vrcLogin (input: {
+    totp: $code
+  }) {
+    complete
+    authCookie
+  }
+}

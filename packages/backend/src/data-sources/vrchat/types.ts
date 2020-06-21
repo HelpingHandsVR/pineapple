@@ -2,7 +2,7 @@
 // Disabled because these properties are dictated by the VRC API and this is a
 // strict binding. Casing is changed later in resolvers.
 
-import { Response } from "apollo-datasource-rest"
+import { Response } from 'apollo-datasource-rest'
 
 type ResponseBase = {
   __headers: Response['headers']
@@ -192,4 +192,11 @@ export type VRCLoginResult = VRCLoginResultTotpNeeded | VRCExtendedUser
 
 export type VRCTotpVerificationResult = ResponseBase & {
   verified: boolean,
+}
+
+export type VRCLogoutResult = ResponseBase & {
+  success: {
+    message: string,
+    status_code: number,
+  },
 }

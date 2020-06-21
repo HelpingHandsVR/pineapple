@@ -15,6 +15,7 @@ export type Scalars = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  logout: VrChatLogoutMutationResult;
   vrcLogin: VrChatLoginResult;
 };
 
@@ -88,8 +89,11 @@ export type VrChatLoginResult = {
   __typename?: 'VRChatLoginResult';
   authCookie?: Maybe<Scalars['String']>;
   complete: Scalars['Boolean'];
-  totpNeeded: Scalars['Boolean'];
-  user?: Maybe<VrChatExtendedUser>;
+};
+
+export type VrChatLogoutMutationResult = {
+  __typename?: 'VRChatLogoutMutationResult';
+  success: Scalars['Boolean'];
 };
 
 export type VrChatUser = VrChatUserBase & {
@@ -139,76 +143,181 @@ export enum VrChatUserRole {
   Visitor = 'VISITOR'
 }
 
-export type TestQueryVariables = Exact<{ [key: string]: never; }>;
+export type VrcLoginMutationVariables = Exact<{
+  username?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+}>;
 
 
-export type TestQuery = (
-  { __typename?: 'Query' }
-  & Pick<Query, 'test'>
+export type VrcLoginMutation = (
+  { __typename?: 'Mutation' }
+  & { vrcLogin: (
+    { __typename?: 'VRChatLoginResult' }
+    & Pick<VrChatLoginResult, 'complete' | 'authCookie'>
+  ) }
 );
 
-export type ViewerQueryVariables = Exact<{ [key: string]: never; }>;
+export type VrcLogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ViewerQuery = (
+export type VrcLogoutMutation = (
+  { __typename?: 'Mutation' }
+  & { logout: (
+    { __typename?: 'VRChatLogoutMutationResult' }
+    & Pick<VrChatLogoutMutationResult, 'success'>
+  ) }
+);
+
+export type VrcLoginTotpMutationVariables = Exact<{
+  code?: Maybe<Scalars['String']>;
+}>;
+
+
+export type VrcLoginTotpMutation = (
+  { __typename?: 'Mutation' }
+  & { vrcLogin: (
+    { __typename?: 'VRChatLoginResult' }
+    & Pick<VrChatLoginResult, 'complete' | 'authCookie'>
+  ) }
+);
+
+export type VrcViewerQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type VrcViewerQuery = (
   { __typename?: 'Query' }
   & { vrcViewer: (
     { __typename?: 'VRChatExtendedUser' }
-    & Pick<VrChatExtendedUser, 'id' | 'displayName'>
+    & Pick<VrChatExtendedUser, 'id' | 'displayName' | 'currentAvatarImageUrl' | 'currentAvatarThumbnailImageUrl' | 'role' | 'state' | 'status' | 'statusDescription' | 'obfuscatedEmail' | 'allowAvatarCopying' | 'last_login' | 'last_platform' | 'twoFactorAuthEnabled'>
   ) }
 );
 
 
-export const TestDocument = gql`
-    query test {
-  test
-}
-    `;
-
-/**
- * __useTestQuery__
- *
- * To run a query within a Vue component, call `useTestQuery` and pass it any options that fit your needs.
- * When your component renders, `useTestQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useTestQuery(
- *   {
- *   }
- * );
- */
-export function useTestQuery(options: VueApolloComposable.UseQueryOptions<TestQuery, TestQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<TestQuery, TestQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<TestQuery, TestQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<TestQuery, undefined>(TestDocument, undefined, options);
-          }
-export type TestQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<TestQuery, TestQueryVariables>;
-export const ViewerDocument = gql`
-    query viewer {
-  vrcViewer {
-    id
-    displayName
+export const VrcLoginDocument = gql`
+    mutation vrcLogin($username: String, $password: String) {
+  vrcLogin(input: {username: $username, password: $password}) {
+    complete
+    authCookie
   }
 }
     `;
 
 /**
- * __useViewerQuery__
+ * __useVrcLoginMutation__
  *
- * To run a query within a Vue component, call `useViewerQuery` and pass it any options that fit your needs.
- * When your component renders, `useViewerQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * To run a mutation, you first call `useVrcLoginMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useVrcLoginMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useVrcLoginMutation({
+ *   variables: {
+ *      username: // value for 'username'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useVrcLoginMutation(options: VueApolloComposable.UseMutationOptions<VrcLoginMutation, VrcLoginMutationVariables> = {}) {
+            return VueApolloComposable.useMutation<VrcLoginMutation, VrcLoginMutationVariables>(VrcLoginDocument, options);
+          }
+export type VrcLoginMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<VrcLoginMutation, VrcLoginMutationVariables>;
+export const VrcLogoutDocument = gql`
+    mutation vrcLogout {
+  logout {
+    success
+  }
+}
+    `;
+
+/**
+ * __useVrcLogoutMutation__
+ *
+ * To run a mutation, you first call `useVrcLogoutMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useVrcLogoutMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useVrcLogoutMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useVrcLogoutMutation(options: VueApolloComposable.UseMutationOptionsNoVariables<VrcLogoutMutation, VrcLogoutMutationVariables> = {}) {
+            return VueApolloComposable.useMutation<VrcLogoutMutation, VrcLogoutMutationVariables>(VrcLogoutDocument, options);
+          }
+export type VrcLogoutMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<VrcLogoutMutation, VrcLogoutMutationVariables>;
+export const VrcLoginTotpDocument = gql`
+    mutation vrcLoginTotp($code: String) {
+  vrcLogin(input: {totp: $code}) {
+    complete
+    authCookie
+  }
+}
+    `;
+
+/**
+ * __useVrcLoginTotpMutation__
+ *
+ * To run a mutation, you first call `useVrcLoginTotpMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useVrcLoginTotpMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useVrcLoginTotpMutation({
+ *   variables: {
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useVrcLoginTotpMutation(options: VueApolloComposable.UseMutationOptions<VrcLoginTotpMutation, VrcLoginTotpMutationVariables> = {}) {
+            return VueApolloComposable.useMutation<VrcLoginTotpMutation, VrcLoginTotpMutationVariables>(VrcLoginTotpDocument, options);
+          }
+export type VrcLoginTotpMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<VrcLoginTotpMutation, VrcLoginTotpMutationVariables>;
+export const VrcViewerDocument = gql`
+    query vrcViewer {
+  vrcViewer {
+    id
+    displayName
+    currentAvatarImageUrl
+    currentAvatarThumbnailImageUrl
+    role
+    state
+    status
+    statusDescription
+    obfuscatedEmail
+    allowAvatarCopying
+    last_login
+    last_platform
+    twoFactorAuthEnabled
+  }
+}
+    `;
+
+/**
+ * __useVrcViewerQuery__
+ *
+ * To run a query within a Vue component, call `useVrcViewerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useVrcViewerQuery` returns an object from Apollo Client that contains result, loading and error properties
  * you can use to render your UI.
  *
  * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
  *
  * @example
- * const { result, loading, error } = useViewerQuery(
+ * const { result, loading, error } = useVrcViewerQuery(
  *   {
  *   }
  * );
  */
-export function useViewerQuery(options: VueApolloComposable.UseQueryOptions<ViewerQuery, ViewerQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<ViewerQuery, ViewerQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<ViewerQuery, ViewerQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<ViewerQuery, undefined>(ViewerDocument, undefined, options);
+export function useVrcViewerQuery(options: VueApolloComposable.UseQueryOptions<VrcViewerQuery, VrcViewerQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<VrcViewerQuery, VrcViewerQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<VrcViewerQuery, VrcViewerQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<VrcViewerQuery, undefined>(VrcViewerDocument, undefined, options);
           }
-export type ViewerQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<ViewerQuery, ViewerQueryVariables>;
+export type VrcViewerQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<VrcViewerQuery, VrcViewerQueryVariables>;

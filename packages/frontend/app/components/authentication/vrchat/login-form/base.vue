@@ -14,6 +14,11 @@ export default Vue.extend({
       required: false,
       default: false,
     },
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   data () {
     return {
@@ -63,9 +68,9 @@ export default Vue.extend({
   )
     v-text-field(
       v-model='formData.username'
-      label='Username'
+      label='Username / E-mail address'
       required
-      :disabled='showTotp'
+      :disabled='loading || showTotp'
       :rules='rules.username'
     )
     v-text-field(
@@ -73,7 +78,7 @@ export default Vue.extend({
       label='Password'
       type='password'
       required
-      :disabled='showTotp'
+      :disabled='loading || showTotp'
       :rules='rules.password'
     )
     v-text-field(
@@ -82,8 +87,9 @@ export default Vue.extend({
       required
       v-if='showTotp'
       :rules='rules.totp'
+      :disabled='loading'
     )
 
-    v-btn(color='primary', type='submit')
+    v-btn(color='primary', type='submit', :loading='loading')
       | Log in
 </template>

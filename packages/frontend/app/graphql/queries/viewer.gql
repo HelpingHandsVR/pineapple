@@ -1,6 +1,17 @@
-query viewer {
+query vrcViewer {
   vrcViewer {
     id
     displayName
+    currentAvatarImageUrl
+    currentAvatarThumbnailImageUrl
+    role
+    state
+    status
+    statusDescription
+    obfuscatedEmail
+    allowAvatarCopying
+    last_login
+    last_platform
+    twoFactorAuthEnabled
   }
 }

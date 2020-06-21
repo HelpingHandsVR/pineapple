@@ -71,8 +71,9 @@ export interface NexusGenRootTypes {
   VRChatLoginResult: { // root type
     authCookie?: string | null; // String
     complete: boolean; // Boolean!
-    totpNeeded: boolean; // Boolean!
-    user?: NexusGenRootTypes['VRChatExtendedUser'] | null; // VRChatExtendedUser
+  }
+  VRChatLogoutMutationResult: { // root type
+    success: boolean; // Boolean!
   }
   VRChatUser: { // root type
     allowAvatarCopying: boolean; // Boolean!
@@ -107,6 +108,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
+    logout: NexusGenRootTypes['VRChatLogoutMutationResult']; // VRChatLogoutMutationResult!
     vrcLogin: NexusGenRootTypes['VRChatLoginResult']; // VRChatLoginResult!
   }
   Query: { // field return type
@@ -157,8 +159,9 @@ export interface NexusGenFieldTypes {
   VRChatLoginResult: { // field return type
     authCookie: string | null; // String
     complete: boolean; // Boolean!
-    totpNeeded: boolean; // Boolean!
-    user: NexusGenRootTypes['VRChatExtendedUser'] | null; // VRChatExtendedUser
+  }
+  VRChatLogoutMutationResult: { // field return type
+    success: boolean; // Boolean!
   }
   VRChatUser: { // field return type
     allowAvatarCopying: boolean; // Boolean!
@@ -212,7 +215,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Mutation" | "Query" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatLoginResult" | "VRChatUser";
+export type NexusGenObjectNames = "Mutation" | "Query" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatLoginResult" | "VRChatLogoutMutationResult" | "VRChatUser";
 
 export type NexusGenInputNames = "VRChatLoginInput";
 

@@ -2,11 +2,19 @@
 import Vue from 'vue'
 import {mapGetters, mapMutations} from 'vuex'
 
+import {VrcLogoutDocument} from '../../generated/composition'
+import ProfileMenu from '../components/authentication/vrchat/profile-menu/index.vue'
+
 const flashMap = new Map()
 
 flashMap.set('unauthenticated', 'Please log in first to access that page.')
+flashMap.set('already-authenticated', `You're already logged in, you need to log out first.`)
 
 export default Vue.extend({
+  name: 'default-layout',
+  components: {
+    ProfileMenu,
+  },
   data() {
     return {
       items: [
@@ -17,15 +25,17 @@ export default Vue.extend({
         },
       ],
       title: 'Pineapple',
-      // drawer: null,
-      // mini: true,
     }
+  },
+  created () {
+    this.$vuetify.theme.dark = this.dark
   },
   computed: {
     ...mapGetters({
       dark: 'ui/isDark',
       open: 'ui/menuOpen',
       small: 'ui/menuSmall',
+      loggedIn: 'auth/loggedIn',
     }),
     forceLarge () {
       // On mobile, `mini` will cause text to disappear from the menu, so we
@@ -53,12 +63,23 @@ export default Vue.extend({
         this.setMenuSmall(!this.small)
       }
     },
+    async handleLogout () {
+      try {
+        await this.$apollo.mutate({
+          mutation: VrcLogoutDocument,
+        })
+      } finally {
+        this.$store.commit('auth/setLoggedIn', false)
+        this.$apolloHelpers.onLogout()
+        this.$router.push('/login')
+      }
+    }
   },
   watch: {
     dark (newValue) {
       // We cannot access the vm from the store, so we watch for dark theme
       // changes here. Downside is that the watch will only work on pages with
-      // the default layout.
+      // this layout.
       this.$vuetify.theme.dark = newValue
     }
   }
@@ -100,6 +121,7 @@ export default Vue.extend({
         v-icon mdi-menu
       v-toolbar-title(v-text='title')
       v-spacer
+      profile-menu(v-if='loggedIn', @logout='handleLogout')
 
     v-main
       v-container

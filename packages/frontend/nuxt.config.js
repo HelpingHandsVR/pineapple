@@ -1,6 +1,11 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
+  server: {
+    port: 3000,
+    host: '0.0.0.0',
+  },
+
   srcDir: 'app/',
   /*
    ** Nuxt rendering mode
@@ -103,7 +108,7 @@ export default {
     tokenName: 'apollo-auth',
     errorHandler: '~/plugins/apollo-error-handler.ts',
     clientConfigs: {
-      default: '~/plugins/apollo-config.ts',
+      default: '~/plugins/apollo-config.js',
     },
   },
 }

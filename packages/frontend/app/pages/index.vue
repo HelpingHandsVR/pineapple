@@ -1,5 +1,22 @@
 <script lang="ts">
+import { VrcViewerDocument, VrChatExtendedUser } from '../../generated/composition'
+
+type Data = {
+  vrcViewer: VrChatExtendedUser,
+}
+
+
 export default {
+  apollo: {
+    vrcViewer: {
+      query: VrcViewerDocument
+    }
+  },
+  data (): Data {
+    return {
+      vrcViewer: null,
+    }
+  },
   middleware: [
     'auth'
   ]
@@ -9,13 +26,14 @@ export default {
 <template lang="pug">
   v-layout(column, justify-center, align-center)
     v-flex(xs12, sm8, md6)
+      v-skeleton-loader(
+        v-if='$apollo.queries.vrcViewer.loading'
+        boilerplate='paragraph, paragraph, paragraph'
+      )
       v-card
         v-card-title.headline
-          | Pineapple
+          | Your profile
         v-card-text
-          p.
-            This page is not used for anything right now.
-        v-card-actions
-          v-btn(primary, nuxt, to='/login')
-            | Log In
+          pre
+            | {{vrcViewer}}
 </template>

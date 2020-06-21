@@ -1,6 +1,14 @@
 <script lang="ts">
 import Vue from 'vue'
+import {mapMutations} from 'vuex'
+
 import LoginFormBase, { LoginFormData } from './base.vue'
+
+import {
+  VrcLoginDocument,
+  VrChatLoginResult,
+  VrcLoginTotpDocument
+} from '../../../../../generated/composition'
 
 export default Vue.extend({
   components: {
@@ -9,21 +17,62 @@ export default Vue.extend({
   data () {
     return {
       totpNeeded: false,
+      loading: false,
     }
   },
   methods: {
+    ...mapMutations({
+      setLoggedIn: 'auth/setLoggedIn'
+    }),
     async handleFormSubmit (credentials: LoginFormData) {
-      // this.$emit('submit', this.formData)
-      console.log('logging in with', JSON.stringify(credentials, null, 2))
+      this.loading = true
 
-      console.log(this.$vrcapi.get)
+      if (credentials.totp) {
+        const result = await this.$apollo.mutate({
+          mutation: VrcLoginTotpDocument,
+          variables: {
+            code: credentials.totp,
+          }
+        })
+
+        this.loading = false
+        this.setLoggedIn(true)
+        this.$router.push('/')
+        return null
+      }
+
+      const initialResult = await this.$apollo.mutate({
+        mutation: VrcLoginDocument,
+        variables: {
+          username: credentials.username,
+          password: credentials.password,
+        },
+      })
+
+      // This is the only chance we have to store the auth cookie
+      this.$apolloHelpers.onLogin(initialResult.data.vrcLogin.authCookie)
+
+      if (initialResult.data.vrcLogin.complete) {
+        // Login is complete, two-factor isn't enabled on the account
+        this.loading = false
+        this.setLoggedIn(true)
+        this.$router.push('/')
+        return null
+      }
+
+      // Login is successful but the session needs to be elevated using two
+      // factor
+      this.totpNeeded = true
+      this.loading = false
     }
-  }
+  },
 })
 </script>
 
 <template lang="pug">
   login-form-base(
     @submit='handleFormSubmit'
+    :loading='loading'
+    :showTotp='totpNeeded'
   )
 </template>
