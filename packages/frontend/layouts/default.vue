@@ -2,6 +2,10 @@
 import Vue from 'vue'
 import {mapGetters, mapMutations} from 'vuex'
 
+const flashMap = new Map()
+
+flashMap.set('unauthenticated', 'Please log in first to access that page.')
+
 export default Vue.extend({
   data() {
     return {
@@ -28,6 +32,9 @@ export default Vue.extend({
       // need to force the normal version
       return this.$vuetify.breakpoint.mdAndDown
     },
+    flash () {
+      return flashMap.get(this.$route.query.flash)
+    }
   },
   methods: {
     ...mapMutations({
@@ -79,7 +86,7 @@ export default Vue.extend({
             v-list-item-title(v-text='item.title')
 
       template(v-slot:append)
-        v-sheet
+        v-sheet(v-show='!small')
           v-list-item
             v-switch(
               label='Dark theme'
@@ -96,5 +103,8 @@ export default Vue.extend({
 
     v-main
       v-container
+        v-banner.mb-3(color='warning', light, v-if='flash')
+          v-icon(slot='icon') mdi-alert
+          | {{flash}}
         nuxt
 </template>

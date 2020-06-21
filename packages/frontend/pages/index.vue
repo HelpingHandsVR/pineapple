@@ -1,3 +1,11 @@
+<script lang="ts">
+export default {
+  middleware: [
+    'auth'
+  ]
+}
+</script>
+
 <template lang="pug">
   v-layout(column, justify-center, align-center)
     v-flex(xs12, sm8, md6)

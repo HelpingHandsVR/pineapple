@@ -55,6 +55,7 @@ export default {
    */
   modules: [
     '@nuxtjs/apollo',
+    '@nuxtjs/axios',
   ],
   /*
    ** vuetify module configuration
