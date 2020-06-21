@@ -95,7 +95,7 @@ export default Vue.extend({
               inset
             )
 
-    v-app-bar(fixed, app, color='deep-purple', dark)
+    v-app-bar(fixed, app, color='primary', dark)
       v-btn(icon, @click.stop='toggleDrawer')
         v-icon mdi-menu
       v-toolbar-title(v-text='title')

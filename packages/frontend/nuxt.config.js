@@ -1,6 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
+  srcDir: 'app/',
   /*
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
@@ -25,6 +26,14 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
   /*
+   ** Build configuration
+   ** See https://nuxtjs.org/api/configuration-build/
+   */
+  build: {
+    cache: true,
+    hardSource: true,
+  },
+  /*
    ** Global CSS
    */
   css: [],
@@ -33,7 +42,7 @@ export default {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
-    { src: '~/plugins/vuex-persistedstate.ts', ssr: false },
+    { src: '~/plugins/vuex-persistedstate.ts' },
   ],
   /*
    ** Nuxt.js dev-modules
@@ -55,33 +64,33 @@ export default {
    */
   modules: [
     '@nuxtjs/apollo',
-    '@nuxtjs/axios',
   ],
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
+    treeShake: true,
     customVariables: ['~/assets/variables.scss'],
     theme: {
       themes: {
         light: {
-          primary: colors.yellow,
-          accent: colors.grey,
-          secondary: colors.amber,
-          info: colors.teal,
-          warning: colors.amber,
-          error: colors.deepOrange,
-          success: colors.green,
+          primary: colors.brown.base,
+          secondary: colors.amber.base,
+          accent: colors.lightGreen.base,
+          error: colors.red.base,
+          warning: colors.orange.base,
+          info: colors.blue.base,
+          success: colors.green.base,
         },
         dark: {
-          primary: colors.yellow,
-          accent: colors.grey,
-          secondary: colors.amber,
-          info: colors.teal,
-          warning: colors.amber,
-          error: colors.deepOrange,
-          success: colors.green,
+          primary: colors.brown.base,
+          secondary: colors.amber.base,
+          accent: colors.lightGreen.base,
+          error: colors.red.base,
+          warning: colors.orange.base,
+          info: colors.blue.base,
+          success: colors.green.base,
         },
       },
     },
@@ -97,9 +106,4 @@ export default {
       default: '~/plugins/apollo-config.ts',
     },
   },
-  /*
-   ** Build configuration
-   ** See https://nuxtjs.org/api/configuration-build/
-   */
-  build: {},
 }

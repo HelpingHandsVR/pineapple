@@ -13,6 +13,16 @@ export type Scalars = {
   Float: number;
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  vrcLogin: VrChatLoginResult;
+};
+
+
+export type MutationVrcLoginArgs = {
+  input: VrChatLoginInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   test: Scalars['String'];
@@ -66,6 +76,20 @@ export type VrChatExtendedUser = VrChatUserBase & {
   statusDescription: Scalars['String'];
   twoFactorAuthEnabled: Scalars['Boolean'];
   username: Scalars['String'];
+};
+
+export type VrChatLoginInput = {
+  password?: Maybe<Scalars['String']>;
+  totp?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+};
+
+export type VrChatLoginResult = {
+  __typename?: 'VRChatLoginResult';
+  authCookie?: Maybe<Scalars['String']>;
+  complete: Scalars['Boolean'];
+  totpNeeded: Scalars['Boolean'];
+  user?: Maybe<VrChatExtendedUser>;
 };
 
 export type VrChatUser = VrChatUserBase & {

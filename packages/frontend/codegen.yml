@@ -1,6 +1,6 @@
 overwrite: true
 schema: "../backend/src/generated/schema.graphql"
-documents: "graphql/**/*.gql"
+documents: "app/**/*.gql"
 generates:
   generated/fragments.json:
     plugins:
