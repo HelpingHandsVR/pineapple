@@ -94,6 +94,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 
 export interface NexusGenFieldTypes {
   Query: { // field return type
+    test: string; // String!
     vrcViewer: NexusGenRootTypes['VRChatExtendedUser']; // VRChatExtendedUser!
   }
   VRChatConfig: { // field return type

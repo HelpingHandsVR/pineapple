@@ -9,5 +9,11 @@ export const VRCViewerQuery = extendType({
         return context.dataSources.vrchat.getViewer()
       },
     })
+
+    t.string('test', {
+      resolve () {
+        return 'OK'
+      },
+    })
   },
 })
