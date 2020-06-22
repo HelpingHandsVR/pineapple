@@ -8,6 +8,7 @@
     "strict": false,
     "noEmit": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "noImplicitAny": true,
     "resolveJsonModule": true,

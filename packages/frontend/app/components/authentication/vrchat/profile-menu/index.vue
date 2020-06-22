@@ -39,7 +39,8 @@ export default {
     v-list(v-if='!$apollo.queries.vrcViewer.loading && vrcViewer')
       v-list-item(@click.stop)
         v-list-item-content
-          v-list-item-title {{vrcViewer.displayName}}
+          v-list-item-title
+            b {{vrcViewer.displayName}}
           v-list-item-subtitle VRC role: {{vrcViewer.role}}
           v-list-item-subtitle Pineapple role: role_placeholder
         v-list-item-avatar(size='64px')

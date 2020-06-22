@@ -8,14 +8,16 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "nodemon -r tsconfig-paths/register src/index.ts"
+    "dev": "env-cmd nodemon -r tsconfig-paths/register src/index.ts"
   },
   "devDependencies": {
     "@types/cookie": "^0.4.0",
     "@types/ioredis": "^4.16.6",
+    "@types/node": "^14.0.13",
     "@types/node-fetch": "^2.5.7",
     "@typescript-eslint/eslint-plugin": "^3.3.0",
     "@typescript-eslint/parser": "^3.3.0",
+    "env-cmd": "^10.1.0",
     "eslint": "^7.2.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.21.2",
@@ -35,6 +37,9 @@
     "cookie": "^0.4.1",
     "graphql-yoga": "^1.18.3",
     "ioredis": "^4.17.3",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "pg": "^8.2.1",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.25"
   }
 }
