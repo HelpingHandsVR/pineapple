@@ -8,7 +8,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "env-cmd nodemon -r tsconfig-paths/register src/index.ts"
+    "dev": "env-cmd nodemon -r tsconfig-paths/register src/index.ts",
+    "typeorm": "yarn env-cmd ts-node ./node_modules/.bin/typeorm"
   },
   "devDependencies": {
     "@types/cookie": "^0.4.0",

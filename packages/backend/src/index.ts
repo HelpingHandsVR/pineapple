@@ -4,7 +4,7 @@ import { GraphQLServer } from 'graphql-yoga'
 import { makeSchema } from '@nexus/schema'
 
 import * as vrchatTypes from './graphql/components/vrchat-api'
-import { makeContext } from './graphql/context'
+import { makeContextFactory } from './graphql/context'
 
 const main = async () => {
   const schema = makeSchema({
@@ -30,7 +30,7 @@ const main = async () => {
 
   const server = new GraphQLServer({
     schema,
-    context: makeContext,
+    context: await makeContextFactory(),
   })
 
   server.start(({ port }) => console.log(`Server running on port ${port}`))

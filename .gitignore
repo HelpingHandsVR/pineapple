@@ -1,6 +1,7 @@
 .env
 .*.env
 !.example.env
+ormconfig.json
 
 ### Code ###
 .vscode/*

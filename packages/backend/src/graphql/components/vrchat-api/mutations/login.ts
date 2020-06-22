@@ -1,6 +1,7 @@
-import { extendType, inputObjectType, objectType } from '@nexus/schema'
+import { extendType, inputObjectType, objectType, FieldResolver } from '@nexus/schema'
 import cookie from 'cookie'
 import { AuthenticationError } from 'apollo-server-errors'
+import { User } from '~/entity'
 
 export const VRChatLoginInput = inputObjectType({
   name: 'VRChatLoginInput',
@@ -27,6 +28,28 @@ export const VRChatLoginResult = objectType({
   },
 })
 
+const onLoginComplete = async (userId: string): Promise<any> => {
+  const user = await User.findOne({
+    where: {
+      vrcUserID: userId,
+    },
+    select: ['id'],
+  })
+
+  if (!user) {
+    const newUser = new User()
+
+    newUser.vrcUserID = userId
+
+    await newUser.save()
+  }
+
+  return {
+    complete: true,
+    authCookie: null,
+  }
+}
+
 export const VRChatLoginMutation = extendType({
   type: 'Mutation',
   definition (t) {
@@ -46,14 +69,12 @@ export const VRChatLoginMutation = extendType({
             throw new AuthenticationError('Invalid two-factor authentication code')
           }
 
-          return {
-            complete: true,
-            authCookie: null,
-          }
+          const user = await context.dataSources.vrchat.getViewer()
+
+          return onLoginComplete(user.id)
         }
 
         const response = await context.dataSources.vrchat.login(args.input.username, args.input.password)
-
         const { auth } = cookie.parse(response.__headers.get('set-cookie'))
 
         if ('requiresTwoFactorAuth' in response) {
@@ -63,10 +84,7 @@ export const VRChatLoginMutation = extendType({
           }
         }
 
-        return {
-          complete: true,
-          user: response,
-        }
+        return onLoginComplete(response.id)
       },
     })
   },

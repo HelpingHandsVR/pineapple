@@ -11,7 +11,7 @@ export const VRCViewerQuery = extendType({
     })
 
     t.string('test', {
-      resolve () {
+      async resolve () {
         return 'OK'
       },
     })
