@@ -15,8 +15,12 @@ query vrcViewer {
     twoFactorAuthEnabled
     user {
       id
-      discordAccount {
+      discord {
         id
+        account {
+          id
+          username
+        }
       }
     }
   }

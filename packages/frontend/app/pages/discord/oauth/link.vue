@@ -4,13 +4,17 @@ import qs from 'querystring'
 
 import {DiscordOauthUrlDocument} from '../../../../generated/composition'
 
+type Data = {
+  discordOauthURL: string,
+}
+
 export default {
   apollo: {
     discordOauthURL: {
       query: DiscordOauthUrlDocument,
     }
   },
-  data () {
+  data (): Data {
     return {
       discordOauthURL: null,
     }

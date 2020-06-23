@@ -15,6 +15,7 @@ export type Scalars = {
 
 export type DiscordAccount = {
   __typename?: 'DiscordAccount';
+  account: DiscordUser;
   id: Scalars['ID'];
 };
 
@@ -26,7 +27,6 @@ export type DiscordOauthMutationInput = {
 
 export type DiscordUser = {
   __typename?: 'DiscordUser';
-  avatar?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   username: Scalars['String'];
 };
@@ -57,7 +57,7 @@ export type Query = {
 
 export type User = {
   __typename?: 'User';
-  discordAccount?: Maybe<DiscordAccount>;
+  discord?: Maybe<DiscordAccount>;
   id: Scalars['ID'];
 };
 
@@ -248,9 +248,13 @@ export type VrcViewerQuery = (
     & { user: (
       { __typename?: 'User' }
       & Pick<User, 'id'>
-      & { discordAccount?: Maybe<(
+      & { discord?: Maybe<(
         { __typename?: 'DiscordAccount' }
         & Pick<DiscordAccount, 'id'>
+        & { account: (
+          { __typename?: 'DiscordUser' }
+          & Pick<DiscordUser, 'id' | 'username'>
+        ) }
       )> }
     ) }
   ) }
@@ -420,8 +424,12 @@ export const VrcViewerDocument = gql`
     twoFactorAuthEnabled
     user {
       id
-      discordAccount {
+      discord {
         id
+        account {
+          id
+          username
+        }
       }
     }
   }

@@ -1,4 +1,4 @@
-import { extendType, inputObjectType, objectType } from '@nexus/schema'
+import { extendType, inputObjectType } from '@nexus/schema'
 import { randomBytes } from 'crypto'
 import { AuthenticationError } from 'apollo-server-errors'
 import { DateTime } from 'luxon'
@@ -38,17 +38,6 @@ export const DiscordOauthMutationInput = inputObjectType({
     t.string('accessToken')
     t.string('state')
     t.int('expiresIn')
-  },
-})
-
-export const DiscordUser = objectType({
-  name: 'DiscordUser',
-  definition (t) {
-    t.id('id')
-    t.string('avatar', {
-      nullable: true,
-    })
-    t.string('username')
   },
 })
 
@@ -119,7 +108,7 @@ export const DiscordOauthMutation = extendType({
 
         newAccount.accessToken = args.input.accessToken
         newAccount.expiresAt = expiresAt
-        account.user = Promise.resolve(user)
+        newAccount.user = Promise.resolve(user)
 
         await newAccount.save()
 

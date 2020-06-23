@@ -35,14 +35,12 @@ export interface NexusGenRootTypes {
     id: string; // ID!
   }
   DiscordUser: { // root type
-    avatar?: string | null; // String
     id: string; // ID!
     username: string; // String!
   }
   Mutation: {};
   Query: {};
   User: { // root type
-    discordAccount?: NexusGenRootTypes['DiscordAccount'] | null; // DiscordAccount
     id: string; // ID!
   }
   VRChatConfig: { // root type
@@ -126,10 +124,10 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 
 export interface NexusGenFieldTypes {
   DiscordAccount: { // field return type
+    account: NexusGenRootTypes['DiscordUser']; // DiscordUser!
     id: string; // ID!
   }
   DiscordUser: { // field return type
-    avatar: string | null; // String
     id: string; // ID!
     username: string; // String!
   }
@@ -144,7 +142,7 @@ export interface NexusGenFieldTypes {
     vrcViewer: NexusGenRootTypes['VRChatExtendedUser']; // VRChatExtendedUser!
   }
   User: { // field return type
-    discordAccount: NexusGenRootTypes['DiscordAccount'] | null; // DiscordAccount
+    discord: NexusGenRootTypes['DiscordAccount'] | null; // DiscordAccount
     id: string; // ID!
   }
   VRChatConfig: { // field return type
