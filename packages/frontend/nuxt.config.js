@@ -110,5 +110,10 @@ export default {
     clientConfigs: {
       default: '~/plugins/apollo-config.js',
     },
+    defaultOptions: {
+      $query: {
+        fetchPolocy: 'cache-and-network',
+      },
+    },
   },
 }

@@ -9,7 +9,7 @@ type Data = {
 export default {
   apollo: {
     vrcViewer: {
-      query: VrcViewerDocument
+      query: VrcViewerDocument,
     }
   },
   data (): Data {
@@ -19,7 +19,12 @@ export default {
   },
   middleware: [
     'auth'
-  ]
+  ],
+  mounted () {
+    if ('refetch' in this.$route.query) {
+      this.$apollo.queries.vrcViewer.refetch()
+    }
+  }
 }
 </script>
 

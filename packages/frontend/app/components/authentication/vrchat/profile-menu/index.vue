@@ -33,11 +33,11 @@ export default {
         v-on='on'
         :loading='$apollo.queries.vrcViewer.loading'
       )
-        v-avatar(v-if='!$apollo.queries.vrcViewer.loading && vrcViewer')
-          v-img(:src='vrcViewer.currentAvatarThumbnailImageUrl')
+        v-avatar
+          v-img(v-if='!$apollo.queries.vrcViewer.loading && vrcViewer', :src='vrcViewer.currentAvatarThumbnailImageUrl')
 
-    v-list(v-if='!$apollo.queries.vrcViewer.loading && vrcViewer')
-      v-list-item(@click.stop)
+    v-list
+      v-list-item(@click.stop, v-if='!$apollo.queries.vrcViewer.loading && vrcViewer')
         v-list-item-content
           v-list-item-title
             b {{vrcViewer.displayName}}

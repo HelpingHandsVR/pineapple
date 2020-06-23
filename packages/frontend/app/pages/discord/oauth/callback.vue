@@ -35,7 +35,7 @@ export default Vue.extend({
         }
       })
 
-      this.$router.push('/')
+      this.$router.push('/?refetch')
     }
   }
 })
