@@ -2,14 +2,37 @@
 ### Do not make changes to this file directly
 
 
+type DiscordAccount {
+  id: ID!
+}
+
+input DiscordOauthMutationInput {
+  accessToken: String
+  expiresIn: Int
+  state: String
+}
+
+type DiscordUser {
+  avatar: String
+  id: ID!
+  username: String!
+}
+
 type Mutation {
+  discordOauthCallback(input: DiscordOauthMutationInput!): DiscordUser!
   logout: VRChatLogoutMutationResult!
   vrcLogin(input: VRChatLoginInput!): VRChatLoginResult!
 }
 
 type Query {
+  discordOauthURL: String!
   test: String!
   vrcViewer: VRChatExtendedUser!
+}
+
+type User {
+  discordAccount: DiscordAccount
+  id: ID!
 }
 
 type VRChatConfig {
@@ -54,6 +77,7 @@ type VRChatExtendedUser implements VRChatUserBase {
   status: String!
   statusDescription: String!
   twoFactorAuthEnabled: Boolean!
+  user: User!
   username: String!
 }
 
@@ -88,6 +112,7 @@ type VRChatUser implements VRChatUserBase {
   state: String!
   status: String!
   statusDescription: String!
+  user: User!
   username: String!
   worldId: String!
 }

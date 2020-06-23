@@ -4,6 +4,9 @@ import { GraphQLServer } from 'graphql-yoga'
 import { makeSchema } from '@nexus/schema'
 
 import * as vrchatTypes from './graphql/components/vrchat-api'
+import * as discordTypes from './graphql/components/discord'
+import * as userTypes from './graphql/components/user'
+
 import { makeContextFactory } from './graphql/context'
 
 const main = async () => {
@@ -11,6 +14,8 @@ const main = async () => {
     shouldGenerateArtifacts: process.env.NODE_ENV !== 'production',
     types: {
       ...vrchatTypes,
+      ...discordTypes,
+      ...userTypes,
     },
     outputs: {
       schema: path.join(__dirname, 'generated/schema.graphql'),

@@ -2,4 +2,9 @@ import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConne
 
 export type Config = {
   db: PostgresConnectionOptions,
+  discord: {
+    clientId: string,
+    redirectUri: string,
+    clientSecret: string,
+  }
 }

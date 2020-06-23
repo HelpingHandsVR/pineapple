@@ -1,0 +1,13 @@
+mutation discordOauthCallback (
+  $accessToken: String!
+  $state: String!
+  $expiresIn: Int!
+) {
+  discordOauthCallback (input: {
+    accessToken: $accessToken
+    state: $state
+    expiresIn: $expiresIn
+  }) {
+    id
+  }
+}

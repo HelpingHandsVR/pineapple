@@ -1,22 +1,13 @@
+import { CrudEntity } from '~/db/entity-type/crud'
 import {
-  BaseEntity,
   Entity,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  VersionColumn,
-  PrimaryColumn,
+  OneToOne,
 } from 'typeorm'
+import { DiscordAccount } from './discord-account'
 
 @Entity({ name: 'User' })
-export class User extends BaseEntity {
-  @PrimaryColumn({
-    generated: 'uuid',
-    unique: true,
-  })
-  id: string
-
+export class User extends CrudEntity {
   @Column({
     type: 'varchar',
     // VRC User IDs are usr_<uuid4>
@@ -24,17 +15,8 @@ export class User extends BaseEntity {
   })
   vrcUserID: string
 
-  // Automatically managed fields
-
-  @CreateDateColumn()
-  createdAt: Date
-
-  @UpdateDateColumn()
-  updatedAt: Date
-
-  @DeleteDateColumn()
-  deletedAt: Date
-
-  @VersionColumn()
-  version: number
+  @OneToOne(() => DiscordAccount, (discordAccount) => discordAccount.user, {
+    nullable: true,
+  })
+  discordAccount: Promise<DiscordAccount>
 }

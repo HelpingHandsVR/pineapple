@@ -23,6 +23,11 @@ export default Vue.extend({
           title: 'Welcome',
           to: '/',
         },
+        {
+          icon: 'mdi-discord',
+          title: 'Link Discord',
+          to: '/discord/oauth/link',
+        },
       ],
       title: 'Pineapple',
     }

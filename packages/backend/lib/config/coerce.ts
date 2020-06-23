@@ -12,4 +12,9 @@ export const getConfig = (env: NodeJS.ProcessEnv): Config => ({
     logging: env.DB_LOGGING === 'true',
     migrationsRun: env.DB_MIGRATIONS === 'true',
   },
+  discord: {
+    clientId: env.DISCORD_CLIENT_ID,
+    clientSecret: env.DISCORD_CLIENT_SECRET,
+    redirectUri: env.DISCORD_REDIRECT_URL,
+  },
 })

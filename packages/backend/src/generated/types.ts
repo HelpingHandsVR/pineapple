@@ -14,6 +14,11 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  DiscordOauthMutationInput: { // input type
+    accessToken?: string | null; // String
+    expiresIn?: number | null; // Int
+    state?: string | null; // String
+  }
   VRChatLoginInput: { // input type
     password?: string | null; // String
     totp?: string | null; // String
@@ -26,8 +31,20 @@ export interface NexusGenEnums {
 }
 
 export interface NexusGenRootTypes {
+  DiscordAccount: { // root type
+    id: string; // ID!
+  }
+  DiscordUser: { // root type
+    avatar?: string | null; // String
+    id: string; // ID!
+    username: string; // String!
+  }
   Mutation: {};
   Query: {};
+  User: { // root type
+    discordAccount?: NexusGenRootTypes['DiscordAccount'] | null; // DiscordAccount
+    id: string; // ID!
+  }
   VRChatConfig: { // root type
     announcements: Array<NexusGenRootTypes['VRChatConfigAnnouncement'] | null>; // [VRChatConfigAnnouncement]!
     dynamicWorldRows: Array<NexusGenRootTypes['VRChatConfigDynamicWorldRow'] | null>; // [VRChatConfigDynamicWorldRow]!
@@ -102,18 +119,33 @@ export interface NexusGenRootTypes {
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  DiscordOauthMutationInput: NexusGenInputs['DiscordOauthMutationInput'];
   VRChatLoginInput: NexusGenInputs['VRChatLoginInput'];
   VRChatUserRole: NexusGenEnums['VRChatUserRole'];
 }
 
 export interface NexusGenFieldTypes {
+  DiscordAccount: { // field return type
+    id: string; // ID!
+  }
+  DiscordUser: { // field return type
+    avatar: string | null; // String
+    id: string; // ID!
+    username: string; // String!
+  }
   Mutation: { // field return type
+    discordOauthCallback: NexusGenRootTypes['DiscordUser']; // DiscordUser!
     logout: NexusGenRootTypes['VRChatLogoutMutationResult']; // VRChatLogoutMutationResult!
     vrcLogin: NexusGenRootTypes['VRChatLoginResult']; // VRChatLoginResult!
   }
   Query: { // field return type
+    discordOauthURL: string; // String!
     test: string; // String!
     vrcViewer: NexusGenRootTypes['VRChatExtendedUser']; // VRChatExtendedUser!
+  }
+  User: { // field return type
+    discordAccount: NexusGenRootTypes['DiscordAccount'] | null; // DiscordAccount
+    id: string; // ID!
   }
   VRChatConfig: { // field return type
     announcements: Array<NexusGenRootTypes['VRChatConfigAnnouncement'] | null>; // [VRChatConfigAnnouncement]!
@@ -154,6 +186,7 @@ export interface NexusGenFieldTypes {
     status: string; // String!
     statusDescription: string; // String!
     twoFactorAuthEnabled: boolean; // Boolean!
+    user: NexusGenRootTypes['User']; // User!
     username: string; // String!
   }
   VRChatLoginResult: { // field return type
@@ -179,6 +212,7 @@ export interface NexusGenFieldTypes {
     state: string; // String!
     status: string; // String!
     statusDescription: string; // String!
+    user: NexusGenRootTypes['User']; // User!
     username: string; // String!
     worldId: string; // String!
   }
@@ -203,6 +237,9 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    discordOauthCallback: { // args
+      input: NexusGenInputs['DiscordOauthMutationInput']; // DiscordOauthMutationInput!
+    }
     vrcLogin: { // args
       input: NexusGenInputs['VRChatLoginInput']; // VRChatLoginInput!
     }
@@ -215,9 +252,9 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Mutation" | "Query" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatLoginResult" | "VRChatLogoutMutationResult" | "VRChatUser";
+export type NexusGenObjectNames = "DiscordAccount" | "DiscordUser" | "Mutation" | "Query" | "User" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatLoginResult" | "VRChatLogoutMutationResult" | "VRChatUser";
 
-export type NexusGenInputNames = "VRChatLoginInput";
+export type NexusGenInputNames = "DiscordOauthMutationInput" | "VRChatLoginInput";
 
 export type NexusGenEnumNames = "VRChatUserRole";
 

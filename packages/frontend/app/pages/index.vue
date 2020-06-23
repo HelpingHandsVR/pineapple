@@ -28,7 +28,7 @@ export default {
     v-flex(xs12, sm8, md6)
       v-skeleton-loader(
         v-if='$apollo.queries.vrcViewer.loading'
-        boilerplate='paragraph, paragraph, paragraph'
+        boilerplate
       )
       v-card
         v-card-title.headline

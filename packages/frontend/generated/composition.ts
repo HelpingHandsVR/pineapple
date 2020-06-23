@@ -13,10 +13,34 @@ export type Scalars = {
   Float: number;
 };
 
+export type DiscordAccount = {
+  __typename?: 'DiscordAccount';
+  id: Scalars['ID'];
+};
+
+export type DiscordOauthMutationInput = {
+  accessToken?: Maybe<Scalars['String']>;
+  expiresIn?: Maybe<Scalars['Int']>;
+  state?: Maybe<Scalars['String']>;
+};
+
+export type DiscordUser = {
+  __typename?: 'DiscordUser';
+  avatar?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  username: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  discordOauthCallback: DiscordUser;
   logout: VrChatLogoutMutationResult;
   vrcLogin: VrChatLoginResult;
+};
+
+
+export type MutationDiscordOauthCallbackArgs = {
+  input: DiscordOauthMutationInput;
 };
 
 
@@ -26,8 +50,15 @@ export type MutationVrcLoginArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  discordOauthURL: Scalars['String'];
   test: Scalars['String'];
   vrcViewer: VrChatExtendedUser;
+};
+
+export type User = {
+  __typename?: 'User';
+  discordAccount?: Maybe<DiscordAccount>;
+  id: Scalars['ID'];
 };
 
 export type VrChatConfig = {
@@ -76,6 +107,7 @@ export type VrChatExtendedUser = VrChatUserBase & {
   status: Scalars['String'];
   statusDescription: Scalars['String'];
   twoFactorAuthEnabled: Scalars['Boolean'];
+  user: User;
   username: Scalars['String'];
 };
 
@@ -113,6 +145,7 @@ export type VrChatUser = VrChatUserBase & {
   state: Scalars['String'];
   status: Scalars['String'];
   statusDescription: Scalars['String'];
+  user: User;
   username: Scalars['String'];
   worldId: Scalars['String'];
 };
@@ -142,6 +175,21 @@ export enum VrChatUserRole {
   User = 'USER',
   Visitor = 'VISITOR'
 }
+
+export type DiscordOauthCallbackMutationVariables = Exact<{
+  accessToken: Scalars['String'];
+  state: Scalars['String'];
+  expiresIn: Scalars['Int'];
+}>;
+
+
+export type DiscordOauthCallbackMutation = (
+  { __typename?: 'Mutation' }
+  & { discordOauthCallback: (
+    { __typename?: 'DiscordUser' }
+    & Pick<DiscordUser, 'id'>
+  ) }
+);
 
 export type VrcLoginMutationVariables = Exact<{
   username?: Maybe<Scalars['String']>;
@@ -181,6 +229,14 @@ export type VrcLoginTotpMutation = (
   ) }
 );
 
+export type DiscordOauthUrlQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DiscordOauthUrlQuery = (
+  { __typename?: 'Query' }
+  & Pick<Query, 'discordOauthURL'>
+);
+
 export type VrcViewerQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -189,10 +245,49 @@ export type VrcViewerQuery = (
   & { vrcViewer: (
     { __typename?: 'VRChatExtendedUser' }
     & Pick<VrChatExtendedUser, 'id' | 'displayName' | 'currentAvatarImageUrl' | 'currentAvatarThumbnailImageUrl' | 'role' | 'state' | 'status' | 'statusDescription' | 'obfuscatedEmail' | 'allowAvatarCopying' | 'last_login' | 'last_platform' | 'twoFactorAuthEnabled'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+      & { discordAccount?: Maybe<(
+        { __typename?: 'DiscordAccount' }
+        & Pick<DiscordAccount, 'id'>
+      )> }
+    ) }
   ) }
 );
 
 
+export const DiscordOauthCallbackDocument = gql`
+    mutation discordOauthCallback($accessToken: String!, $state: String!, $expiresIn: Int!) {
+  discordOauthCallback(input: {accessToken: $accessToken, state: $state, expiresIn: $expiresIn}) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useDiscordOauthCallbackMutation__
+ *
+ * To run a mutation, you first call `useDiscordOauthCallbackMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useDiscordOauthCallbackMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useDiscordOauthCallbackMutation({
+ *   variables: {
+ *      accessToken: // value for 'accessToken'
+ *      state: // value for 'state'
+ *      expiresIn: // value for 'expiresIn'
+ *   },
+ * });
+ */
+export function useDiscordOauthCallbackMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>) {
+            return VueApolloComposable.useMutation<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>(DiscordOauthCallbackDocument, options);
+          }
+export type DiscordOauthCallbackMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>;
 export const VrcLoginDocument = gql`
     mutation vrcLogin($username: String, $password: String) {
   vrcLogin(input: {username: $username, password: $password}) {
@@ -282,6 +377,31 @@ export function useVrcLoginTotpMutation(options: VueApolloComposable.UseMutation
             return VueApolloComposable.useMutation<VrcLoginTotpMutation, VrcLoginTotpMutationVariables>(VrcLoginTotpDocument, options);
           }
 export type VrcLoginTotpMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<VrcLoginTotpMutation, VrcLoginTotpMutationVariables>;
+export const DiscordOauthUrlDocument = gql`
+    query discordOauthURL {
+  discordOauthURL
+}
+    `;
+
+/**
+ * __useDiscordOauthUrlQuery__
+ *
+ * To run a query within a Vue component, call `useDiscordOauthUrlQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscordOauthUrlQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useDiscordOauthUrlQuery(
+ *   {
+ *   }
+ * );
+ */
+export function useDiscordOauthUrlQuery(options: VueApolloComposable.UseQueryOptions<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<DiscordOauthUrlQuery, undefined>(DiscordOauthUrlDocument, undefined, options);
+          }
+export type DiscordOauthUrlQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables>;
 export const VrcViewerDocument = gql`
     query vrcViewer {
   vrcViewer {
@@ -298,6 +418,12 @@ export const VrcViewerDocument = gql`
     last_login
     last_platform
     twoFactorAuthEnabled
+    user {
+      id
+      discordAccount {
+        id
+      }
+    }
   }
 }
     `;

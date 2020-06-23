@@ -6,8 +6,9 @@ import { Config } from '@/lib/config/type'
 import { getConfig } from '@/lib/config/coerce'
 
 import * as entities from '~/entity'
+import { DiscordContext, makeDiscordContext } from '../components/discord/context'
 
-type StaticContext = {
+export type StaticContext = {
   config: Config,
   connection: Connection,
 }
@@ -15,6 +16,7 @@ type StaticContext = {
 export type Context =
   & StaticContext
   & VRChatAPIContext
+  & DiscordContext
 
 const makeStaticContext = async (): Promise<StaticContext> => {
   const config = getConfig(process.env)
@@ -33,6 +35,7 @@ type ContextCreator = (params: ContextParameters) => Promise<Context>
 
 export const makeContextFactory = async (): Promise<ContextCreator> => {
   const staticContext = await makeStaticContext()
+  const discordContext = await makeDiscordContext(staticContext)
 
   return async (params: ContextParameters): Promise<Context> => {
     const vrcContext = makeVRChatAPIContext(params)
@@ -40,6 +43,7 @@ export const makeContextFactory = async (): Promise<ContextCreator> => {
     return {
       ...staticContext,
       ...vrcContext,
+      ...discordContext,
     }
   }
 }
