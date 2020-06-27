@@ -1,0 +1,10 @@
+diff --git a/node_modules/typeorm-seeding/dist/cli.js b/node_modules/typeorm-seeding/dist/cli.js
+index c408441..f04706e 100755
+--- a/node_modules/typeorm-seeding/dist/cli.js
++++ b/node_modules/typeorm-seeding/dist/cli.js
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env nod
++#!/usr/bin/env node
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
+ require("reflect-metadata");
