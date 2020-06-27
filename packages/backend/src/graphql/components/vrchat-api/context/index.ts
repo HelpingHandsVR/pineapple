@@ -21,7 +21,11 @@ export const makeVRChatAPIContext = async (params: ContextParameters): Promise<V
   console.log({ authCookie })
 
   if (authCookie) {
-    viewer = await vrchat.getViewer()
+    const response = await vrchat.getViewer()
+
+    if ('id' in response) {
+      viewer = response
+    }
   }
 
   return {

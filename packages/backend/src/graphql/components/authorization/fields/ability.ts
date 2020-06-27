@@ -7,8 +7,6 @@ export const AbilityOnUser = extendType({
       type: 'Ability',
       list: [false],
       async resolve (root, args, context) {
-        // console.log(context.auth.ability.rules)
-
         return context.auth.ability.rules
       },
     })

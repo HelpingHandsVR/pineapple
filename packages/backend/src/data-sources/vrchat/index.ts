@@ -68,7 +68,7 @@ export class VRChatAPI extends RESTDataSource {
   }
 
   // Gets extended user (only for when requesting self when logged in)
-  public async getViewer (): Promise<Types.VRCExtendedUser> {
+  public async getViewer (): Promise<Types.VRCExtendedUser | Types.VRCLoginResultTotpNeeded> {
     return this.get('/auth/user')
   }
 

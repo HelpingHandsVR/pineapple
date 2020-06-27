@@ -72,7 +72,7 @@ export const DiscordOauthMutation = extendType({
           throw new AuthenticationError('Bot accounts cannot be linked')
         }
 
-        const vrcUser = await context.dataSources.vrchat.getViewer()
+        const vrcUser = await context.vrchat.viewer
         const user = await User.findOne({
           where: {
             vrcUserID: vrcUser.id,
