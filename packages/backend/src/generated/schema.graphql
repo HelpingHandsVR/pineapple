@@ -2,6 +2,34 @@
 ### Do not make changes to this file directly
 
 
+type Ability {
+  action: AbilityAction!
+  subject: AbilitySubject
+}
+
+enum AbilityAction {
+  ATTACH
+  CREATE
+  DELETE
+  DETACH
+  LOG_OUT
+  LOG_OUT_OTHERS
+  READ
+  SOFT_DELETE
+  UPDATE
+}
+
+enum AbilitySubject {
+  DISCORD_ACCOUNT_OTHERS
+  DISCORD_ACCOUNT_SELF
+  DISCORD_OAUTH_REQUEST_SELF
+  LESSON_OTHERS
+  LESSON_SELF
+  PERMISSION_SELF
+  USER_OTHERS
+  USER_SELF
+}
+
 type DiscordAccount {
   account: DiscordUser!
   id: ID!
@@ -26,11 +54,12 @@ type Mutation {
 
 type Query {
   discordOauthURL: String!
-  test: String!
+  ping: String!
   vrcViewer: VRChatExtendedUser!
 }
 
 type User {
+  ability: [Ability]!
   discord: DiscordAccount
   id: ID!
 }
@@ -77,7 +106,7 @@ type VRChatExtendedUser implements VRChatUserBase {
   status: String!
   statusDescription: String!
   twoFactorAuthEnabled: Boolean!
-  user: User!
+  user: User
   username: String!
 }
 
@@ -112,7 +141,7 @@ type VRChatUser implements VRChatUserBase {
   state: String!
   status: String!
   statusDescription: String!
-  user: User!
+  user: User
   username: String!
   worldId: String!
 }

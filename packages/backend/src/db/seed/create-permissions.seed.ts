@@ -6,25 +6,21 @@ import { Action, Subject } from '@/lib/permission'
 
 const fullCrudFor = (subject: Subject) => [
   { action: Action.CREATE, subject },
-  { action: Action.CREATE_OTHERS, subject },
-
   { action: Action.READ, subject },
-  { action: Action.READ_OTHERS, subject },
-
   { action: Action.SOFT_DELETE, subject },
-  { action: Action.SOFT_DELETE_OTHERS, subject },
-
   { action: Action.DELETE, subject },
-  { action: Action.DELETE_OTHERS, subject },
 ]
 
 const allPermissions = [
-  ...fullCrudFor(Subject.LESSON),
-  ...fullCrudFor(Subject.USER),
-  ...fullCrudFor(Subject.PERMISSION),
+  ...fullCrudFor(Subject.LESSON_SELF),
+  ...fullCrudFor(Subject.LESSON_OTHERS),
+  ...fullCrudFor(Subject.USER_SELF),
+  ...fullCrudFor(Subject.USER_OTHERS),
+  ...fullCrudFor(Subject.PERMISSION_SELF),
 
-  { action: Action.ATTACH, subject: Subject.DISCORD_ACCOUNT },
-  { action: Action.READ, subject: Subject.DISCORD_OAUTH_REQUEST },
+  { action: Action.ATTACH, subject: Subject.DISCORD_ACCOUNT_SELF },
+  { action: Action.DETACH, subject: Subject.DISCORD_ACCOUNT_OTHERS },
+  { action: Action.READ, subject: Subject.DISCORD_OAUTH_REQUEST_SELF },
 ]
 
 export default class CreatePermissions implements Seeder {
@@ -41,10 +37,10 @@ export default class CreatePermissions implements Seeder {
       .insert()
       .into(Role)
       .values([
-        { name: 'rootAdmin', permissions: [] },
-        { name: 'admin', permissions: [] },
-        { name: 'teacher', permissions: [] },
-        { name: 'student', permissions: [] },
+        { name: 'rootAdmin', permissions: Promise.resolve([]) },
+        { name: 'admin', permissions: Promise.resolve([]) },
+        { name: 'teacher', permissions: Promise.resolve([]) },
+        { name: 'student', permissions: Promise.resolve([]) },
       ])
       .execute()
 

@@ -13,6 +13,12 @@ export type Scalars = {
   Float: number;
 };
 
+export type Ability = {
+  __typename?: 'Ability';
+  action: Scalars['Int'];
+  subject: Scalars['Int'];
+};
+
 export type DiscordAccount = {
   __typename?: 'DiscordAccount';
   account: DiscordUser;
@@ -51,12 +57,13 @@ export type MutationVrcLoginArgs = {
 export type Query = {
   __typename?: 'Query';
   discordOauthURL: Scalars['String'];
-  test: Scalars['String'];
+  ping: Scalars['String'];
   vrcViewer: VrChatExtendedUser;
 };
 
 export type User = {
   __typename?: 'User';
+  ability: Array<Maybe<Ability>>;
   discord?: Maybe<DiscordAccount>;
   id: Scalars['ID'];
 };
@@ -107,7 +114,7 @@ export type VrChatExtendedUser = VrChatUserBase & {
   status: Scalars['String'];
   statusDescription: Scalars['String'];
   twoFactorAuthEnabled: Scalars['Boolean'];
-  user: User;
+  user?: Maybe<User>;
   username: Scalars['String'];
 };
 
@@ -145,7 +152,7 @@ export type VrChatUser = VrChatUserBase & {
   state: Scalars['String'];
   status: Scalars['String'];
   statusDescription: Scalars['String'];
-  user: User;
+  user?: Maybe<User>;
   username: Scalars['String'];
   worldId: Scalars['String'];
 };
@@ -245,7 +252,7 @@ export type VrcViewerQuery = (
   & { vrcViewer: (
     { __typename?: 'VRChatExtendedUser' }
     & Pick<VrChatExtendedUser, 'id' | 'displayName' | 'currentAvatarImageUrl' | 'currentAvatarThumbnailImageUrl' | 'role' | 'state' | 'status' | 'statusDescription' | 'obfuscatedEmail' | 'allowAvatarCopying' | 'last_login' | 'last_platform' | 'twoFactorAuthEnabled'>
-    & { user: (
+    & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
       & { discord?: Maybe<(
@@ -256,7 +263,7 @@ export type VrcViewerQuery = (
           & Pick<DiscordUser, 'id' | 'username'>
         ) }
       )> }
-    ) }
+    )> }
   ) }
 );
 

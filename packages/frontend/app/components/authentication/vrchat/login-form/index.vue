@@ -24,6 +24,12 @@ export default Vue.extend({
     ...mapMutations({
       setLoggedIn: 'auth/setLoggedIn'
     }),
+    onLoginComplete () {
+      this.loading = false
+      this.setLoggedIn(true)
+      this.$router.push('/')
+      return null
+    },
     async handleFormSubmit (credentials: LoginFormData) {
       this.loading = true
 
@@ -35,35 +41,36 @@ export default Vue.extend({
           }
         })
 
-        this.loading = false
-        this.setLoggedIn(true)
-        this.$router.push('/')
-        return null
+        if (result.data.vrcLogin.complete) {
+          // Login is complete, two-factor successful
+          return this.onLoginComplete()
+        }
       }
 
-      const initialResult = await this.$apollo.mutate({
-        mutation: VrcLoginDocument,
-        variables: {
-          username: credentials.username,
-          password: credentials.password,
-        },
-      })
+      if (credentials.username && credentials.password) {
+        const initialResult = await this.$apollo.mutate({
+          mutation: VrcLoginDocument,
+          variables: {
+            username: credentials.username,
+            password: credentials.password,
+          },
+        })
 
-      // This is the only chance we have to store the auth cookie
-      this.$apolloHelpers.onLogin(initialResult.data.vrcLogin.authCookie)
+        if (initialResult.data.vrcLogin.authCookie) {
+          // This is the only chance we have to store the auth cookie
+          this.$apolloHelpers.onLogin(initialResult.data.vrcLogin.authCookie)
+        }
 
-      if (initialResult.data.vrcLogin.complete) {
-        // Login is complete, two-factor isn't enabled on the account
+        if (initialResult.data.vrcLogin.complete) {
+          // Login is complete, two-factor isn't enabled on the account
+          return this.onLoginComplete()
+        }
+
+        // Login is successful but the session needs to be elevated using two
+        // factor
+        this.totpNeeded = true
         this.loading = false
-        this.setLoggedIn(true)
-        this.$router.push('/')
-        return null
       }
-
-      // Login is successful but the session needs to be elevated using two
-      // factor
-      this.totpNeeded = true
-      this.loading = false
     }
   },
 })

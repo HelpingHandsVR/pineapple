@@ -1,7 +1,7 @@
 import { extendType, inputObjectType, objectType, FieldResolver } from '@nexus/schema'
 import cookie from 'cookie'
 import { AuthenticationError } from 'apollo-server-errors'
-import { User } from '~/entity'
+import { User, Role } from '~/entity'
 
 export const VRChatLoginInput = inputObjectType({
   name: 'VRChatLoginInput',
@@ -29,6 +29,13 @@ export const VRChatLoginResult = objectType({
 })
 
 const onLoginComplete = async (userId: string): Promise<any> => {
+  if (!userId) {
+    return {
+      complete: false,
+      authCookie: null,
+    }
+  }
+
   const user = await User.findOne({
     where: {
       vrcUserID: userId,
@@ -40,6 +47,11 @@ const onLoginComplete = async (userId: string): Promise<any> => {
     const newUser = new User()
 
     newUser.vrcUserID = userId
+    newUser.role = Role.findOne({
+      where: {
+        name: 'student',
+      },
+    })
 
     await newUser.save()
   }

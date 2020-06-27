@@ -53,7 +53,10 @@ export class VRChatAPI extends RESTDataSource {
   willSendRequest (request: RequestOptions): void {
     request.headers.set('User-Agent', `Pineapple/${pkg.version} (+decentm+pineapple-ua@decentm.com) (+environment:${process.env.NODE_ENV})`)
     request.headers.set('X-Forwarded-For', this.remoteIp)
-    request.headers.set('cookie', cookie.serialize('auth', this.authCookie))
+
+    if (this.authCookie) {
+      request.headers.set('cookie', cookie.serialize('auth', this.authCookie))
+    }
 
     if (this.apiKey) {
       request.params.append('apiKey', this.apiKey)

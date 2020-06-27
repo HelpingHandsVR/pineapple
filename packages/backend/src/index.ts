@@ -6,6 +6,7 @@ import { makeSchema } from '@nexus/schema'
 import * as vrchatTypes from './graphql/components/vrchat-api'
 import * as discordTypes from './graphql/components/discord'
 import * as userTypes from './graphql/components/user'
+import * as authTypes from './graphql/components/authorization'
 
 import { makeContextFactory } from './graphql/context'
 
@@ -16,6 +17,7 @@ const main = async () => {
       ...vrchatTypes,
       ...discordTypes,
       ...userTypes,
+      ...authTypes,
     },
     outputs: {
       schema: path.join(__dirname, 'generated/schema.graphql'),

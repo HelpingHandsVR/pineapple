@@ -16,8 +16,8 @@ export class Role extends CrudEntity {
   name: string
 
   @ManyToMany(() => Permission, {
-    eager: true,
+    lazy: true,
   })
   @JoinTable()
-  permissions: Permission[]
+  permissions: Promise<Permission[]>
 }

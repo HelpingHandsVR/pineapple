@@ -1,6 +1,7 @@
 {
   "watch": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "lib/**/*.ts"
   ],
   "ignore": [
     "src/**/*.spec.ts"

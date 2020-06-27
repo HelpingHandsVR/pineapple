@@ -6,13 +6,13 @@ export const VRCViewerQuery = extendType({
     t.field('vrcViewer', {
       type: 'VRChatExtendedUser',
       resolve (root, args, context) {
-        return context.dataSources.vrchat.getViewer()
+        return context.vrchat.viewer
       },
     })
 
-    t.string('test', {
+    t.string('ping', {
       async resolve () {
-        return 'OK'
+        return 'pong'
       },
     })
   },

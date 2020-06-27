@@ -7,6 +7,7 @@ import { getConfig } from '@/lib/config/coerce'
 
 import * as entities from '~/entity'
 import { DiscordContext, makeDiscordContext } from '../components/discord/context'
+import { AuthorisationContext, makeAuthorisationContext } from '../components/authorization/context'
 
 export type StaticContext = {
   config: Config,
@@ -17,6 +18,7 @@ export type Context =
   & StaticContext
   & VRChatAPIContext
   & DiscordContext
+  & AuthorisationContext
 
 const makeStaticContext = async (): Promise<StaticContext> => {
   const config = getConfig(process.env)
@@ -38,12 +40,14 @@ export const makeContextFactory = async (): Promise<ContextCreator> => {
   const discordContext = await makeDiscordContext(staticContext)
 
   return async (params: ContextParameters): Promise<Context> => {
-    const vrcContext = makeVRChatAPIContext(params)
+    const vrcContext = await makeVRChatAPIContext(params)
+    const authorisationContext = await makeAuthorisationContext(staticContext.connection, vrcContext)
 
     return {
       ...staticContext,
       ...vrcContext,
       ...discordContext,
+      ...authorisationContext,
     }
   }
 }

@@ -6,7 +6,8 @@ export const UserOnVRCExtendedUser = extendType({
   definition (t) {
     t.field('user', {
       type: 'User',
-      resolve (root, args, context) {
+      nullable: true,
+      resolve (root) {
         return User.findOne({
           where: {
             vrcUserID: root.id,
@@ -22,7 +23,8 @@ export const UserOnVRCUser = extendType({
   definition (t) {
     t.field('user', {
       type: 'User',
-      resolve (root, args, context) {
+      nullable: true,
+      resolve (root) {
         return User.findOne({
           where: {
             vrcUserID: root.id,
