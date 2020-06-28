@@ -1,8 +1,9 @@
 import { objectType } from '@nexus/schema'
 
-export const User = objectType({
-  name: 'User',
+export const Role = objectType({
+  name: 'Role',
   definition (t) {
     t.id('id')
+    t.string('name')
   },
 })

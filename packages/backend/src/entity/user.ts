@@ -3,7 +3,7 @@ import {
   Entity,
   Column,
   OneToOne,
-  JoinColumn,
+  ManyToOne,
 } from 'typeorm'
 import { DiscordAccount } from './discord-account'
 import { Role } from './role'
@@ -24,9 +24,8 @@ export class User extends CrudEntity {
   })
   discordAccount?: Promise<DiscordAccount>
 
-  @OneToOne(() => Role, {
+  @ManyToOne(() => Role, (role) => role.users, {
     lazy: true,
   })
-  @JoinColumn()
   role: Promise<Role>
 }

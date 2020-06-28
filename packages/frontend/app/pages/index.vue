@@ -1,20 +1,20 @@
 <script lang="ts">
-import { VrcViewerDocument, VrChatExtendedUser } from '../../generated/composition'
+import { ViewerDocument, Viewer } from '../../generated/composition'
 
 type Data = {
-  vrcViewer: VrChatExtendedUser,
+  viewer: Viewer,
 }
 
 
 export default {
   apollo: {
-    vrcViewer: {
-      query: VrcViewerDocument,
+    viewer: {
+      query: ViewerDocument,
     }
   },
   data (): Data {
     return {
-      vrcViewer: null,
+      viewer: null,
     }
   },
   middleware: [
@@ -22,7 +22,7 @@ export default {
   ],
   mounted () {
     if ('refetch' in this.$route.query) {
-      this.$apollo.queries.vrcViewer.refetch()
+      this.$apollo.queries.viewer.refetch()
     }
   }
 }
@@ -32,7 +32,7 @@ export default {
   v-layout(column, justify-center, align-center)
     v-flex(xs12, sm8, md6)
       v-skeleton-loader(
-        v-if='$apollo.queries.vrcViewer.loading'
+        v-if='$apollo.queries.viewer.loading'
         boilerplate
       )
       v-card
@@ -40,5 +40,5 @@ export default {
           | Your profile
         v-card-text
           pre
-            | {{vrcViewer}}
+            | {{viewer}}
 </template>

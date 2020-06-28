@@ -48,20 +48,30 @@ type DiscordUser {
 
 type Mutation {
   discordOauthCallback(input: DiscordOauthMutationInput!): DiscordUser!
-  logout: VRChatLogoutMutationResult!
   vrcLogin(input: VRChatLoginInput!): VRChatLoginResult!
+  vrcLogout: VRChatLogoutMutationResult!
 }
 
 type Query {
   discordOauthURL: String!
-  ping: String!
-  vrcViewer: VRChatExtendedUser!
+  viewer: Viewer!
+}
+
+type Role {
+  id: ID!
+  name: String!
 }
 
 type User {
-  ability: [Ability]!
   discord: DiscordAccount
   id: ID!
+  role: Role!
+}
+
+type Viewer {
+  ability: [Ability]!
+  user: User!
+  vrchatUser: VRChatExtendedUser!
 }
 
 type VRChatConfig {

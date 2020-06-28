@@ -2,6 +2,11 @@ import { Request } from 'express'
 
 export const getAuthCookieFromReq = (req: Request): string => {
   const header = req.headers.authorization || null
+
+  if (!header) {
+    return null
+  }
+
   const [method, cookie, ...rest] = header.split(' ')
   const headerValid =
     // assert that the header is a string with only one space in it

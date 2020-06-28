@@ -10,7 +10,7 @@ export const VRChatLogoutMutationResult = objectType({
 export const LogoutMutation = extendType({
   type: 'Mutation',
   definition (t) {
-    t.field('logout', {
+    t.field('vrcLogout', {
       type: 'VRChatLogoutMutationResult',
       async resolve (root, args, context) {
         await context.dataSources.vrchat.logout()

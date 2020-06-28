@@ -7,14 +7,16 @@ import { defineAbilityForRole, defineAbilityForGuest } from '@/lib/permission/he
 export type AuthorisationContext = {
   auth: {
     ability: Ability
+    user?: User
   },
 }
 
 export const makeAuthorisationContext = async (connection: Connection, context: VRChatAPIContext): Promise<AuthorisationContext> => {
   let ability: Ability = defineAbilityForGuest()
+  let user = null
 
   if (context.vrchat.viewer) {
-    const user = await connection.getRepository(User)
+    user = await connection.getRepository(User)
       .findOne({
         where: {
           vrcUserID: context.vrchat.viewer.id,
@@ -29,6 +31,7 @@ export const makeAuthorisationContext = async (connection: Connection, context: 
   return {
     auth: {
       ability,
+      user,
     },
   }
 }

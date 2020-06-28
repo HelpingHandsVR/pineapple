@@ -43,6 +43,10 @@ export interface NexusGenRootTypes {
   }
   Mutation: {};
   Query: {};
+  Role: { // root type
+    id: string; // ID!
+    name: string; // String!
+  }
   User: { // root type
     id: string; // ID!
   }
@@ -111,6 +115,10 @@ export interface NexusGenRootTypes {
     username: string; // String!
     worldId: string; // String!
   }
+  Viewer: { // root type
+    user: NexusGenRootTypes['User']; // User!
+    vrchatUser: NexusGenRootTypes['VRChatExtendedUser']; // VRChatExtendedUser!
+  }
   VRChatUserBase: NexusGenRootTypes['VRChatExtendedUser'] | NexusGenRootTypes['VRChatUser'];
   String: string;
   Int: number;
@@ -142,18 +150,21 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     discordOauthCallback: NexusGenRootTypes['DiscordUser']; // DiscordUser!
-    logout: NexusGenRootTypes['VRChatLogoutMutationResult']; // VRChatLogoutMutationResult!
     vrcLogin: NexusGenRootTypes['VRChatLoginResult']; // VRChatLoginResult!
+    vrcLogout: NexusGenRootTypes['VRChatLogoutMutationResult']; // VRChatLogoutMutationResult!
   }
   Query: { // field return type
     discordOauthURL: string; // String!
-    ping: string; // String!
-    vrcViewer: NexusGenRootTypes['VRChatExtendedUser']; // VRChatExtendedUser!
+    viewer: NexusGenRootTypes['Viewer']; // Viewer!
+  }
+  Role: { // field return type
+    id: string; // ID!
+    name: string; // String!
   }
   User: { // field return type
-    ability: Array<NexusGenRootTypes['Ability'] | null>; // [Ability]!
     discord: NexusGenRootTypes['DiscordAccount'] | null; // DiscordAccount
     id: string; // ID!
+    role: NexusGenRootTypes['Role']; // Role!
   }
   VRChatConfig: { // field return type
     announcements: Array<NexusGenRootTypes['VRChatConfigAnnouncement'] | null>; // [VRChatConfigAnnouncement]!
@@ -224,6 +235,11 @@ export interface NexusGenFieldTypes {
     username: string; // String!
     worldId: string; // String!
   }
+  Viewer: { // field return type
+    ability: Array<NexusGenRootTypes['Ability'] | null>; // [Ability]!
+    user: NexusGenRootTypes['User']; // User!
+    vrchatUser: NexusGenRootTypes['VRChatExtendedUser']; // VRChatExtendedUser!
+  }
   VRChatUserBase: { // field return type
     allowAvatarCopying: boolean; // Boolean!
     bio: string; // String!
@@ -260,7 +276,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Ability" | "DiscordAccount" | "DiscordUser" | "Mutation" | "Query" | "User" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatLoginResult" | "VRChatLogoutMutationResult" | "VRChatUser";
+export type NexusGenObjectNames = "Ability" | "DiscordAccount" | "DiscordUser" | "Mutation" | "Query" | "Role" | "User" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatLoginResult" | "VRChatLogoutMutationResult" | "VRChatUser" | "Viewer";
 
 export type NexusGenInputNames = "DiscordOauthMutationInput" | "VRChatLoginInput";
 

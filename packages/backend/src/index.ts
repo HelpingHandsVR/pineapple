@@ -9,6 +9,7 @@ import * as userTypes from './graphql/components/user'
 import * as authTypes from './graphql/components/authorization'
 
 import { makeContextFactory } from './graphql/context'
+import { permissions } from './graphql/permissions'
 
 const main = async () => {
   const schema = makeSchema({
@@ -37,6 +38,7 @@ const main = async () => {
 
   const server = new GraphQLServer({
     schema,
+    middlewares: [permissions],
     context: await makeContextFactory(),
   })
 

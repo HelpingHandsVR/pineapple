@@ -1,23 +1,23 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import {VrcViewerDocument, VrChatExtendedUser} from '../../../../../generated/composition'
+import {ViewerDocument, Viewer} from '../../../../../generated/composition'
 
 type Data = {
   value: boolean,
-  vrcViewer: VrChatExtendedUser,
+  viewer: Viewer,
 }
 
 export default {
   apollo: {
-    vrcViewer: {
-      query: VrcViewerDocument
+    viewer: {
+      query: ViewerDocument
     }
   },
   data (): Data {
     return {
       value: false,
-      vrcViewer: null,
+      viewer: null,
     }
   },
 }
@@ -31,20 +31,20 @@ export default {
         x-large
         v-bind='attrs'
         v-on='on'
-        :loading='$apollo.queries.vrcViewer.loading'
+        :loading='$apollo.queries.viewer.loading'
       )
         v-avatar
-          v-img(v-if='!$apollo.queries.vrcViewer.loading && vrcViewer', :src='vrcViewer.currentAvatarThumbnailImageUrl')
+          v-img(v-if='!$apollo.queries.viewer.loading && viewer', :src='viewer.vrchatUser.currentAvatarThumbnailImageUrl')
 
     v-list
-      v-list-item(@click.stop, v-if='!$apollo.queries.vrcViewer.loading && vrcViewer')
+      v-list-item(@click.stop, v-if='!$apollo.queries.viewer.loading && viewer')
         v-list-item-content
           v-list-item-title
-            b {{vrcViewer.displayName}}
-          v-list-item-subtitle VRC role: {{vrcViewer.role}}
-          v-list-item-subtitle Pineapple role: role_placeholder
+            b {{viewer.vrchatUser.displayName}}
+          v-list-item-subtitle VRC role: {{viewer.vrchatUser.role}}
+          v-list-item-subtitle Pineapple role: {{viewer.user.role.name}}
         v-list-item-avatar(size='64px')
-          v-img(:src='vrcViewer.currentAvatarThumbnailImageUrl')
+          v-img(:src='viewer.vrchatUser.currentAvatarThumbnailImageUrl')
 
       v-divider
 

@@ -80,15 +80,27 @@ export type MutationVrcLoginArgs = {
 export type Query = {
   __typename?: 'Query';
   discordOauthURL: Scalars['String'];
-  ping: Scalars['String'];
-  vrcViewer: VrChatExtendedUser;
+  viewer: Viewer;
+};
+
+export type Role = {
+  __typename?: 'Role';
+  id: Scalars['ID'];
+  name: Scalars['String'];
 };
 
 export type User = {
   __typename?: 'User';
-  ability: Array<Maybe<Ability>>;
   discord?: Maybe<DiscordAccount>;
   id: Scalars['ID'];
+  role: Role;
+};
+
+export type Viewer = {
+  __typename?: 'Viewer';
+  ability: Array<Maybe<Ability>>;
+  user: User;
+  vrchatUser: VrChatExtendedUser;
 };
 
 export type VrChatConfig = {
@@ -267,18 +279,20 @@ export type DiscordOauthUrlQuery = (
   & Pick<Query, 'discordOauthURL'>
 );
 
-export type VrcViewerQueryVariables = Exact<{ [key: string]: never; }>;
+export type ViewerQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type VrcViewerQuery = (
+export type ViewerQuery = (
   { __typename?: 'Query' }
-  & { vrcViewer: (
-    { __typename?: 'VRChatExtendedUser' }
-    & Pick<VrChatExtendedUser, 'id' | 'displayName' | 'currentAvatarImageUrl' | 'currentAvatarThumbnailImageUrl' | 'role' | 'state' | 'status' | 'statusDescription' | 'obfuscatedEmail' | 'allowAvatarCopying' | 'last_login' | 'last_platform' | 'twoFactorAuthEnabled'>
-    & { user?: Maybe<(
+  & { viewer: (
+    { __typename?: 'Viewer' }
+    & { user: (
       { __typename?: 'User' }
       & Pick<User, 'id'>
-      & { discord?: Maybe<(
+      & { role: (
+        { __typename?: 'Role' }
+        & Pick<Role, 'id' | 'name'>
+      ), discord?: Maybe<(
         { __typename?: 'DiscordAccount' }
         & Pick<DiscordAccount, 'id'>
         & { account: (
@@ -286,7 +300,13 @@ export type VrcViewerQuery = (
           & Pick<DiscordUser, 'id' | 'username'>
         ) }
       )> }
-    )> }
+    ), vrchatUser: (
+      { __typename?: 'VRChatExtendedUser' }
+      & Pick<VrChatExtendedUser, 'id' | 'displayName' | 'currentAvatarImageUrl' | 'currentAvatarThumbnailImageUrl' | 'role' | 'state' | 'status' | 'statusDescription' | 'obfuscatedEmail' | 'allowAvatarCopying' | 'last_login' | 'last_platform' | 'twoFactorAuthEnabled'>
+    ), ability: Array<Maybe<(
+      { __typename?: 'Ability' }
+      & Pick<Ability, 'action' | 'subject'>
+    )>> }
   ) }
 );
 
@@ -436,24 +456,15 @@ export function useDiscordOauthUrlQuery(options: VueApolloComposable.UseQueryOpt
             return VueApolloComposable.useQuery<DiscordOauthUrlQuery, undefined>(DiscordOauthUrlDocument, undefined, options);
           }
 export type DiscordOauthUrlQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables>;
-export const VrcViewerDocument = gql`
-    query vrcViewer {
-  vrcViewer {
-    id
-    displayName
-    currentAvatarImageUrl
-    currentAvatarThumbnailImageUrl
-    role
-    state
-    status
-    statusDescription
-    obfuscatedEmail
-    allowAvatarCopying
-    last_login
-    last_platform
-    twoFactorAuthEnabled
+export const ViewerDocument = gql`
+    query viewer {
+  viewer {
     user {
       id
+      role {
+        id
+        name
+      }
       discord {
         id
         account {
@@ -462,26 +473,45 @@ export const VrcViewerDocument = gql`
         }
       }
     }
+    vrchatUser {
+      id
+      displayName
+      currentAvatarImageUrl
+      currentAvatarThumbnailImageUrl
+      role
+      state
+      status
+      statusDescription
+      obfuscatedEmail
+      allowAvatarCopying
+      last_login
+      last_platform
+      twoFactorAuthEnabled
+    }
+    ability {
+      action
+      subject
+    }
   }
 }
     `;
 
 /**
- * __useVrcViewerQuery__
+ * __useViewerQuery__
  *
- * To run a query within a Vue component, call `useVrcViewerQuery` and pass it any options that fit your needs.
- * When your component renders, `useVrcViewerQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * To run a query within a Vue component, call `useViewerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useViewerQuery` returns an object from Apollo Client that contains result, loading and error properties
  * you can use to render your UI.
  *
  * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
  *
  * @example
- * const { result, loading, error } = useVrcViewerQuery(
+ * const { result, loading, error } = useViewerQuery(
  *   {
  *   }
  * );
  */
-export function useVrcViewerQuery(options: VueApolloComposable.UseQueryOptions<VrcViewerQuery, VrcViewerQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<VrcViewerQuery, VrcViewerQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<VrcViewerQuery, VrcViewerQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<VrcViewerQuery, undefined>(VrcViewerDocument, undefined, options);
+export function useViewerQuery(options: VueApolloComposable.UseQueryOptions<ViewerQuery, ViewerQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<ViewerQuery, ViewerQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<ViewerQuery, ViewerQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<ViewerQuery, undefined>(ViewerDocument, undefined, options);
           }
-export type VrcViewerQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<VrcViewerQuery, VrcViewerQueryVariables>;
+export type ViewerQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<ViewerQuery, ViewerQueryVariables>;

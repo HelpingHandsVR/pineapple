@@ -1,20 +1,13 @@
-query vrcViewer {
-  vrcViewer {
-    id
-    displayName
-    currentAvatarImageUrl
-    currentAvatarThumbnailImageUrl
-    role
-    state
-    status
-    statusDescription
-    obfuscatedEmail
-    allowAvatarCopying
-    last_login
-    last_platform
-    twoFactorAuthEnabled
+query viewer {
+  viewer {
     user {
       id
+
+      role {
+        id
+        name
+      }
+
       discord {
         id
         account {
@@ -22,6 +15,27 @@ query vrcViewer {
           username
         }
       }
+    }
+
+    vrchatUser {
+      id
+      displayName
+      currentAvatarImageUrl
+      currentAvatarThumbnailImageUrl
+      role
+      state
+      status
+      statusDescription
+      obfuscatedEmail
+      allowAvatarCopying
+      last_login
+      last_platform
+      twoFactorAuthEnabled
+    }
+
+    ability {
+      action
+      subject
     }
   }
 }
