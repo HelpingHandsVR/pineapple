@@ -63,8 +63,8 @@ export type DiscordUser = {
 export type Mutation = {
   __typename?: 'Mutation';
   discordOauthCallback: DiscordUser;
-  logout: VrChatLogoutMutationResult;
   vrcLogin: VrChatLoginResult;
+  vrcLogout: VrChatLogoutMutationResult;
 };
 
 
@@ -80,7 +80,7 @@ export type MutationVrcLoginArgs = {
 export type Query = {
   __typename?: 'Query';
   discordOauthURL: Scalars['String'];
-  viewer: Viewer;
+  viewer?: Maybe<Viewer>;
 };
 
 export type Role = {
@@ -252,7 +252,7 @@ export type VrcLogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type VrcLogoutMutation = (
   { __typename?: 'Mutation' }
-  & { logout: (
+  & { vrcLogout: (
     { __typename?: 'VRChatLogoutMutationResult' }
     & Pick<VrChatLogoutMutationResult, 'success'>
   ) }
@@ -284,7 +284,7 @@ export type ViewerQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ViewerQuery = (
   { __typename?: 'Query' }
-  & { viewer: (
+  & { viewer?: Maybe<(
     { __typename?: 'Viewer' }
     & { user: (
       { __typename?: 'User' }
@@ -307,7 +307,7 @@ export type ViewerQuery = (
       { __typename?: 'Ability' }
       & Pick<Ability, 'action' | 'subject'>
     )>> }
-  ) }
+  )> }
 );
 
 
@@ -375,7 +375,7 @@ export function useVrcLoginMutation(options: VueApolloComposable.UseMutationOpti
 export type VrcLoginMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<VrcLoginMutation, VrcLoginMutationVariables>;
 export const VrcLogoutDocument = gql`
     mutation vrcLogout {
-  logout {
+  vrcLogout {
     success
   }
 }

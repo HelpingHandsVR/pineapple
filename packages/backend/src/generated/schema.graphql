@@ -54,7 +54,7 @@ type Mutation {
 
 type Query {
   discordOauthURL: String!
-  viewer: Viewer!
+  viewer: Viewer
 }
 
 type Role {

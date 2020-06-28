@@ -155,7 +155,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     discordOauthURL: string; // String!
-    viewer: NexusGenRootTypes['Viewer']; // Viewer!
+    viewer: NexusGenRootTypes['Viewer'] | null; // Viewer
   }
   Role: { // field return type
     id: string; // ID!

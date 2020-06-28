@@ -1,5 +1,5 @@
 mutation vrcLogout {
-  logout {
+  vrcLogout {
     success
   }
 }
