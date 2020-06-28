@@ -5,6 +5,7 @@ import {mapGetters, mapMutations} from 'vuex'
 import {VrcLogoutDocument} from '../../generated/composition'
 import ProfileMenu from '../components/authentication/vrchat/profile-menu/index.vue'
 import StoreToast from '../components/containers/store-toast.vue'
+import StoreTheme from '../components/containers/store-theme.vue'
 
 const flashMap = new Map()
 
@@ -16,6 +17,7 @@ export default Vue.extend({
   components: {
     ProfileMenu,
     StoreToast,
+    StoreTheme,
   },
   data() {
     return {
@@ -34,14 +36,12 @@ export default Vue.extend({
       title: 'Pineapple',
     }
   },
-  created () {
-    this.$vuetify.theme.dark = this.dark
-  },
   computed: {
     ...mapGetters({
       dark: 'ui/isDark',
       open: 'ui/menuOpen',
       small: 'ui/menuSmall',
+      theme: 'ui/themeName',
       loggedIn: 'auth/loggedIn',
     }),
     forceLarge () {
@@ -51,11 +51,22 @@ export default Vue.extend({
     },
     flash () {
       return flashMap.get(this.$route.query.flash)
+    },
+    themeItems () {
+      return [
+        {text: 'Pineapple', value: 'pineapple'},
+        {text: 'Greyscale', value: 'greyscale'},
+        {text: 'Lemon', value: 'lemon'},
+        {text: 'Melon', value: 'melon'},
+        {text: 'Trans pride', value: 'trans-flag'},
+        {text: 'Pan pride', value: 'pan-flag'},
+      ]
     }
   },
   methods: {
     ...mapMutations({
       setDark: 'ui/setDark',
+      setTheme: 'ui/setTheme',
       setMenuOpen: 'ui/setMenuOpen',
       setMenuSmall: 'ui/setMenuSmall',
     }),
@@ -82,20 +93,13 @@ export default Vue.extend({
       }
     }
   },
-  watch: {
-    dark (newValue) {
-      // We cannot access the vm from the store, so we watch for dark theme
-      // changes here. Downside is that the watch will only work on pages with
-      // this layout.
-      this.$vuetify.theme.dark = newValue
-    }
-  }
 })
 </script>
 
 <template lang="pug">
   v-app(:dark='dark')
     store-toast
+    store-theme
 
     v-navigation-drawer(
       :value='open'
@@ -116,7 +120,14 @@ export default Vue.extend({
             v-list-item-title(v-text='item.title')
 
       template(v-slot:append)
-        v-sheet(v-show='!small')
+        v-sheet.pt-4(v-show='!small')
+          v-list-item
+            v-select(
+              label='Theme'
+              :items='themeItems'
+              @change='setTheme'
+              :value='theme'
+            )
           v-list-item
             v-switch(
               label='Dark theme'
@@ -134,7 +145,7 @@ export default Vue.extend({
 
     v-main
       v-container
-        v-banner.mb-3(color='warning', light, v-if='flash')
+        v-banner.mb-3(color='accent', light, v-if='flash')
           v-icon(slot='icon') mdi-alert
           | {{flash}}
         nuxt

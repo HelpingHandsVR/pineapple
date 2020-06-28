@@ -88,6 +88,7 @@ export default Vue.extend({
       v-if='showTotp'
       :rules='rules.totp'
       :disabled='loading'
+      autofocus
     )
 
     v-btn(color='primary', type='submit', :loading='loading')

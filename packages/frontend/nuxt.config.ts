@@ -1,6 +1,11 @@
-import colors from 'vuetify/es5/util/colors'
+import { Configuration } from '@nuxt/types'
 
-export default {
+// import { lightTheme as light } from './app/themes/light'
+// import { darkTheme as dark } from './app/themes/dark'
+
+const config: Configuration = {
+  env: process.env,
+
   server: {
     port: 3000,
     host: '0.0.0.0',
@@ -78,26 +83,10 @@ export default {
     treeShake: true,
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      themes: {
-        light: {
-          primary: colors.brown.base,
-          secondary: colors.amber.base,
-          accent: colors.lightGreen.base,
-          error: colors.red.base,
-          warning: colors.orange.base,
-          info: colors.blue.base,
-          success: colors.green.base,
-        },
-        dark: {
-          primary: colors.brown.base,
-          secondary: colors.amber.base,
-          accent: colors.lightGreen.base,
-          error: colors.red.base,
-          warning: colors.orange.base,
-          info: colors.blue.base,
-          success: colors.green.base,
-        },
-      },
+      // options: {
+      //   customProperties: true,
+      //   variations: false,
+      // },
     },
   },
   /*
@@ -113,7 +102,9 @@ export default {
     defaultOptions: {
       $query: {
         fetchPolocy: 'cache-and-network',
-      },
+      } as any,
     },
   },
 }
+
+export default config

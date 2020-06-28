@@ -1,8 +1,10 @@
-export default (context) => {
-  return {
-    httpEndpoint: 'http://decentm-vm-manjaro:4000/',
-    getAuth: () => {
-      return `VRCAuthCookie ${context.$apolloHelpers.getToken()}`
-    },
-  }
-}
+import { getConfig } from '@/../lib/config/coerce'
+
+const config = getConfig(process.env)
+
+export default (context) => ({
+  httpEndpoint: config.graphql.endpoint,
+  getAuth: () => {
+    return `VRCAuthCookie ${context.$apolloHelpers.getToken()}`
+  },
+})

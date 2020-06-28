@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "yarn concurrently 'nuxt' 'yarn gen:watch'",
+    "dev": "yarn concurrently 'env-cmd nuxt-ts' 'yarn gen:watch'",
     "gen:watch": "graphql-codegen --config codegen.yml -w",
     "gen": "graphql-codegen --config codegen.yml",
-    "build": "nuxt-ts build",
+    "build": "env-cmd nuxt-ts build",
     "prebuild": "yarn gen",
-    "start": "nuxt-ts start",
+    "start": "env-cmd nuxt-ts start",
     "generate": "nuxt-ts generate",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint": "yarn lint:js"
@@ -45,6 +45,7 @@
     "@types/js-cookie": "^2.2.6",
     "babel-eslint": "^10.1.0",
     "concurrently": "^5.2.0",
+    "env-cmd": "^10.1.0",
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-nuxt": "^1.0.0",
