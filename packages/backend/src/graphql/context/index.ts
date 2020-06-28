@@ -1,5 +1,5 @@
-import { ContextParameters } from 'graphql-yoga/dist/types'
 import { Connection, createConnection } from 'typeorm'
+import { Request, Response } from 'express'
 
 import { VRChatAPIContext, makeVRChatAPIContext } from '../components/vrchat-api/context'
 import { Config } from '@/lib/config/type'
@@ -33,13 +33,18 @@ const makeStaticContext = async (): Promise<StaticContext> => {
   }
 }
 
-type ContextCreator = (params: ContextParameters) => Promise<Context>
+export type IntegrationContext = {
+  req: Request,
+  res: Response,
+}
+
+type ContextCreator = (params: IntegrationContext) => Promise<Context>
 
 export const makeContextFactory = async (): Promise<ContextCreator> => {
   const staticContext = await makeStaticContext()
   const discordContext = await makeDiscordContext(staticContext)
 
-  return async (params: ContextParameters): Promise<Context> => {
+  return async (params: IntegrationContext): Promise<Context> => {
     const vrcContext = await makeVRChatAPIContext(params)
     const authorisationContext = await makeAuthorisationContext(staticContext.connection, vrcContext)
 

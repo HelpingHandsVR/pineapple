@@ -1,7 +1,7 @@
-import { ContextParameters } from 'graphql-yoga/dist/types'
 import { getAuthCookieFromReq } from '../lib/auth-cookie-from-req'
 import { VRChatAPI } from '~/data-sources/vrchat'
 import { VRCExtendedUser } from '~/data-sources/vrchat/types'
+import { IntegrationContext } from '~/graphql/context'
 
 export type VRChatAPIContext = {
   vrchat: {
@@ -13,16 +13,24 @@ export type VRChatAPIContext = {
   }
 }
 
-export const makeVRChatAPIContext = async (params: ContextParameters): Promise<VRChatAPIContext> => {
-  const authCookie = getAuthCookieFromReq(params.request)
-  const vrchat = new VRChatAPI(params.request.connection.remoteAddress, authCookie)
+export const makeVRChatAPIContext = async (params: IntegrationContext): Promise<VRChatAPIContext> => {
+  const authCookie = getAuthCookieFromReq(params.req)
+  const vrchat = new VRChatAPI(params.req.connection.remoteAddress, authCookie)
   let viewer = null
 
   if (authCookie) {
-    const response = await vrchat.getViewer()
+    try {
+      const response = await vrchat.getViewer()
 
-    if ('id' in response) {
-      viewer = response
+      if ('id' in response) {
+        viewer = response
+      }
+    } catch (error) {
+      if (error.extensions.code === 'UNAUTHENTICATED') {
+        viewer = null
+      } else {
+        throw error
+      }
     }
   }
 

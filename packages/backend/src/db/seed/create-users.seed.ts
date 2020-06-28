@@ -4,7 +4,7 @@ import { User, Role } from '~/entity'
 export default class CreateUsers implements Seeder {
   public async run (factory: Factory): Promise<void> {
     const role = await Role.findOneOrFail({
-      name: 'student',
+      name: 'STUDENT',
     })
 
     await factory(User)()

@@ -1,8 +1,8 @@
+import { shield } from '@/lib/permission/shield'
 import { isLoggedIn } from '@/lib/permission/rules/is-logged-in'
-import { IRules } from 'graphql-shield'
 
-export const rules: IRules = {
+export const rules = shield({
   Query: {
     viewer: isLoggedIn,
   },
-}
+})

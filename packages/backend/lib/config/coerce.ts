@@ -17,4 +17,7 @@ export const getConfig = (env: NodeJS.ProcessEnv): Config => ({
     clientSecret: env.DISCORD_CLIENT_SECRET,
     redirectUri: env.DISCORD_REDIRECT_URL,
   },
+  api: {
+    port: Number.parseInt(env.API_PORT, 10),
+  },
 })

@@ -29,6 +29,12 @@ const onLoginComplete = async (userId: string): Promise<LoginResult> => {
   })
 
   if (!user) {
+    const role = await Role.findOneOrFail({
+      where: {
+        name: 'STUDENT',
+      },
+    })
+
     const newUser = new User()
 
     newUser.vrcUserID = userId
@@ -36,11 +42,7 @@ const onLoginComplete = async (userId: string): Promise<LoginResult> => {
     // When they first register, users are going to be students. This relies on
     // the assumption that such a role exists. A student role is seeded, but
     // this could be dynamic.
-    newUser.role = Role.findOneOrFail({
-      where: {
-        name: 'student',
-      },
-    })
+    newUser.role = Promise.resolve(role)
 
     await newUser.save()
   }

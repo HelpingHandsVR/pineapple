@@ -1,3 +1,3 @@
-import { IRules } from 'graphql-shield'
+import { shield } from '@/lib/permission/shield'
 
-export const rules: IRules = {}
+export const rules = shield({})

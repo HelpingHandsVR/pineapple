@@ -6,5 +6,8 @@ export type Config = {
     clientId: string,
     redirectUri: string,
     clientSecret: string,
+  },
+  api: {
+    port: number,
   }
 }

@@ -1,6 +1,6 @@
 import { rule } from 'graphql-shield'
 import { Context } from '~/graphql/context'
 
-export const isLoggedIn = rule('isLoggedIn')((root, args, context: Context) => {
+export const isLoggedIn = rule('isLoggedIn', { cache: 'no_cache' })((root, args, context: Context) => {
   return Boolean(context.auth.user) || 'You must log in'
 })
