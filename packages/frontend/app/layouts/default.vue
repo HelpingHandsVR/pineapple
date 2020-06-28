@@ -27,11 +27,6 @@ export default Vue.extend({
           title: 'Welcome',
           to: '/',
         },
-        {
-          icon: 'mdi-discord',
-          title: 'Link Discord',
-          to: '/discord/oauth/link',
-        },
       ],
       title: 'Pineapple',
     }
@@ -56,8 +51,8 @@ export default Vue.extend({
       return [
         {text: 'Pineapple', value: 'pineapple'},
         {text: 'Greyscale', value: 'greyscale'},
-        {text: 'Lemon', value: 'lemon'},
-        {text: 'Melon', value: 'melon'},
+        {text: '🍋', value: 'lemon'},
+        {text: '🍈', value: 'melon'},
         {text: 'Trans pride', value: 'trans-flag'},
         {text: 'Pan pride', value: 'pan-flag'},
       ]
@@ -145,7 +140,7 @@ export default Vue.extend({
 
     v-main
       v-container
-        v-banner.mb-3(color='accent', light, v-if='flash')
+        v-banner.mb-3(color='secondary', light, v-if='flash')
           v-icon(slot='icon') mdi-alert
           | {{flash}}
         nuxt

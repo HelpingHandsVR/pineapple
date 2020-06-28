@@ -22,7 +22,8 @@
       "@nuxt/types",
       "@nuxtjs/apollo",
       "vue-cli-plugin-apollo/types",
-      "vuetify"
+      "vuetify",
+      "."
     ],
     "typeRoots": [
       "./node_modules/@types",

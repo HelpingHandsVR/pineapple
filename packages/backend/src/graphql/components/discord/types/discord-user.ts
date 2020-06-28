@@ -5,5 +5,6 @@ export const DiscordUser = objectType({
   definition (t) {
     t.id('id')
     t.string('username')
+    t.string('discriminator')
   },
 })

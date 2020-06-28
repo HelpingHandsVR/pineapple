@@ -56,6 +56,7 @@ export type DiscordOauthMutationInput = {
 
 export type DiscordUser = {
   __typename?: 'DiscordUser';
+  discriminator: Scalars['String'];
   id: Scalars['ID'];
   username: Scalars['String'];
 };
@@ -297,7 +298,7 @@ export type ViewerQuery = (
         & Pick<DiscordAccount, 'id'>
         & { account: (
           { __typename?: 'DiscordUser' }
-          & Pick<DiscordUser, 'id' | 'username'>
+          & Pick<DiscordUser, 'id' | 'username' | 'discriminator'>
         ) }
       )> }
     ), vrchatUser: (
@@ -470,6 +471,7 @@ export const ViewerDocument = gql`
         account {
           id
           username
+          discriminator
         }
       }
     }

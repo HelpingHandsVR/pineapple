@@ -42,6 +42,7 @@ input DiscordOauthMutationInput {
 }
 
 type DiscordUser {
+  discriminator: String!
   id: ID!
   username: String!
 }

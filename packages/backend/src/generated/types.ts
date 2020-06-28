@@ -38,6 +38,7 @@ export interface NexusGenRootTypes {
     id: string; // ID!
   }
   DiscordUser: { // root type
+    discriminator: string; // String!
     id: string; // ID!
     username: string; // String!
   }
@@ -145,6 +146,7 @@ export interface NexusGenFieldTypes {
     id: string; // ID!
   }
   DiscordUser: { // field return type
+    discriminator: string; // String!
     id: string; // ID!
     username: string; // String!
   }

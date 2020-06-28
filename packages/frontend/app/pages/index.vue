@@ -1,20 +1,33 @@
 <script lang="ts">
 import { DateTime } from 'luxon'
+import { mapGetters } from 'vuex'
 
-import { ViewerDocument, Viewer } from '../../generated/composition'
-import discordBackground from '~/assets/discord-longart.png'
-import discordBackgroundSmall from '~/assets/discord-longart-small.jpg'
+import {
+  ViewerDocument,
+  Viewer,
+  DiscordOauthUrlDocument,
+} from '../../generated/composition'
+
+const discordBackground = require('~/assets/discord-longart.png')
+const discordBackgroundSmall = require('~/assets/discord-longart-small.jpg')
 
 type Data = {
   viewer: Viewer,
   discordBackground: string,
   discordBackgroundSmall: string,
+  discordOauthURL: string,
 }
 
 export default {
   apollo: {
     viewer: {
       query: ViewerDocument,
+    },
+    discordOauthURL: {
+      query: DiscordOauthUrlDocument,
+      skip () {
+        return !this.getDiscordOauthURL
+      }
     }
   },
   data (): Data {
@@ -22,6 +35,7 @@ export default {
       viewer: null,
       discordBackground,
       discordBackgroundSmall,
+      discordOauthURL: null,
     }
   },
   middleware: [
@@ -33,6 +47,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      dark: 'ui/isDark',
+    }),
     badgeColour () {
       let result = 'grey'
 
@@ -45,6 +62,28 @@ export default {
       }
 
       return result
+    },
+    gradient () {
+      if (this.dark) {
+        return `
+          to bottom,
+            rgba(0, 0, 0, 0) 40%,
+            rgba(30, 30, 30, 20) 100%
+        `
+      }
+
+      return `
+        to bottom,
+          rgba(0, 0, 0, 0) 40%,
+          rgba(255, 255, 255, 20) 100%
+      `
+    },
+    getDiscordOauthURL () {
+      if (!this.viewer) {
+        return true
+      }
+
+      return !this.viewer.user.discord
     }
   },
   methods: {
@@ -55,17 +94,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-// .test1 {
-//   box-shadow: 0 0 5px 2px green;
-// }
-</style>
-
 <template lang="pug">
   v-skeleton-loader(v-if='$apollo.queries.viewer.loading')
-  div(v-else-if='$apollo.queries.viewer.error')
-    | Error: {{$apollo.queries.viewer.error}}
-  v-container(v-else)
+  v-container(v-else-if='viewer')
     v-row
       v-col(md='6')
 
@@ -75,20 +106,51 @@ export default {
               :lazy-src='discordBackgroundSmall'
               :src='discordBackground'
               height='100'
-              gradient='to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 20)'
+              :gradient='gradient'
             )
               v-card-title
                 | Discord link
             v-card-text(v-if='viewer.user.discord')
-              v-badge.mr-2(
-                color='success'
-                icon='mdi-check'
-                inline
-                left
-              )
-                | Your account is already linked, nothing to do!
+              v-row(no-gutters)
+                v-col(md='8')
+                  v-badge.mr-2(
+                    color='success'
+                    icon='mdi-check'
+                    inline
+                    left
+                  )
+                    | Your account is linked, nothing to do!
+
+                v-col(align='end')
+                  v-chip(
+                    color='secondary'
+                    ripple
+                    small
+                  )
+                    v-avatar(tile, left)
+                      v-icon(small) mdi-discord
+                    | {{viewer.user.discord.account.username}}\#{{viewer.user.discord.account.discriminator}}
+
             v-card-text(v-else)
-              | Not linked yet
+              v-row(no-gutters)
+                v-col
+                  v-badge.mr-2(
+                    color='error'
+                    icon='mdi-link-off'
+                    inline
+                    left
+                  )
+                    | Not linked yet
+
+                v-col(align='end')
+                  v-btn(
+                    small
+                    text
+                    :href='discordOauthURL'
+                    :disabled='!discordOauthURL'
+                    :loading='!discordOauthURL && $apollo.queries.discordOauthURL.loading'
+                  )
+                    | Link now
 
 
         v-container
@@ -106,7 +168,7 @@ export default {
               :lazy-src='viewer.vrchatUser.currentAvatarThumbnailImageUrl'
               :src='viewer.vrchatUser.currentAvatarImageUrl'
               height='200'
-              gradient='to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 20)'
+              :gradient='gradient'
             )
               v-card-title(dark)
                 v-badge.mb-1.mr-2(inline, :color='badgeColour', left, dot)
