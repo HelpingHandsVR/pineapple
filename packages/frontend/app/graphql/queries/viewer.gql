@@ -25,12 +25,8 @@ query viewer {
       currentAvatarThumbnailImageUrl
       role
       state
-      status
       statusDescription
-      obfuscatedEmail
-      allowAvatarCopying
       last_login
-      last_platform
       twoFactorAuthEnabled
     }
 

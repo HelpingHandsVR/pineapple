@@ -1,5 +1,5 @@
 <script lang="ts">
-import LoginForm from '~/components/authentication/vrchat/login-form/index.vue'
+import LoginForm from '../components/authentication/vrchat/login-form/index.vue'
 
 export default {
   middleware: [

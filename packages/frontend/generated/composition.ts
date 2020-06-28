@@ -303,7 +303,7 @@ export type ViewerQuery = (
       )> }
     ), vrchatUser: (
       { __typename?: 'VRChatExtendedUser' }
-      & Pick<VrChatExtendedUser, 'id' | 'displayName' | 'currentAvatarImageUrl' | 'currentAvatarThumbnailImageUrl' | 'role' | 'state' | 'status' | 'statusDescription' | 'obfuscatedEmail' | 'allowAvatarCopying' | 'last_login' | 'last_platform' | 'twoFactorAuthEnabled'>
+      & Pick<VrChatExtendedUser, 'id' | 'displayName' | 'currentAvatarImageUrl' | 'currentAvatarThumbnailImageUrl' | 'role' | 'state' | 'statusDescription' | 'last_login' | 'twoFactorAuthEnabled'>
     ), ability: Array<Maybe<(
       { __typename?: 'Ability' }
       & Pick<Ability, 'action' | 'subject'>
@@ -482,12 +482,8 @@ export const ViewerDocument = gql`
       currentAvatarThumbnailImageUrl
       role
       state
-      status
       statusDescription
-      obfuscatedEmail
-      allowAvatarCopying
       last_login
-      last_platform
       twoFactorAuthEnabled
     }
     ability {

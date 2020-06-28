@@ -44,6 +44,7 @@ export default {
   mounted () {
     if ('refetch' in this.$route.query) {
       this.$apollo.queries.viewer.refetch()
+      this.$router.push('/')
     }
   },
   computed: {
@@ -180,8 +181,6 @@ export default {
               | Role: {{viewer.vrchatUser.role}}
               br
               | State: {{viewer.vrchatUser.state}}
-              br
-              | E-mail: {{viewer.vrchatUser.obfuscatedEmail}}
               br
               | Last login: {{relativeFormat(viewer.vrchatUser.last_login)}}
               br

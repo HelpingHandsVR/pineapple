@@ -95,6 +95,6 @@ export default Vue.extend({
         b {{first.title}}
       .contents
         | {{first.message}}
-        small(v-if='first.occurrences !== 0')
+        small(v-if='first.occurrences > 1')
           | Occurred {{first.occurrences}} times
 </template>

@@ -91,6 +91,12 @@ export default Vue.extend({
 })
 </script>
 
+<style lang="scss" scoped>
+.main-container {
+  max-width: 1161px
+}
+</style>
+
 <template lang="pug">
   v-app(:dark='dark')
     store-toast
@@ -139,7 +145,7 @@ export default Vue.extend({
       profile-menu(v-if='loggedIn', @logout='handleLogout')
 
     v-main
-      v-container
+      v-container.main-container
         v-banner.mb-3(color='secondary', light, v-if='flash')
           v-icon(slot='icon') mdi-alert
           | {{flash}}
