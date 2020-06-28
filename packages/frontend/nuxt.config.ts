@@ -83,10 +83,9 @@ const config: Configuration = {
     treeShake: true,
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      // options: {
-      //   customProperties: true,
-      //   variations: false,
-      // },
+      options: {
+        customProperties: true,
+      },
     },
   },
   /*
