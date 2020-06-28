@@ -18,8 +18,6 @@ export const makeVRChatAPIContext = async (params: ContextParameters): Promise<V
   const vrchat = new VRChatAPI(params.request.connection.remoteAddress, authCookie)
   let viewer = null
 
-  console.log({ authCookie })
-
   if (authCookie) {
     const response = await vrchat.getViewer()
 

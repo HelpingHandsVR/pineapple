@@ -4,6 +4,7 @@ import {mapGetters, mapMutations} from 'vuex'
 
 import {VrcLogoutDocument} from '../../generated/composition'
 import ProfileMenu from '../components/authentication/vrchat/profile-menu/index.vue'
+import StoreToast from '../components/containers/store-toast.vue'
 
 const flashMap = new Map()
 
@@ -14,6 +15,7 @@ export default Vue.extend({
   name: 'default-layout',
   components: {
     ProfileMenu,
+    StoreToast,
   },
   data() {
     return {
@@ -93,6 +95,8 @@ export default Vue.extend({
 
 <template lang="pug">
   v-app(:dark='dark')
+    store-toast
+
     v-navigation-drawer(
       :value='open'
       :mini-variant='forceLarge ? false : small'

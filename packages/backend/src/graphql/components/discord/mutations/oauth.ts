@@ -1,36 +1,10 @@
 import { extendType, inputObjectType } from '@nexus/schema'
-import { randomBytes } from 'crypto'
 import { AuthenticationError } from 'apollo-server-errors'
 import { DateTime } from 'luxon'
 
 import { DiscordAccount } from '~/entity/discord-account'
 import { DiscordOauthRequest } from '~/entity/discord-oauth-request'
 import { User } from '~/entity'
-
-export const DiscordOauthURLQuery = extendType({
-  type: 'Query',
-  definition (t) {
-    t.string('discordOauthURL', {
-      async resolve (root, args, context) {
-        const state = randomBytes(32).toString('hex')
-        const request = new DiscordOauthRequest()
-
-        request.state = state
-
-        await request.save()
-
-        return context.discord.oauth2.generateAuthUrl({
-          state,
-          responseType: 'token',
-          scope: [
-            'identify',
-            'guilds',
-          ],
-        })
-      },
-    })
-  },
-})
 
 export const DiscordOauthMutationInput = inputObjectType({
   name: 'DiscordOauthMutationInput',
@@ -60,7 +34,7 @@ export const DiscordOauthMutation = extendType({
           throw new AuthenticationError('Invalid request state, please try again')
         }
 
-        // This request is not "used up". To try again, the user will need to
+        // This request is now "used up". To try again, the user will need to
         // re-request a new oauth URL
         await request.softRemove()
 

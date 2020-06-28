@@ -15,9 +15,32 @@ export type Scalars = {
 
 export type Ability = {
   __typename?: 'Ability';
-  action: Scalars['Int'];
-  subject: Scalars['Int'];
+  action: AbilityAction;
+  subject?: Maybe<AbilitySubject>;
 };
+
+export enum AbilityAction {
+  Attach = 'ATTACH',
+  Create = 'CREATE',
+  Delete = 'DELETE',
+  Detach = 'DETACH',
+  LogOut = 'LOG_OUT',
+  LogOutOthers = 'LOG_OUT_OTHERS',
+  Read = 'READ',
+  SoftDelete = 'SOFT_DELETE',
+  Update = 'UPDATE'
+}
+
+export enum AbilitySubject {
+  DiscordAccountOthers = 'DISCORD_ACCOUNT_OTHERS',
+  DiscordAccountSelf = 'DISCORD_ACCOUNT_SELF',
+  DiscordOauthRequestSelf = 'DISCORD_OAUTH_REQUEST_SELF',
+  LessonOthers = 'LESSON_OTHERS',
+  LessonSelf = 'LESSON_SELF',
+  PermissionSelf = 'PERMISSION_SELF',
+  UserOthers = 'USER_OTHERS',
+  UserSelf = 'USER_SELF'
+}
 
 export type DiscordAccount = {
   __typename?: 'DiscordAccount';
