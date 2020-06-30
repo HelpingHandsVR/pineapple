@@ -85,6 +85,21 @@ export default {
       }
 
       return !this.viewer.user.discord
+    },
+    mockEvents () {
+      const now = new Date().getTime()
+
+      return new Array(20).fill(null).map((value, index) => {
+        const start = now + 8000000 * index
+        const end = start + 3800000
+
+        return {
+          name: 'ASL Test',
+          start,
+          end,
+          timed: true
+        }
+      })
     }
   },
   methods: {
@@ -157,7 +172,15 @@ export default {
         v-container
           v-card
             v-card-title
-              | Teszt cucc ide 2
+              | Upcoming events today
+            v-card-subtitle
+              | unfinished, mock data
+            v-card-text
+              v-sheet(height='500')
+                v-calendar(
+                  type='day'
+                  :events='mockEvents'
+                )
 
       //-
       //- VRCHAT
@@ -178,7 +201,9 @@ export default {
                 | {{viewer.vrchatUser.statusDescription}}
 
             v-card-text
-              | Role: {{viewer.vrchatUser.role}}
+              | VRChat role: {{viewer.vrchatUser.role}}
+              br
+              | Pineapple role: {{viewer.user.role.name}}
               br
               | State: {{viewer.vrchatUser.state}}
               br

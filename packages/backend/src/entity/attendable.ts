@@ -1,18 +1,18 @@
-import { CrudEntity } from '~/db/entity-type/crud'
 import {
   Entity,
   Column,
   ManyToOne,
 } from 'typeorm'
 
-import { User } from './user'
+import { AttendableBase } from '~/db/entity-type/attendable-base'
 import { AttendableDefinition } from './attendable-definition'
-import { AttendableType } from '~/db/enums'
 
 @Entity({ name: 'Attendable' })
-export class Attendable extends CrudEntity {
+export class Attendable extends AttendableBase {
   @ManyToOne(() => AttendableDefinition, (definition) => definition.attendables, {
     lazy: true,
+    // If null, it's synced from an external source
+    nullable: true,
   })
   definition: Promise<AttendableDefinition>
 
@@ -25,23 +25,4 @@ export class Attendable extends CrudEntity {
     type: 'timestamp with time zone',
   })
   endsAt: Date
-
-  // We're redeclaring the following columns so that users can individually
-  // change them (such as changing the host for the next event if the current
-  // host becomes unavailable)
-
-  @Column({
-    type: 'int',
-  })
-  type: AttendableType
-
-  @Column({
-    type: 'varchar',
-  })
-  name: string
-
-  @ManyToOne(() => User, {
-    lazy: true,
-  })
-  host: Promise<User>
 }
