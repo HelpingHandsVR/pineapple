@@ -5,6 +5,7 @@ import {
   DeleteDateColumn,
   VersionColumn,
   PrimaryColumn,
+  Column,
 } from 'typeorm'
 
 export class CrudEntity extends BaseEntity {
@@ -31,7 +32,18 @@ export class CrudEntity extends BaseEntity {
   deletedAt: Date
 
   @VersionColumn({
-    type: 'timestamp with time zone',
+    type: 'int',
   })
   version: number
+
+  @Column({
+    type: 'uuid',
+  })
+  createdBy: string
+
+  @Column({
+    type: 'uuid',
+    nullable: true,
+  })
+  updatedBy: string
 }

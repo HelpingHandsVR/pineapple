@@ -1,4 +1,4 @@
-import { CrudEntity } from '~/db/entity-type/crud'
+import { InternalEntity } from '~/db/entity-type/internal'
 import {
   Entity,
   Column,
@@ -10,7 +10,7 @@ import { Permission } from './permission'
 import { User } from './user'
 
 @Entity({ name: 'Role' })
-export class Role extends CrudEntity {
+export class Role extends InternalEntity {
   @Column({
     type: 'varchar',
     unique: true,

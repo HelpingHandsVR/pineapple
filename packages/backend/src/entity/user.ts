@@ -1,4 +1,4 @@
-import { CrudEntity } from '~/db/entity-type/crud'
+import { InternalEntity } from '~/db/entity-type/internal'
 import {
   Entity,
   Column,
@@ -9,7 +9,7 @@ import { DiscordAccount } from './discord-account'
 import { Role } from './role'
 
 @Entity({ name: 'User' })
-export class User extends CrudEntity {
+export class User extends InternalEntity {
   @Column({
     type: 'varchar',
     // VRC User IDs are usr_<uuid4>
