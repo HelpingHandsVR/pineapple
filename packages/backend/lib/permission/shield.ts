@@ -28,7 +28,7 @@ export const can = (action: Action, subject: Subject): Rule => {
   }
 
   const permission = rule(name)((root, args, context: Context) => {
-    return context.auth.ability.can(action.toString(), subject.toString()) || 'Permission denied'
+    return context.authorisation.ability.can(action.toString(), subject.toString()) || 'Permission denied'
   })
 
   map.set(name, permission)

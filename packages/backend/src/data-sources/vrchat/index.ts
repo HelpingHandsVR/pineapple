@@ -13,15 +13,17 @@ export class VRChatAPI extends RESTDataSource {
 
   private apiKey: string
 
+  private authCookie: string
+
   constructor (
-    private remoteIp: string,
-    private authCookie: string,
+    private username: string,
+    private password: string,
   ) {
     super()
   }
 
   private customFetch = async (input: RequestInfo, init: RequestInit) => {
-    console.log('FETCHING', typeof input === 'string' ? input : input.url)
+    console.log('VRC', typeof input === 'string' ? input : input.url)
 
     const response = await fetch(input, init)
     const setCookieHeader = response.headers.get('set-cookie')
@@ -29,6 +31,10 @@ export class VRChatAPI extends RESTDataSource {
 
     if (cookies.apiKey) {
       this.apiKey = cookies.apiKey
+    }
+
+    if (cookies.auth) {
+      this.authCookie = cookies.auth
     }
 
     return response
@@ -52,14 +58,21 @@ export class VRChatAPI extends RESTDataSource {
 
   willSendRequest (request: RequestOptions): void {
     request.headers.set('User-Agent', `Pineapple/${pkg.version} (+decentm+pineapple-ua@decentm.com) (+environment:${process.env.NODE_ENV})`)
-    request.headers.set('X-Forwarded-For', this.remoteIp)
+    let requestCookie = ''
 
     if (this.authCookie) {
-      request.headers.set('cookie', cookie.serialize('auth', this.authCookie))
+      requestCookie = `${requestCookie}; ${cookie.serialize('auth', this.authCookie)}`
+    } else {
+      request.headers.set('Authorization', `Basic ${atob(`${this.username}:${this.password}`)}`)
     }
 
     if (this.apiKey) {
       request.params.append('apiKey', this.apiKey)
+      requestCookie = `${requestCookie}; ${cookie.serialize('apiKey', this.apiKey)}`
+    }
+
+    if (requestCookie) {
+      request.headers.set('cookie', requestCookie)
     }
   }
 

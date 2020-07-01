@@ -49,8 +49,6 @@ type DiscordUser {
 
 type Mutation {
   discordOauthCallback(input: DiscordOauthMutationInput!): DiscordUser!
-  vrcLogin(input: VRChatLoginInput!): VRChatLoginResult!
-  vrcLogout: VRChatLogoutMutationResult!
 }
 
 type Query {
@@ -119,21 +117,6 @@ type VRChatExtendedUser implements VRChatUserBase {
   twoFactorAuthEnabled: Boolean!
   user: User
   username: String!
-}
-
-input VRChatLoginInput {
-  password: String
-  totp: String
-  username: String
-}
-
-type VRChatLoginResult {
-  authCookie: String
-  complete: Boolean!
-}
-
-type VRChatLogoutMutationResult {
-  success: Boolean!
 }
 
 type VRChatUser implements VRChatUserBase {

@@ -1,44 +1,16 @@
-import { getAuthCookieFromReq } from '../lib/auth-cookie-from-req'
 import { VRChatAPI } from '~/data-sources/vrchat'
-import { VRCExtendedUser } from '~/data-sources/vrchat/types'
-import { IntegrationContext } from '~/graphql/context'
+import { Config } from '@/lib/config/type'
 
 export type VRChatAPIContext = {
-  vrchat: {
-    authCookie: string,
-    viewer: VRCExtendedUser | null,
-  },
   dataSources: {
     vrchat: VRChatAPI | null,
   }
 }
 
-export const makeVRChatAPIContext = async (params: IntegrationContext): Promise<VRChatAPIContext> => {
-  const authCookie = getAuthCookieFromReq(params.req)
-  const vrchat = new VRChatAPI(params.req.connection.remoteAddress, authCookie)
-  let viewer = null
-
-  if (authCookie) {
-    try {
-      const response = await vrchat.getViewer()
-
-      if ('id' in response) {
-        viewer = response
-      }
-    } catch (error) {
-      if (error.extensions.code === 'UNAUTHENTICATED') {
-        viewer = null
-      } else {
-        throw error
-      }
-    }
-  }
+export const makeVRChatAPIContext = async (config: Config): Promise<VRChatAPIContext> => {
+  const vrchat = new VRChatAPI(config.vrchat.bot.username, config.vrchat.bot.password)
 
   return {
-    vrchat: {
-      authCookie,
-      viewer,
-    },
     dataSources: {
       vrchat,
     },

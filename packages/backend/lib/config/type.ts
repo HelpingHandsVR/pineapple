@@ -9,5 +9,11 @@ export type Config = {
   },
   api: {
     port: number,
+  },
+  vrchat: {
+    bot: {
+      username: string,
+      password: string,
+    }
   }
 }

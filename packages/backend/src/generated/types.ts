@@ -19,11 +19,6 @@ export interface NexusGenInputs {
     expiresIn?: number | null; // Int
     state?: string | null; // String
   }
-  VRChatLoginInput: { // input type
-    password?: string | null; // String
-    totp?: string | null; // String
-    username?: string | null; // String
-  }
 }
 
 export interface NexusGenEnums {
@@ -91,13 +86,6 @@ export interface NexusGenRootTypes {
     twoFactorAuthEnabled: boolean; // Boolean!
     username: string; // String!
   }
-  VRChatLoginResult: { // root type
-    authCookie?: string | null; // String
-    complete: boolean; // Boolean!
-  }
-  VRChatLogoutMutationResult: { // root type
-    success: boolean; // Boolean!
-  }
   VRChatUser: { // root type
     allowAvatarCopying: boolean; // Boolean!
     bio: string; // String!
@@ -130,7 +118,6 @@ export interface NexusGenRootTypes {
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
   DiscordOauthMutationInput: NexusGenInputs['DiscordOauthMutationInput'];
-  VRChatLoginInput: NexusGenInputs['VRChatLoginInput'];
   AbilityAction: NexusGenEnums['AbilityAction'];
   AbilitySubject: NexusGenEnums['AbilitySubject'];
   VRChatUserRole: NexusGenEnums['VRChatUserRole'];
@@ -152,8 +139,6 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     discordOauthCallback: NexusGenRootTypes['DiscordUser']; // DiscordUser!
-    vrcLogin: NexusGenRootTypes['VRChatLoginResult']; // VRChatLoginResult!
-    vrcLogout: NexusGenRootTypes['VRChatLogoutMutationResult']; // VRChatLogoutMutationResult!
   }
   Query: { // field return type
     discordOauthURL: string; // String!
@@ -210,13 +195,6 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User'] | null; // User
     username: string; // String!
   }
-  VRChatLoginResult: { // field return type
-    authCookie: string | null; // String
-    complete: boolean; // Boolean!
-  }
-  VRChatLogoutMutationResult: { // field return type
-    success: boolean; // Boolean!
-  }
   VRChatUser: { // field return type
     allowAvatarCopying: boolean; // Boolean!
     bio: string; // String!
@@ -266,9 +244,6 @@ export interface NexusGenArgTypes {
     discordOauthCallback: { // args
       input: NexusGenInputs['DiscordOauthMutationInput']; // DiscordOauthMutationInput!
     }
-    vrcLogin: { // args
-      input: NexusGenInputs['VRChatLoginInput']; // VRChatLoginInput!
-    }
   }
 }
 
@@ -278,9 +253,9 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Ability" | "DiscordAccount" | "DiscordUser" | "Mutation" | "Query" | "Role" | "User" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatLoginResult" | "VRChatLogoutMutationResult" | "VRChatUser" | "Viewer";
+export type NexusGenObjectNames = "Ability" | "DiscordAccount" | "DiscordUser" | "Mutation" | "Query" | "Role" | "User" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatUser" | "Viewer";
 
-export type NexusGenInputNames = "DiscordOauthMutationInput" | "VRChatLoginInput";
+export type NexusGenInputNames = "DiscordOauthMutationInput";
 
 export type NexusGenEnumNames = "AbilityAction" | "AbilitySubject" | "VRChatUserRole";
 

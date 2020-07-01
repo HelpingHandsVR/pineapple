@@ -16,9 +16,9 @@ export type StaticContext = {
 
 export type Context =
   & StaticContext
-  & VRChatAPIContext
   & DiscordContext
   & AuthorisationContext
+  & VRChatAPIContext
 
 const makeStaticContext = async (): Promise<StaticContext> => {
   const config = getConfig(process.env)
@@ -42,11 +42,11 @@ type ContextCreator = (params: IntegrationContext) => Promise<Context>
 
 export const makeContextFactory = async (): Promise<ContextCreator> => {
   const staticContext = await makeStaticContext()
-  const discordContext = await makeDiscordContext(staticContext)
+  const discordContext = await makeDiscordContext(staticContext.config)
+  const vrcContext = await makeVRChatAPIContext(staticContext.config)
 
   return async (params: IntegrationContext): Promise<Context> => {
-    const vrcContext = await makeVRChatAPIContext(params)
-    const authorisationContext = await makeAuthorisationContext(staticContext.connection, vrcContext)
+    const authorisationContext = await makeAuthorisationContext()
 
     return {
       ...staticContext,

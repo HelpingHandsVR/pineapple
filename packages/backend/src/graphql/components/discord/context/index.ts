@@ -1,5 +1,5 @@
 import DiscordOauth2 from 'discord-oauth2'
-import { StaticContext } from '~/graphql/context'
+import { Config } from '@/lib/config/type'
 
 export type DiscordContext = {
   discord: {
@@ -7,10 +7,10 @@ export type DiscordContext = {
   },
 }
 
-export const makeDiscordContext = (context: StaticContext): DiscordContext => {
+export const makeDiscordContext = (config: Config): DiscordContext => {
   return {
     discord: {
-      oauth2: new DiscordOauth2(context.config.discord),
+      oauth2: new DiscordOauth2(config.discord),
     },
   }
 }
