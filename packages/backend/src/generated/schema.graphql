@@ -47,13 +47,26 @@ type DiscordUser {
   username: String!
 }
 
+input LoginInput {
+  email: String
+  password: String
+}
+
 type Mutation {
   discordOauthCallback(input: DiscordOauthMutationInput!): DiscordUser!
+  login(input: LoginInput!): User!
+  logout: Boolean!
+  register(input: RegisterInput!): User!
 }
 
 type Query {
   discordOauthURL: String!
-  viewer: Viewer
+  viewer: User
+}
+
+input RegisterInput {
+  email: String
+  password: String
 }
 
 type Role {

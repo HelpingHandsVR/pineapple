@@ -3,26 +3,35 @@ import { Request, Response } from 'express'
 
 import { VRChatAPIContext, makeVRChatAPIContext } from '../components/vrchat-api/context'
 import { Config } from '@/lib/config/type'
-import { getConfig } from '@/lib/config/coerce'
 
 import * as entities from '~/entity'
 import { DiscordContext, makeDiscordContext } from '../components/discord/context'
 import { AuthorisationContext, makeAuthorisationContext } from '../components/authorization/context'
+import { AuthenticationContext, makeAuthenticationContext } from '../components/authentication/context'
 
 export type StaticContext = {
   config: Config,
   connection: Connection,
 }
 
+export type IntegrationContext = {
+  req: Request,
+  res: Response,
+}
+
+export type ExpressContext = {
+  express: IntegrationContext,
+}
+
 export type Context =
   & StaticContext
   & DiscordContext
   & AuthorisationContext
+  & AuthenticationContext
   & VRChatAPIContext
+  & ExpressContext
 
-const makeStaticContext = async (): Promise<StaticContext> => {
-  const config = getConfig(process.env)
-
+const makeStaticContext = async (config: Config): Promise<StaticContext> => {
   return {
     config,
     connection: await createConnection({
@@ -33,26 +42,32 @@ const makeStaticContext = async (): Promise<StaticContext> => {
   }
 }
 
-export type IntegrationContext = {
-  req: Request,
-  res: Response,
-}
+const makeExpressContext = (params: IntegrationContext) => ({
+  express: {
+    req: params.req,
+    res: params.res,
+  },
+})
 
 type ContextCreator = (params: IntegrationContext) => Promise<Context>
 
-export const makeContextFactory = async (): Promise<ContextCreator> => {
-  const staticContext = await makeStaticContext()
+export const makeContextFactory = async (config: Config): Promise<ContextCreator> => {
+  const staticContext = await makeStaticContext(config)
   const discordContext = await makeDiscordContext(staticContext.config)
   const vrcContext = await makeVRChatAPIContext(staticContext.config)
 
   return async (params: IntegrationContext): Promise<Context> => {
     const authorisationContext = await makeAuthorisationContext()
+    const authenticationContext = await makeAuthenticationContext(params.req, params.res)
+    const expressContext = await makeExpressContext(params)
 
     return {
       ...staticContext,
       ...vrcContext,
       ...discordContext,
       ...authorisationContext,
+      ...authenticationContext,
+      ...expressContext,
     }
   }
 }

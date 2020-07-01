@@ -1,6 +1,10 @@
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
 
 export type Config = {
+  features: {
+    disableMiddleware: boolean,
+    sessionSecret: string,
+  },
   db: PostgresConnectionOptions,
   discord: {
     clientId: string,

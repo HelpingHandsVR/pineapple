@@ -8,21 +8,26 @@ import { applyMiddleware } from 'graphql-middleware'
 import * as vrchatTypes from './graphql/components/vrchat-api'
 import * as discordTypes from './graphql/components/discord'
 import * as userTypes from './graphql/components/user'
-import * as authTypes from './graphql/components/authorization'
+import * as authorisationTypes from './graphql/components/authorization'
+import * as authenticationTypes from './graphql/components/authentication'
 
+import * as passport from './graphql/passport'
 import { makeContextFactory } from './graphql/context'
 import { permissions } from './graphql/permissions'
 import { getConfig } from '@/lib/config/coerce'
+import { getConnection } from 'typeorm'
+import { makeErrorHandlerMiddleware } from './graphql/error-handler'
 
 const main = async () => {
   const config = getConfig(process.env)
-  const schema = makeSchema({
+  const baseSchema = makeSchema({
     shouldGenerateArtifacts: process.env.NODE_ENV !== 'production',
     types: {
       ...vrchatTypes,
       ...discordTypes,
       ...userTypes,
-      ...authTypes,
+      ...authorisationTypes,
+      ...authenticationTypes,
     },
     outputs: {
       schema: path.join(__dirname, 'generated/schema.graphql'),
@@ -39,18 +44,29 @@ const main = async () => {
       contextType: 'ctx.Context',
     },
   })
-  const middleware = [...permissions]
-  const schemaWithMiddleware = applyMiddleware(schema, ...middleware)
+
+  let schema = null
+
+  if (config.features.disableMiddleware) {
+    console.warn('Middlewares are disabled, no permission checks will run!')
+    schema = applyMiddleware(baseSchema, makeErrorHandlerMiddleware())
+  } else {
+    const middleware = [...permissions, makeErrorHandlerMiddleware()]
+
+    schema = applyMiddleware(baseSchema, ...middleware)
+  }
 
   const server = new ApolloServer({
-    schema: schemaWithMiddleware,
-    context: await makeContextFactory(),
+    schema,
+    context: await makeContextFactory(config),
     playground: {
       endpoint: '/graphql',
     },
   })
 
   const app = express()
+
+  await passport.applyMiddleware(app, config, getConnection('default'))
 
   server.applyMiddleware({ app })
 

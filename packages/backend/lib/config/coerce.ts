@@ -1,6 +1,10 @@
 import { Config } from './type'
 
 export const getConfig = (env: NodeJS.ProcessEnv): Config => ({
+  features: {
+    disableMiddleware: env.DISABLE_MIDDLEWARE === 'true',
+    sessionSecret: env.SESSION_SECRET,
+  },
   db: {
     type: 'postgres',
     host: env.DB_HOST,

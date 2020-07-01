@@ -19,6 +19,14 @@ export interface NexusGenInputs {
     expiresIn?: number | null; // Int
     state?: string | null; // String
   }
+  LoginInput: { // input type
+    email?: string | null; // String
+    password?: string | null; // String
+  }
+  RegisterInput: { // input type
+    email?: string | null; // String
+    password?: string | null; // String
+  }
 }
 
 export interface NexusGenEnums {
@@ -118,6 +126,8 @@ export interface NexusGenRootTypes {
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
   DiscordOauthMutationInput: NexusGenInputs['DiscordOauthMutationInput'];
+  LoginInput: NexusGenInputs['LoginInput'];
+  RegisterInput: NexusGenInputs['RegisterInput'];
   AbilityAction: NexusGenEnums['AbilityAction'];
   AbilitySubject: NexusGenEnums['AbilitySubject'];
   VRChatUserRole: NexusGenEnums['VRChatUserRole'];
@@ -139,10 +149,13 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     discordOauthCallback: NexusGenRootTypes['DiscordUser']; // DiscordUser!
+    login: NexusGenRootTypes['User']; // User!
+    logout: boolean; // Boolean!
+    register: NexusGenRootTypes['User']; // User!
   }
   Query: { // field return type
     discordOauthURL: string; // String!
-    viewer: NexusGenRootTypes['Viewer'] | null; // Viewer
+    viewer: NexusGenRootTypes['User'] | null; // User
   }
   Role: { // field return type
     id: string; // ID!
@@ -244,6 +257,12 @@ export interface NexusGenArgTypes {
     discordOauthCallback: { // args
       input: NexusGenInputs['DiscordOauthMutationInput']; // DiscordOauthMutationInput!
     }
+    login: { // args
+      input: NexusGenInputs['LoginInput']; // LoginInput!
+    }
+    register: { // args
+      input: NexusGenInputs['RegisterInput']; // RegisterInput!
+    }
   }
 }
 
@@ -255,7 +274,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "Ability" | "DiscordAccount" | "DiscordUser" | "Mutation" | "Query" | "Role" | "User" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatUser" | "Viewer";
 
-export type NexusGenInputNames = "DiscordOauthMutationInput";
+export type NexusGenInputNames = "DiscordOauthMutationInput" | "LoginInput" | "RegisterInput";
 
 export type NexusGenEnumNames = "AbilityAction" | "AbilitySubject" | "VRChatUserRole";
 
