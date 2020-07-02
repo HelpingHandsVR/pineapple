@@ -4,10 +4,13 @@ export const ViewerQuery = extendType({
   type: 'Query',
   definition (t) {
     t.field('viewer', {
-      type: 'User',
+      type: 'Viewer',
       nullable: true,
       resolve (root, args, context) {
-        return context.authentication.getUser()
+        return {
+          user: context.authentication.getUser(),
+          ability: context.authorisation.ability.rules,
+        }
       },
     })
   },

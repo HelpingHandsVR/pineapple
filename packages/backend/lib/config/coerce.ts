@@ -4,6 +4,8 @@ export const getConfig = (env: NodeJS.ProcessEnv): Config => ({
   features: {
     disableMiddleware: env.DISABLE_MIDDLEWARE === 'true',
     sessionSecret: env.SESSION_SECRET,
+    playground: env.GRAPHQL_PLAYGROUND === 'true',
+    corsOrigin: env.CORS_ORIGIN.split(','),
   },
   db: {
     type: 'postgres',

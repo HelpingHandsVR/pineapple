@@ -113,10 +113,10 @@ export interface NexusGenRootTypes {
     worldId: string; // String!
   }
   Viewer: { // root type
+    ability: Array<NexusGenRootTypes['Ability'] | null>; // [Ability]!
     user: NexusGenRootTypes['User']; // User!
-    vrchatUser: NexusGenRootTypes['VRChatExtendedUser']; // VRChatExtendedUser!
   }
-  VRChatUserBase: NexusGenRootTypes['VRChatExtendedUser'] | NexusGenRootTypes['VRChatUser'];
+  VRChatUserBase: NexusGenRootTypes['VRChatUser'] | NexusGenRootTypes['VRChatExtendedUser'];
   String: string;
   Int: number;
   Float: number;
@@ -155,7 +155,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     discordOauthURL: string; // String!
-    viewer: NexusGenRootTypes['User'] | null; // User
+    viewer: NexusGenRootTypes['Viewer'] | null; // Viewer
   }
   Role: { // field return type
     id: string; // ID!
@@ -165,6 +165,7 @@ export interface NexusGenFieldTypes {
     discord: NexusGenRootTypes['DiscordAccount'] | null; // DiscordAccount
     id: string; // ID!
     role: NexusGenRootTypes['Role']; // Role!
+    vrchat: NexusGenRootTypes['VRChatUser'] | null; // VRChatUser
   }
   VRChatConfig: { // field return type
     announcements: Array<NexusGenRootTypes['VRChatConfigAnnouncement'] | null>; // [VRChatConfigAnnouncement]!
@@ -231,7 +232,6 @@ export interface NexusGenFieldTypes {
   Viewer: { // field return type
     ability: Array<NexusGenRootTypes['Ability'] | null>; // [Ability]!
     user: NexusGenRootTypes['User']; // User!
-    vrchatUser: NexusGenRootTypes['VRChatExtendedUser']; // VRChatExtendedUser!
   }
   VRChatUserBase: { // field return type
     allowAvatarCopying: boolean; // Boolean!
@@ -267,7 +267,7 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
-  VRChatUserBase: "VRChatExtendedUser" | "VRChatUser"
+  VRChatUserBase: "VRChatUser" | "VRChatExtendedUser"
 }
 
 export interface NexusGenInheritedFields {}

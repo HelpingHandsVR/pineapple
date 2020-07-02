@@ -61,7 +61,7 @@ type Mutation {
 
 type Query {
   discordOauthURL: String!
-  viewer: User
+  viewer: Viewer
 }
 
 input RegisterInput {
@@ -78,12 +78,12 @@ type User {
   discord: DiscordAccount
   id: ID!
   role: Role!
+  vrchat: VRChatUser
 }
 
 type Viewer {
   ability: [Ability]!
   user: User!
-  vrchatUser: VRChatExtendedUser!
 }
 
 type VRChatConfig {

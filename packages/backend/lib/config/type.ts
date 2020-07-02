@@ -4,6 +4,8 @@ export type Config = {
   features: {
     disableMiddleware: boolean,
     sessionSecret: string,
+    playground: boolean,
+    corsOrigin: string[],
   },
   db: PostgresConnectionOptions,
   discord: {

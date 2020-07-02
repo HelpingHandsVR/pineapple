@@ -7,16 +7,9 @@ export const Viewer = objectType({
       type: 'User',
     })
 
-    t.field('vrchatUser', {
-      type: 'VRChatExtendedUser',
-    })
-
     t.field('ability', {
       type: 'Ability',
       list: [false],
-      async resolve (root, args, context) {
-        return context.auth.ability.rules
-      },
     })
   },
 })

@@ -11,6 +11,7 @@ import * as userTypes from './graphql/components/user'
 import * as authorisationTypes from './graphql/components/authorization'
 import * as authenticationTypes from './graphql/components/authentication'
 
+import * as middlewares from './middlewares'
 import * as passport from './graphql/passport'
 import { makeContextFactory } from './graphql/context'
 import { permissions } from './graphql/permissions'
@@ -66,9 +67,20 @@ const main = async () => {
 
   const app = express()
 
+  middlewares.applyAll(app, config)
   await passport.applyMiddleware(app, config, getConnection('default'))
-
-  server.applyMiddleware({ app })
+  server.applyMiddleware({
+    app,
+    cors: {
+      origin: config.features.corsOrigin,
+      credentials: true,
+      methods: [
+        'OPTIONS',
+        'GET',
+        'POST',
+      ],
+    },
+  })
 
   app.listen({ port: config.api.port }, () => {
     console.log(`Server running: http://[::1]:${config.api.port}${server.graphqlPath}`)
