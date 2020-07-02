@@ -6,10 +6,10 @@
         "name": "VRChatUserBase",
         "possibleTypes": [
           {
-            "name": "VRChatExtendedUser"
+            "name": "VRChatUser"
           },
           {
-            "name": "VRChatUser"
+            "name": "VRChatExtendedUser"
           }
         ]
       }

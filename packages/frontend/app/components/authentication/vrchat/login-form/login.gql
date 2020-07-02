@@ -1,0 +1,8 @@
+mutation loginFormLogin ($email: String!, $password: String!) {
+  loginFormLogin: login (input: {
+    email: $email
+    password: $password
+  }) {
+    id
+  }
+}

@@ -1,19 +1,15 @@
 <script lang="ts">
 import Vue from 'vue'
+import {validate} from 'email-validator'
 
 export type LoginFormData = {
-  username: string,
+  email: string,
   password: string,
   totp?: string,
 }
 
 export default Vue.extend({
   props: {
-    showTotp: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
     loading: {
       type: Boolean,
       required: false,
@@ -23,9 +19,8 @@ export default Vue.extend({
   data () {
     return {
       formData: {
-        username: '',
+        email: '',
         password: '',
-        totp: '',
       },
       valid: false,
     }
@@ -44,15 +39,12 @@ export default Vue.extend({
   computed: {
     rules () {
       return {
-        username: [
-          (v: string) => !!v || 'Username is required',
-          (v: string) => v.length <= 15 || 'Username must be at most 15 characters long',
+        email: [
+          (v: string) => !!v || 'E-mail is required',
+          (v: string) => validate(v) || 'Must be a valid e-mail address',
         ],
         password: [
           (v: string) => !!v || 'Password is required'
-        ],
-        totp: [
-          (v: string) => !!v || 'Your account requires two factor authentication'
         ],
       }
     }
@@ -67,28 +59,19 @@ export default Vue.extend({
     @submit.prevent='handleSubmit'
   )
     v-text-field(
-      v-model='formData.username'
-      label='Username / E-mail address'
+      v-model='formData.email'
+      label='E-mail address'
       required
-      :disabled='loading || showTotp'
-      :rules='rules.username'
+      :disabled='loading'
+      :rules='rules.email'
     )
     v-text-field(
       v-model='formData.password'
       label='Password'
       type='password'
       required
-      :disabled='loading || showTotp'
-      :rules='rules.password'
-    )
-    v-text-field(
-      v-model='formData.totp'
-      label='Two factor token'
-      required
-      v-if='showTotp'
-      :rules='rules.totp'
       :disabled='loading'
-      autofocus
+      :rules='rules.password'
     )
 
     v-btn(color='primary', type='submit', :loading='loading')

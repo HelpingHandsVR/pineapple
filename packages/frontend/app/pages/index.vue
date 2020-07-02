@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 import { mapGetters } from 'vuex'
 
 import {
-  ViewerDocument,
+  IndexPageViewerDocument,
   Viewer,
   DiscordOauthUrlDocument,
 } from '../../generated/composition'
@@ -21,7 +21,7 @@ type Data = {
 export default {
   apollo: {
     viewer: {
-      query: ViewerDocument,
+      query: IndexPageViewerDocument,
     },
     discordOauthURL: {
       query: DiscordOauthUrlDocument,
@@ -58,7 +58,7 @@ export default {
         return result
       }
 
-      if (this.viewer.vrchatUser.state === 'online') {
+      if (this.viewer.user.vrchat.state === 'online') {
         result = 'success'
       }
 
@@ -187,27 +187,25 @@ export default {
       //-
       v-col(md='6')
         v-container
-          v-card
+          v-card(v-if='viewer.user.vrchat')
             v-img.align-end(
-              :lazy-src='viewer.vrchatUser.currentAvatarThumbnailImageUrl'
-              :src='viewer.vrchatUser.currentAvatarImageUrl'
+              :lazy-src='viewer.user.vrchat.currentAvatarThumbnailImageUrl'
+              :src='viewer.user.vrchat.currentAvatarImageUrl'
               height='200'
               :gradient='gradient'
             )
               v-card-title(dark)
                 v-badge.mb-1.mr-2(inline, :color='badgeColour', left, dot)
-                | {{viewer.vrchatUser.displayName}}
+                | {{viewer.user.vrchat.displayName}}
               v-card-subtitle(dark)
-                | {{viewer.vrchatUser.statusDescription}}
+                | {{viewer.user.vrchat.statusDescription}}
 
             v-card-text
-              | VRChat role: {{viewer.vrchatUser.role}}
+              | VRChat role: {{viewer.user.vrchat.role}}
               br
               | Pineapple role: {{viewer.user.role.name}}
               br
-              | State: {{viewer.vrchatUser.state}}
+              | State: {{viewer.user.vrchat.state}}
               br
-              | Last login: {{relativeFormat(viewer.vrchatUser.last_login)}}
-              br
-              | 2FA enabled: {{viewer.vrchatUser.twoFactorAuthEnabled ? 'Yes' : 'No'}}
+              | Last login: {{relativeFormat(viewer.user.vrchat.last_login)}}
 </template>

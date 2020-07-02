@@ -1,9 +1,0 @@
-mutation vrcLogin ($username: String, $password: String) {
-  vrcLogin (input: {
-    username: $username
-    password: $password
-  }) {
-    complete
-    authCookie
-  }
-}

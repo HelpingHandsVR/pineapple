@@ -61,11 +61,17 @@ export type DiscordUser = {
   username: Scalars['String'];
 };
 
+export type LoginInput = {
+  email?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   discordOauthCallback: DiscordUser;
-  vrcLogin: VrChatLoginResult;
-  vrcLogout: VrChatLogoutMutationResult;
+  login: User;
+  logout: Scalars['Boolean'];
+  register: User;
 };
 
 
@@ -74,14 +80,24 @@ export type MutationDiscordOauthCallbackArgs = {
 };
 
 
-export type MutationVrcLoginArgs = {
-  input: VrChatLoginInput;
+export type MutationLoginArgs = {
+  input: LoginInput;
+};
+
+
+export type MutationRegisterArgs = {
+  input: RegisterInput;
 };
 
 export type Query = {
   __typename?: 'Query';
   discordOauthURL: Scalars['String'];
   viewer?: Maybe<Viewer>;
+};
+
+export type RegisterInput = {
+  email?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
 };
 
 export type Role = {
@@ -95,13 +111,13 @@ export type User = {
   discord?: Maybe<DiscordAccount>;
   id: Scalars['ID'];
   role: Role;
+  vrchat?: Maybe<VrChatUser>;
 };
 
 export type Viewer = {
   __typename?: 'Viewer';
   ability: Array<Maybe<Ability>>;
   user: User;
-  vrchatUser: VrChatExtendedUser;
 };
 
 export type VrChatConfig = {
@@ -154,23 +170,6 @@ export type VrChatExtendedUser = VrChatUserBase & {
   username: Scalars['String'];
 };
 
-export type VrChatLoginInput = {
-  password?: Maybe<Scalars['String']>;
-  totp?: Maybe<Scalars['String']>;
-  username?: Maybe<Scalars['String']>;
-};
-
-export type VrChatLoginResult = {
-  __typename?: 'VRChatLoginResult';
-  authCookie?: Maybe<Scalars['String']>;
-  complete: Scalars['Boolean'];
-};
-
-export type VrChatLogoutMutationResult = {
-  __typename?: 'VRChatLogoutMutationResult';
-  success: Scalars['Boolean'];
-};
-
 export type VrChatUser = VrChatUserBase & {
   __typename?: 'VRChatUser';
   allowAvatarCopying: Scalars['Boolean'];
@@ -219,6 +218,49 @@ export enum VrChatUserRole {
   Visitor = 'VISITOR'
 }
 
+export type LoginFormLoginMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginFormLoginMutation = (
+  { __typename?: 'Mutation' }
+  & { loginFormLogin: (
+    { __typename?: 'User' }
+    & Pick<User, 'id'>
+  ) }
+);
+
+export type ProfileMenuLogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ProfileMenuLogoutMutation = (
+  { __typename?: 'Mutation' }
+  & { profileMenuLogout: Mutation['logout'] }
+);
+
+export type ProfileMenuViewerQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ProfileMenuViewerQuery = (
+  { __typename?: 'Query' }
+  & { profileMenuViewer?: Maybe<(
+    { __typename?: 'Viewer' }
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+      & { role: (
+        { __typename?: 'Role' }
+        & Pick<Role, 'id' | 'name'>
+      ), vrchat?: Maybe<(
+        { __typename?: 'VRChatUser' }
+        & Pick<VrChatUser, 'id' | 'displayName' | 'currentAvatarImageUrl' | 'currentAvatarThumbnailImageUrl' | 'role'>
+      )> }
+    ) }
+  )> }
+);
+
 export type DiscordOauthCallbackMutationVariables = Exact<{
   accessToken: Scalars['String'];
   state: Scalars['String'];
@@ -234,42 +276,29 @@ export type DiscordOauthCallbackMutation = (
   ) }
 );
 
-export type VrcLoginMutationVariables = Exact<{
-  username?: Maybe<Scalars['String']>;
-  password?: Maybe<Scalars['String']>;
-}>;
+export type IndexPageViewerQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type VrcLoginMutation = (
-  { __typename?: 'Mutation' }
-  & { vrcLogin: (
-    { __typename?: 'VRChatLoginResult' }
-    & Pick<VrChatLoginResult, 'complete' | 'authCookie'>
-  ) }
-);
-
-export type VrcLogoutMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type VrcLogoutMutation = (
-  { __typename?: 'Mutation' }
-  & { vrcLogout: (
-    { __typename?: 'VRChatLogoutMutationResult' }
-    & Pick<VrChatLogoutMutationResult, 'success'>
-  ) }
-);
-
-export type VrcLoginTotpMutationVariables = Exact<{
-  code?: Maybe<Scalars['String']>;
-}>;
-
-
-export type VrcLoginTotpMutation = (
-  { __typename?: 'Mutation' }
-  & { vrcLogin: (
-    { __typename?: 'VRChatLoginResult' }
-    & Pick<VrChatLoginResult, 'complete' | 'authCookie'>
-  ) }
+export type IndexPageViewerQuery = (
+  { __typename?: 'Query' }
+  & { indexPageViewer?: Maybe<(
+    { __typename?: 'Viewer' }
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+      & { vrchat?: Maybe<(
+        { __typename?: 'VRChatUser' }
+        & Pick<VrChatUser, 'id' | 'displayName' | 'currentAvatarImageUrl' | 'currentAvatarThumbnailImageUrl' | 'role' | 'state' | 'statusDescription'>
+      )>, discord?: Maybe<(
+        { __typename?: 'DiscordAccount' }
+        & Pick<DiscordAccount, 'id'>
+        & { account: (
+          { __typename?: 'DiscordUser' }
+          & Pick<DiscordUser, 'id' | 'username' | 'discriminator'>
+        ) }
+      )> }
+    ) }
+  )> }
 );
 
 export type DiscordOauthUrlQueryVariables = Exact<{ [key: string]: never; }>;
@@ -280,38 +309,103 @@ export type DiscordOauthUrlQuery = (
   & Pick<Query, 'discordOauthURL'>
 );
 
-export type ViewerQueryVariables = Exact<{ [key: string]: never; }>;
 
+export const LoginFormLoginDocument = gql`
+    mutation loginFormLogin($email: String!, $password: String!) {
+  loginFormLogin: login(input: {email: $email, password: $password}) {
+    id
+  }
+}
+    `;
 
-export type ViewerQuery = (
-  { __typename?: 'Query' }
-  & { viewer?: Maybe<(
-    { __typename?: 'Viewer' }
-    & { user: (
-      { __typename?: 'User' }
-      & Pick<User, 'id'>
-      & { role: (
-        { __typename?: 'Role' }
-        & Pick<Role, 'id' | 'name'>
-      ), discord?: Maybe<(
-        { __typename?: 'DiscordAccount' }
-        & Pick<DiscordAccount, 'id'>
-        & { account: (
-          { __typename?: 'DiscordUser' }
-          & Pick<DiscordUser, 'id' | 'username' | 'discriminator'>
-        ) }
-      )> }
-    ), vrchatUser: (
-      { __typename?: 'VRChatExtendedUser' }
-      & Pick<VrChatExtendedUser, 'id' | 'displayName' | 'currentAvatarImageUrl' | 'currentAvatarThumbnailImageUrl' | 'role' | 'state' | 'statusDescription' | 'last_login' | 'twoFactorAuthEnabled'>
-    ), ability: Array<Maybe<(
-      { __typename?: 'Ability' }
-      & Pick<Ability, 'action' | 'subject'>
-    )>> }
-  )> }
-);
+/**
+ * __useLoginFormLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginFormLoginMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useLoginFormLoginMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useLoginFormLoginMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useLoginFormLoginMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<LoginFormLoginMutation, LoginFormLoginMutationVariables>) {
+            return VueApolloComposable.useMutation<LoginFormLoginMutation, LoginFormLoginMutationVariables>(LoginFormLoginDocument, options);
+          }
+export type LoginFormLoginMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<LoginFormLoginMutation, LoginFormLoginMutationVariables>;
+export const ProfileMenuLogoutDocument = gql`
+    mutation profileMenuLogout {
+  profileMenuLogout: logout
+}
+    `;
 
+/**
+ * __useProfileMenuLogoutMutation__
+ *
+ * To run a mutation, you first call `useProfileMenuLogoutMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useProfileMenuLogoutMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useProfileMenuLogoutMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProfileMenuLogoutMutation(options: VueApolloComposable.UseMutationOptionsNoVariables<ProfileMenuLogoutMutation, ProfileMenuLogoutMutationVariables> = {}) {
+            return VueApolloComposable.useMutation<ProfileMenuLogoutMutation, ProfileMenuLogoutMutationVariables>(ProfileMenuLogoutDocument, options);
+          }
+export type ProfileMenuLogoutMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<ProfileMenuLogoutMutation, ProfileMenuLogoutMutationVariables>;
+export const ProfileMenuViewerDocument = gql`
+    query profileMenuViewer {
+  profileMenuViewer: viewer {
+    user {
+      id
+      role {
+        id
+        name
+      }
+      vrchat {
+        id
+        displayName
+        currentAvatarImageUrl
+        currentAvatarThumbnailImageUrl
+        role
+      }
+    }
+  }
+}
+    `;
 
+/**
+ * __useProfileMenuViewerQuery__
+ *
+ * To run a query within a Vue component, call `useProfileMenuViewerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProfileMenuViewerQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useProfileMenuViewerQuery(
+ *   {
+ *   }
+ * );
+ */
+export function useProfileMenuViewerQuery(options: VueApolloComposable.UseQueryOptions<ProfileMenuViewerQuery, ProfileMenuViewerQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<ProfileMenuViewerQuery, ProfileMenuViewerQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<ProfileMenuViewerQuery, ProfileMenuViewerQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<ProfileMenuViewerQuery, undefined>(ProfileMenuViewerDocument, undefined, options);
+          }
+export type ProfileMenuViewerQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<ProfileMenuViewerQuery, ProfileMenuViewerQueryVariables>;
 export const DiscordOauthCallbackDocument = gql`
     mutation discordOauthCallback($accessToken: String!, $state: String!, $expiresIn: Int!) {
   discordOauthCallback(input: {accessToken: $accessToken, state: $state, expiresIn: $expiresIn}) {
@@ -343,95 +437,52 @@ export function useDiscordOauthCallbackMutation(options: VueApolloComposable.Use
             return VueApolloComposable.useMutation<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>(DiscordOauthCallbackDocument, options);
           }
 export type DiscordOauthCallbackMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>;
-export const VrcLoginDocument = gql`
-    mutation vrcLogin($username: String, $password: String) {
-  vrcLogin(input: {username: $username, password: $password}) {
-    complete
-    authCookie
+export const IndexPageViewerDocument = gql`
+    query indexPageViewer {
+  indexPageViewer: viewer {
+    user {
+      id
+      vrchat {
+        id
+        displayName
+        currentAvatarImageUrl
+        currentAvatarThumbnailImageUrl
+        role
+        state
+        statusDescription
+      }
+      discord {
+        id
+        account {
+          id
+          username
+          discriminator
+        }
+      }
+    }
   }
 }
     `;
 
 /**
- * __useVrcLoginMutation__
+ * __useIndexPageViewerQuery__
  *
- * To run a mutation, you first call `useVrcLoginMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useVrcLoginMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ * To run a query within a Vue component, call `useIndexPageViewerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIndexPageViewerQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
  *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useVrcLoginMutation({
- *   variables: {
- *      username: // value for 'username'
- *      password: // value for 'password'
- *   },
- * });
- */
-export function useVrcLoginMutation(options: VueApolloComposable.UseMutationOptions<VrcLoginMutation, VrcLoginMutationVariables> = {}) {
-            return VueApolloComposable.useMutation<VrcLoginMutation, VrcLoginMutationVariables>(VrcLoginDocument, options);
-          }
-export type VrcLoginMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<VrcLoginMutation, VrcLoginMutationVariables>;
-export const VrcLogoutDocument = gql`
-    mutation vrcLogout {
-  vrcLogout {
-    success
-  }
-}
-    `;
-
-/**
- * __useVrcLogoutMutation__
- *
- * To run a mutation, you first call `useVrcLogoutMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useVrcLogoutMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
  *
  * @example
- * const { mutate, loading, error, onDone } = useVrcLogoutMutation({
- *   variables: {
- *   },
- * });
+ * const { result, loading, error } = useIndexPageViewerQuery(
+ *   {
+ *   }
+ * );
  */
-export function useVrcLogoutMutation(options: VueApolloComposable.UseMutationOptionsNoVariables<VrcLogoutMutation, VrcLogoutMutationVariables> = {}) {
-            return VueApolloComposable.useMutation<VrcLogoutMutation, VrcLogoutMutationVariables>(VrcLogoutDocument, options);
+export function useIndexPageViewerQuery(options: VueApolloComposable.UseQueryOptions<IndexPageViewerQuery, IndexPageViewerQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<IndexPageViewerQuery, IndexPageViewerQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<IndexPageViewerQuery, IndexPageViewerQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<IndexPageViewerQuery, undefined>(IndexPageViewerDocument, undefined, options);
           }
-export type VrcLogoutMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<VrcLogoutMutation, VrcLogoutMutationVariables>;
-export const VrcLoginTotpDocument = gql`
-    mutation vrcLoginTotp($code: String) {
-  vrcLogin(input: {totp: $code}) {
-    complete
-    authCookie
-  }
-}
-    `;
-
-/**
- * __useVrcLoginTotpMutation__
- *
- * To run a mutation, you first call `useVrcLoginTotpMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useVrcLoginTotpMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useVrcLoginTotpMutation({
- *   variables: {
- *      code: // value for 'code'
- *   },
- * });
- */
-export function useVrcLoginTotpMutation(options: VueApolloComposable.UseMutationOptions<VrcLoginTotpMutation, VrcLoginTotpMutationVariables> = {}) {
-            return VueApolloComposable.useMutation<VrcLoginTotpMutation, VrcLoginTotpMutationVariables>(VrcLoginTotpDocument, options);
-          }
-export type VrcLoginTotpMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<VrcLoginTotpMutation, VrcLoginTotpMutationVariables>;
+export type IndexPageViewerQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<IndexPageViewerQuery, IndexPageViewerQueryVariables>;
 export const DiscordOauthUrlDocument = gql`
     query discordOauthURL {
   discordOauthURL
@@ -457,59 +508,3 @@ export function useDiscordOauthUrlQuery(options: VueApolloComposable.UseQueryOpt
             return VueApolloComposable.useQuery<DiscordOauthUrlQuery, undefined>(DiscordOauthUrlDocument, undefined, options);
           }
 export type DiscordOauthUrlQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables>;
-export const ViewerDocument = gql`
-    query viewer {
-  viewer {
-    user {
-      id
-      role {
-        id
-        name
-      }
-      discord {
-        id
-        account {
-          id
-          username
-          discriminator
-        }
-      }
-    }
-    vrchatUser {
-      id
-      displayName
-      currentAvatarImageUrl
-      currentAvatarThumbnailImageUrl
-      role
-      state
-      statusDescription
-      last_login
-      twoFactorAuthEnabled
-    }
-    ability {
-      action
-      subject
-    }
-  }
-}
-    `;
-
-/**
- * __useViewerQuery__
- *
- * To run a query within a Vue component, call `useViewerQuery` and pass it any options that fit your needs.
- * When your component renders, `useViewerQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useViewerQuery(
- *   {
- *   }
- * );
- */
-export function useViewerQuery(options: VueApolloComposable.UseQueryOptions<ViewerQuery, ViewerQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<ViewerQuery, ViewerQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<ViewerQuery, ViewerQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<ViewerQuery, undefined>(ViewerDocument, undefined, options);
-          }
-export type ViewerQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<ViewerQuery, ViewerQueryVariables>;

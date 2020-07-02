@@ -1,0 +1,20 @@
+query profileMenuViewer {
+  profileMenuViewer: viewer {
+    user {
+      id
+
+      role {
+        id
+        name
+      }
+
+      vrchat {
+        id
+        displayName
+        currentAvatarImageUrl
+        currentAvatarThumbnailImageUrl
+        role
+      }
+    }
+  }
+}

@@ -1,5 +1,0 @@
-mutation vrcLogout {
-  vrcLogout {
-    success
-  }
-}

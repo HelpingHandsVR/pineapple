@@ -1,7 +1,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import {ViewerDocument, Viewer} from '../../../../../generated/composition'
+import {ProfileMenuViewerDocument, Viewer} from '../../../../../generated/composition'
 
 type Data = {
   value: boolean,
@@ -11,7 +11,7 @@ type Data = {
 export default {
   apollo: {
     viewer: {
-      query: ViewerDocument
+      query: ProfileMenuViewerDocument
     }
   },
   data (): Data {
