@@ -23,7 +23,7 @@ export class VRChatAPI extends RESTDataSource {
   }
 
   private customFetch = async (input: RequestInfo, init: RequestInit) => {
-    console.log('VRC', typeof input === 'string' ? input : input.url)
+    console.log('VRC', init ? init.method : 'GET', typeof input === 'string' ? input : input.url)
 
     const response = await fetch(input, init)
     const setCookieHeader = response.headers.get('set-cookie')
@@ -77,7 +77,13 @@ export class VRChatAPI extends RESTDataSource {
   }
 
   public async getConfig (): Promise<Types.VRCConfig> {
-    return this.get('/config')
+    const result: Types.VRCConfig = await this.get('/config')
+
+    if (result.apiKey) {
+      this.apiKey = result.apiKey
+    }
+
+    return result
   }
 
   // Gets extended user (only for when requesting self when logged in)

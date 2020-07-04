@@ -61,7 +61,9 @@ type Mutation {
 
 type Query {
   discordOauthURL: String!
+  user(where: UserQueryWhereInput!): User
   viewer: Viewer
+  vrchatUser(where: VRChatUserQueryWhereInput!): VRChatUser!
 }
 
 input RegisterInput {
@@ -79,6 +81,11 @@ type User {
   id: ID!
   role: Role!
   vrchat: VRChatUser
+}
+
+input UserQueryWhereInput {
+  id: ID
+  vrcUserID: ID
 }
 
 type Viewer {
@@ -169,6 +176,10 @@ interface VRChatUserBase {
   status: String!
   statusDescription: String!
   username: String!
+}
+
+input VRChatUserQueryWhereInput {
+  id: ID
 }
 
 enum VRChatUserRole {

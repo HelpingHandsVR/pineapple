@@ -92,7 +92,19 @@ export type MutationRegisterArgs = {
 export type Query = {
   __typename?: 'Query';
   discordOauthURL: Scalars['String'];
+  user?: Maybe<User>;
   viewer?: Maybe<Viewer>;
+  vrchatUser: VrChatUser;
+};
+
+
+export type QueryUserArgs = {
+  where: UserQueryWhereInput;
+};
+
+
+export type QueryVrchatUserArgs = {
+  where: VrChatUserQueryWhereInput;
 };
 
 export type RegisterInput = {
@@ -112,6 +124,11 @@ export type User = {
   id: Scalars['ID'];
   role: Role;
   vrchat?: Maybe<VrChatUser>;
+};
+
+export type UserQueryWhereInput = {
+  id?: Maybe<Scalars['ID']>;
+  vrcUserID?: Maybe<Scalars['ID']>;
 };
 
 export type Viewer = {
@@ -210,6 +227,10 @@ export type VrChatUserBase = {
   username: Scalars['String'];
 };
 
+export type VrChatUserQueryWhereInput = {
+  id?: Maybe<Scalars['ID']>;
+};
+
 export enum VrChatUserRole {
   Known = 'KNOWN',
   NewUser = 'NEW_USER',
@@ -261,19 +282,54 @@ export type ProfileMenuViewerQuery = (
   )> }
 );
 
-export type DiscordOauthCallbackMutationVariables = Exact<{
-  accessToken: Scalars['String'];
-  state: Scalars['String'];
-  expiresIn: Scalars['Int'];
+export type DiscordLinkingCardQueryQueryVariables = Exact<{
+  where: UserQueryWhereInput;
 }>;
 
 
-export type DiscordOauthCallbackMutation = (
-  { __typename?: 'Mutation' }
-  & { discordOauthCallback: (
-    { __typename?: 'DiscordUser' }
-    & Pick<DiscordUser, 'id'>
-  ) }
+export type DiscordLinkingCardQueryQuery = (
+  { __typename?: 'Query' }
+  & { user?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id'>
+    & { discord?: Maybe<(
+      { __typename?: 'DiscordAccount' }
+      & Pick<DiscordAccount, 'id'>
+      & { account: (
+        { __typename?: 'DiscordUser' }
+        & Pick<DiscordUser, 'id' | 'username' | 'discriminator'>
+      ) }
+    )> }
+  )> }
+);
+
+export type DiscordOauthUrlQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DiscordOauthUrlQuery = (
+  { __typename?: 'Query' }
+  & Pick<Query, 'discordOauthURL'>
+);
+
+export type ProfileCardQueryQueryVariables = Exact<{
+  vrcWhere: VrChatUserQueryWhereInput;
+  where: UserQueryWhereInput;
+}>;
+
+
+export type ProfileCardQueryQuery = (
+  { __typename?: 'Query' }
+  & { vrchatUser: (
+    { __typename?: 'VRChatUser' }
+    & Pick<VrChatUser, 'id' | 'displayName' | 'statusDescription' | 'currentAvatarImageUrl' | 'currentAvatarThumbnailImageUrl' | 'role' | 'last_login'>
+  ), user?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id'>
+    & { role: (
+      { __typename?: 'Role' }
+      & Pick<Role, 'id' | 'name'>
+    ) }
+  )> }
 );
 
 export type IndexPageViewerQueryVariables = Exact<{ [key: string]: never; }>;
@@ -288,25 +344,25 @@ export type IndexPageViewerQuery = (
       & Pick<User, 'id'>
       & { vrchat?: Maybe<(
         { __typename?: 'VRChatUser' }
-        & Pick<VrChatUser, 'id' | 'displayName' | 'currentAvatarImageUrl' | 'currentAvatarThumbnailImageUrl' | 'role' | 'state' | 'statusDescription'>
-      )>, discord?: Maybe<(
-        { __typename?: 'DiscordAccount' }
-        & Pick<DiscordAccount, 'id'>
-        & { account: (
-          { __typename?: 'DiscordUser' }
-          & Pick<DiscordUser, 'id' | 'username' | 'discriminator'>
-        ) }
+        & Pick<VrChatUser, 'id'>
       )> }
     ) }
   )> }
 );
 
-export type DiscordOauthUrlQueryVariables = Exact<{ [key: string]: never; }>;
+export type DiscordOauthCallbackMutationVariables = Exact<{
+  accessToken: Scalars['String'];
+  state: Scalars['String'];
+  expiresIn: Scalars['Int'];
+}>;
 
 
-export type DiscordOauthUrlQuery = (
-  { __typename?: 'Query' }
-  & Pick<Query, 'discordOauthURL'>
+export type DiscordOauthCallbackMutation = (
+  { __typename?: 'Mutation' }
+  & { discordOauthCallback: (
+    { __typename?: 'DiscordUser' }
+    & Pick<DiscordUser, 'id'>
+  ) }
 );
 
 
@@ -406,6 +462,141 @@ export function useProfileMenuViewerQuery(options: VueApolloComposable.UseQueryO
             return VueApolloComposable.useQuery<ProfileMenuViewerQuery, undefined>(ProfileMenuViewerDocument, undefined, options);
           }
 export type ProfileMenuViewerQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<ProfileMenuViewerQuery, ProfileMenuViewerQueryVariables>;
+export const DiscordLinkingCardQueryDocument = gql`
+    query discordLinkingCardQuery($where: UserQueryWhereInput!) {
+  user(where: $where) {
+    id
+    discord {
+      id
+      account {
+        id
+        username
+        discriminator
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useDiscordLinkingCardQueryQuery__
+ *
+ * To run a query within a Vue component, call `useDiscordLinkingCardQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscordLinkingCardQueryQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useDiscordLinkingCardQueryQuery(
+ *   {
+ *      where: // value for 'where'
+ *   }
+ * );
+ */
+export function useDiscordLinkingCardQueryQuery(variables: DiscordLinkingCardQueryQueryVariables | VueCompositionApi.Ref<DiscordLinkingCardQueryQueryVariables> | ReactiveFunction<DiscordLinkingCardQueryQueryVariables>, options: VueApolloComposable.UseQueryOptions<DiscordLinkingCardQueryQuery, DiscordLinkingCardQueryQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<DiscordLinkingCardQueryQuery, DiscordLinkingCardQueryQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<DiscordLinkingCardQueryQuery, DiscordLinkingCardQueryQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<DiscordLinkingCardQueryQuery, DiscordLinkingCardQueryQueryVariables>(DiscordLinkingCardQueryDocument, variables, options);
+          }
+export type DiscordLinkingCardQueryQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<DiscordLinkingCardQueryQuery, DiscordLinkingCardQueryQueryVariables>;
+export const DiscordOauthUrlDocument = gql`
+    query discordOauthURL {
+  discordOauthURL
+}
+    `;
+
+/**
+ * __useDiscordOauthUrlQuery__
+ *
+ * To run a query within a Vue component, call `useDiscordOauthUrlQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscordOauthUrlQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useDiscordOauthUrlQuery(
+ *   {
+ *   }
+ * );
+ */
+export function useDiscordOauthUrlQuery(options: VueApolloComposable.UseQueryOptions<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<DiscordOauthUrlQuery, undefined>(DiscordOauthUrlDocument, undefined, options);
+          }
+export type DiscordOauthUrlQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables>;
+export const ProfileCardQueryDocument = gql`
+    query profileCardQuery($vrcWhere: VRChatUserQueryWhereInput!, $where: UserQueryWhereInput!) {
+  vrchatUser(where: $vrcWhere) {
+    id
+    displayName
+    statusDescription
+    currentAvatarImageUrl
+    currentAvatarThumbnailImageUrl
+    role
+    last_login
+  }
+  user(where: $where) {
+    id
+    role {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useProfileCardQueryQuery__
+ *
+ * To run a query within a Vue component, call `useProfileCardQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProfileCardQueryQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useProfileCardQueryQuery(
+ *   {
+ *      vrcWhere: // value for 'vrcWhere'
+ *      where: // value for 'where'
+ *   }
+ * );
+ */
+export function useProfileCardQueryQuery(variables: ProfileCardQueryQueryVariables | VueCompositionApi.Ref<ProfileCardQueryQueryVariables> | ReactiveFunction<ProfileCardQueryQueryVariables>, options: VueApolloComposable.UseQueryOptions<ProfileCardQueryQuery, ProfileCardQueryQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<ProfileCardQueryQuery, ProfileCardQueryQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<ProfileCardQueryQuery, ProfileCardQueryQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<ProfileCardQueryQuery, ProfileCardQueryQueryVariables>(ProfileCardQueryDocument, variables, options);
+          }
+export type ProfileCardQueryQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<ProfileCardQueryQuery, ProfileCardQueryQueryVariables>;
+export const IndexPageViewerDocument = gql`
+    query indexPageViewer {
+  viewer {
+    user {
+      id
+      vrchat {
+        id
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useIndexPageViewerQuery__
+ *
+ * To run a query within a Vue component, call `useIndexPageViewerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIndexPageViewerQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useIndexPageViewerQuery(
+ *   {
+ *   }
+ * );
+ */
+export function useIndexPageViewerQuery(options: VueApolloComposable.UseQueryOptions<IndexPageViewerQuery, IndexPageViewerQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<IndexPageViewerQuery, IndexPageViewerQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<IndexPageViewerQuery, IndexPageViewerQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<IndexPageViewerQuery, undefined>(IndexPageViewerDocument, undefined, options);
+          }
+export type IndexPageViewerQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<IndexPageViewerQuery, IndexPageViewerQueryVariables>;
 export const DiscordOauthCallbackDocument = gql`
     mutation discordOauthCallback($accessToken: String!, $state: String!, $expiresIn: Int!) {
   discordOauthCallback(input: {accessToken: $accessToken, state: $state, expiresIn: $expiresIn}) {
@@ -437,74 +628,3 @@ export function useDiscordOauthCallbackMutation(options: VueApolloComposable.Use
             return VueApolloComposable.useMutation<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>(DiscordOauthCallbackDocument, options);
           }
 export type DiscordOauthCallbackMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>;
-export const IndexPageViewerDocument = gql`
-    query indexPageViewer {
-  viewer {
-    user {
-      id
-      vrchat {
-        id
-        displayName
-        currentAvatarImageUrl
-        currentAvatarThumbnailImageUrl
-        role
-        state
-        statusDescription
-      }
-      discord {
-        id
-        account {
-          id
-          username
-          discriminator
-        }
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useIndexPageViewerQuery__
- *
- * To run a query within a Vue component, call `useIndexPageViewerQuery` and pass it any options that fit your needs.
- * When your component renders, `useIndexPageViewerQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useIndexPageViewerQuery(
- *   {
- *   }
- * );
- */
-export function useIndexPageViewerQuery(options: VueApolloComposable.UseQueryOptions<IndexPageViewerQuery, IndexPageViewerQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<IndexPageViewerQuery, IndexPageViewerQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<IndexPageViewerQuery, IndexPageViewerQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<IndexPageViewerQuery, undefined>(IndexPageViewerDocument, undefined, options);
-          }
-export type IndexPageViewerQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<IndexPageViewerQuery, IndexPageViewerQueryVariables>;
-export const DiscordOauthUrlDocument = gql`
-    query discordOauthURL {
-  discordOauthURL
-}
-    `;
-
-/**
- * __useDiscordOauthUrlQuery__
- *
- * To run a query within a Vue component, call `useDiscordOauthUrlQuery` and pass it any options that fit your needs.
- * When your component renders, `useDiscordOauthUrlQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useDiscordOauthUrlQuery(
- *   {
- *   }
- * );
- */
-export function useDiscordOauthUrlQuery(options: VueApolloComposable.UseQueryOptions<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<DiscordOauthUrlQuery, undefined>(DiscordOauthUrlDocument, undefined, options);
-          }
-export type DiscordOauthUrlQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables>;

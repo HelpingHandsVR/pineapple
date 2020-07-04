@@ -53,6 +53,7 @@ const config: Configuration = {
    */
   plugins: [
     { src: '~/plugins/vuex-persistedstate.ts' },
+    { src: '~/plugins/components.ts' },
   ],
   /*
    ** Nuxt.js dev-modules

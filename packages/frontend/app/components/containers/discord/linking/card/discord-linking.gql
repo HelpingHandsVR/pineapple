@@ -1,0 +1,13 @@
+query discordLinkingCardQuery ($where: UserQueryWhereInput!) {
+  user(where: $where) {
+    id
+    discord {
+      id
+      account {
+        id
+        username
+        discriminator
+      }
+    }
+  }
+}

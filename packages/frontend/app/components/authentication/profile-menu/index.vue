@@ -1,7 +1,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import {ProfileMenuViewerDocument, Viewer} from '../../../../../generated/composition'
+import {ProfileMenuViewerDocument, Viewer} from '../../../../generated/composition'
 
 type Data = {
   value: boolean,

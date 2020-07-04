@@ -1,0 +1,19 @@
+query profileCardQuery ($vrcWhere: VRChatUserQueryWhereInput!, $where: UserQueryWhereInput!) {
+  vrchatUser(where: $vrcWhere) {
+    id
+    displayName
+    statusDescription
+    currentAvatarImageUrl
+    currentAvatarThumbnailImageUrl
+    role
+    last_login
+  }
+
+  user (where: $where) {
+    id
+    role {
+      id
+      name
+    }
+  }
+}

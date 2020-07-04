@@ -2,23 +2,9 @@ query indexPageViewer {
   viewer {
     user {
       id
+
       vrchat {
         id
-        displayName
-        currentAvatarImageUrl
-        currentAvatarThumbnailImageUrl
-        role
-        state
-        statusDescription
-      }
-
-      discord {
-        id
-        account {
-          id
-          username
-          discriminator
-        }
       }
     }
   }

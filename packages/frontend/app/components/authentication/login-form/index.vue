@@ -7,7 +7,7 @@ import LoginFormBase, { LoginFormData } from './base.vue'
 import {
   LoginFormLoginDocument,
   User,
-} from '../../../../../generated/composition'
+} from '../../../../generated/composition'
 
 export default Vue.extend({
   components: {

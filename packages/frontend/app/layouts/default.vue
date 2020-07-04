@@ -3,7 +3,8 @@ import Vue from 'vue'
 import {mapGetters, mapMutations} from 'vuex'
 
 import {ProfileMenuLogoutDocument} from '../../generated/composition'
-import ProfileMenu from '../components/authentication/vrchat/profile-menu/index.vue'
+
+import ProfileMenu from '../components/authentication/profile-menu/index.vue'
 import StoreToast from '../components/containers/store-toast.vue'
 import StoreTheme from '../components/containers/store-theme.vue'
 

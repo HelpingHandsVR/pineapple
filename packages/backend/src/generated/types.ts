@@ -27,6 +27,13 @@ export interface NexusGenInputs {
     email?: string | null; // String
     password?: string | null; // String
   }
+  UserQueryWhereInput: { // input type
+    id?: string | null; // ID
+    vrcUserID?: string | null; // ID
+  }
+  VRChatUserQueryWhereInput: { // input type
+    id?: string | null; // ID
+  }
 }
 
 export interface NexusGenEnums {
@@ -128,6 +135,8 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   DiscordOauthMutationInput: NexusGenInputs['DiscordOauthMutationInput'];
   LoginInput: NexusGenInputs['LoginInput'];
   RegisterInput: NexusGenInputs['RegisterInput'];
+  UserQueryWhereInput: NexusGenInputs['UserQueryWhereInput'];
+  VRChatUserQueryWhereInput: NexusGenInputs['VRChatUserQueryWhereInput'];
   AbilityAction: NexusGenEnums['AbilityAction'];
   AbilitySubject: NexusGenEnums['AbilitySubject'];
   VRChatUserRole: NexusGenEnums['VRChatUserRole'];
@@ -155,7 +164,9 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     discordOauthURL: string; // String!
+    user: NexusGenRootTypes['User'] | null; // User
     viewer: NexusGenRootTypes['Viewer'] | null; // Viewer
+    vrchatUser: NexusGenRootTypes['VRChatUser']; // VRChatUser!
   }
   Role: { // field return type
     id: string; // ID!
@@ -264,6 +275,14 @@ export interface NexusGenArgTypes {
       input: NexusGenInputs['RegisterInput']; // RegisterInput!
     }
   }
+  Query: {
+    user: { // args
+      where: NexusGenInputs['UserQueryWhereInput']; // UserQueryWhereInput!
+    }
+    vrchatUser: { // args
+      where: NexusGenInputs['VRChatUserQueryWhereInput']; // VRChatUserQueryWhereInput!
+    }
+  }
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
@@ -274,7 +293,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "Ability" | "DiscordAccount" | "DiscordUser" | "Mutation" | "Query" | "Role" | "User" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatUser" | "Viewer";
 
-export type NexusGenInputNames = "DiscordOauthMutationInput" | "LoginInput" | "RegisterInput";
+export type NexusGenInputNames = "DiscordOauthMutationInput" | "LoginInput" | "RegisterInput" | "UserQueryWhereInput" | "VRChatUserQueryWhereInput";
 
 export type NexusGenEnumNames = "AbilityAction" | "AbilitySubject" | "VRChatUserRole";
 
