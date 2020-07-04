@@ -245,7 +245,7 @@ export type ProfileMenuViewerQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ProfileMenuViewerQuery = (
   { __typename?: 'Query' }
-  & { profileMenuViewer?: Maybe<(
+  & { viewer?: Maybe<(
     { __typename?: 'Viewer' }
     & { user: (
       { __typename?: 'User' }
@@ -281,7 +281,7 @@ export type IndexPageViewerQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type IndexPageViewerQuery = (
   { __typename?: 'Query' }
-  & { indexPageViewer?: Maybe<(
+  & { viewer?: Maybe<(
     { __typename?: 'Viewer' }
     & { user: (
       { __typename?: 'User' }
@@ -368,7 +368,7 @@ export function useProfileMenuLogoutMutation(options: VueApolloComposable.UseMut
 export type ProfileMenuLogoutMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<ProfileMenuLogoutMutation, ProfileMenuLogoutMutationVariables>;
 export const ProfileMenuViewerDocument = gql`
     query profileMenuViewer {
-  profileMenuViewer: viewer {
+  viewer {
     user {
       id
       role {
@@ -439,7 +439,7 @@ export function useDiscordOauthCallbackMutation(options: VueApolloComposable.Use
 export type DiscordOauthCallbackMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>;
 export const IndexPageViewerDocument = gql`
     query indexPageViewer {
-  indexPageViewer: viewer {
+  viewer {
     user {
       id
       vrchat {

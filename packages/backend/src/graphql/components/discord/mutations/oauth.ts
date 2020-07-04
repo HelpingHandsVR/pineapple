@@ -4,7 +4,6 @@ import { DateTime } from 'luxon'
 
 import { DiscordAccount } from '~/entity/discord-account'
 import { DiscordOauthRequest } from '~/entity/discord-oauth-request'
-import { User } from '~/entity'
 
 export const DiscordOauthMutationInput = inputObjectType({
   name: 'DiscordOauthMutationInput',
@@ -31,7 +30,9 @@ export const DiscordOauthMutation = extendType({
         })
 
         if (!request) {
-          throw new AuthenticationError('Invalid request state, please try again')
+          console.error(new AuthenticationError(`Invalid request state: ${args.input.state}`))
+
+          throw new AuthenticationError('Invalid request state')
         }
 
         // This request is now "used up". To try again, the user will need to
@@ -46,16 +47,7 @@ export const DiscordOauthMutation = extendType({
           throw new AuthenticationError('Bot accounts cannot be linked')
         }
 
-        const vrcUser = await context.vrchat.viewer
-        const user = await User.findOne({
-          where: {
-            vrcUserID: vrcUser.id,
-          },
-        })
-
-        if (!user) {
-          throw new AuthenticationError('User not found')
-        }
+        const user = context.authentication.getUser()
 
         const expiresAt = DateTime
           .local()
@@ -74,6 +66,7 @@ export const DiscordOauthMutation = extendType({
           account.accessToken = args.input.accessToken
           account.expiresAt = expiresAt
           account.user = Promise.resolve(user)
+          account.updatedBy = user.id
 
           return discordUser
         }
@@ -83,6 +76,7 @@ export const DiscordOauthMutation = extendType({
         newAccount.accessToken = args.input.accessToken
         newAccount.expiresAt = expiresAt
         newAccount.user = Promise.resolve(user)
+        newAccount.createdBy = user.id
 
         await newAccount.save()
 

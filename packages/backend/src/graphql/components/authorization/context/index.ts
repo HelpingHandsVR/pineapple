@@ -1,5 +1,6 @@
 import { Ability } from '@casl/ability'
-import { defineAbilityForGuest } from '@/lib/permission/helpers'
+import { defineAbilityForGuest, defineAbilityForRole } from '@/lib/permission/helpers'
+import { User } from '~/entity'
 
 export type AuthorisationContext = {
   authorisation: {
@@ -7,8 +8,14 @@ export type AuthorisationContext = {
   },
 }
 
-export const makeAuthorisationContext = async (): Promise<AuthorisationContext> => {
-  const ability: Ability = defineAbilityForGuest()
+export const makeAuthorisationContext = async (user: User): Promise<AuthorisationContext> => {
+  let ability: Ability = null
+
+  if (user) {
+    ability = await defineAbilityForRole(await user.role)
+  } else {
+    ability = defineAbilityForGuest()
+  }
 
   return {
     authorisation: {

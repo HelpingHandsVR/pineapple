@@ -4,8 +4,9 @@ import { User } from '~/entity'
 define(User, (faker): User => {
   const user = new User()
 
-  const uuid = faker.random.uuid()
-  user.vrcUserID = `usr_${uuid}`
+  user.email = faker.internet.email()
+  user.password = 'password'
+  user.emailVerified = faker.random.boolean()
 
   return user
 })

@@ -33,6 +33,7 @@ export class User extends InternalEntity {
 
   @ManyToOne(() => Role, (role) => role.users, {
     lazy: true,
+    nullable: false,
   })
   role: Promise<Role>
 
@@ -75,15 +76,24 @@ export class User extends InternalEntity {
   }
 
   @BeforeUpdate()
-  private hashPasswordOnUpdate () {
+  @BeforeInsert()
+  private async hashPasswordOnUpdate () {
     // If the password is changed, re-hash it
+    // If this entity is brand new, passwordHash will be falsey so this
+    // comparison still works
     if (this.password !== this.passwordHash) {
-      this.passwordHash = bcrypt.hashSync(this.password, 12)
+      this.passwordHash = await bcrypt.hash(this.password, 12)
     }
   }
 
   @BeforeInsert()
-  private hashPasswordOncreate () {
-    this.passwordHash = bcrypt.hashSync(this.password, 12)
+  private async attachDefaultRole () {
+    const role = await Role.findOne({
+      where: {
+        name: 'STUDENT',
+      },
+    })
+
+    this.role = Promise.resolve(role)
   }
 }

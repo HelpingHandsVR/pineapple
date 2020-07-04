@@ -25,6 +25,12 @@ export const applyMiddleware = async (app: Express, config: Config, connection: 
         },
       })
 
+    if (!user) {
+      console.error(new Error(`While deserialising: User not found with ID ${userId}`))
+
+      return done(null, null)
+    }
+
     done(null, user)
   })
 

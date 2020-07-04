@@ -1,5 +1,5 @@
 query indexPageViewer {
-  indexPageViewer: viewer {
+  viewer {
     user {
       id
       vrchat {

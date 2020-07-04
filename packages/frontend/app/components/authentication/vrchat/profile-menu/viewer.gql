@@ -1,5 +1,5 @@
 query profileMenuViewer {
-  profileMenuViewer: viewer {
+  viewer {
     user {
       id
 

@@ -57,8 +57,8 @@ export const makeContextFactory = async (config: Config): Promise<ContextCreator
   const vrcContext = await makeVRChatAPIContext(staticContext.config)
 
   return async (params: IntegrationContext): Promise<Context> => {
-    const authorisationContext = await makeAuthorisationContext()
     const authenticationContext = await makeAuthenticationContext(params.req, params.res)
+    const authorisationContext = await makeAuthorisationContext(authenticationContext.authentication.getUser())
     const expressContext = await makeExpressContext(params)
 
     return {

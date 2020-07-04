@@ -193,6 +193,7 @@ export default {
               :src='viewer.user.vrchat.currentAvatarImageUrl'
               height='200'
               :gradient='gradient'
+              v-if='viewer.user.vrchat'
             )
               v-card-title(dark)
                 v-badge.mb-1.mr-2(inline, :color='badgeColour', left, dot)

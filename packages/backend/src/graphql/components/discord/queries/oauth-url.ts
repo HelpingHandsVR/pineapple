@@ -11,6 +11,7 @@ export const DiscordOauthURLQuery = extendType({
         const request = new DiscordOauthRequest()
 
         request.state = state
+        request.createdBy = context.authentication.getUser().id
 
         await request.save()
 
