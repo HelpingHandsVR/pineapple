@@ -108,8 +108,9 @@ export type QueryVrchatUserArgs = {
 };
 
 export type RegisterInput = {
-  email?: Maybe<Scalars['String']>;
-  password?: Maybe<Scalars['String']>;
+  display: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type Role = {
@@ -121,6 +122,7 @@ export type Role = {
 export type User = {
   __typename?: 'User';
   discord?: Maybe<DiscordAccount>;
+  display: Scalars['String'];
   id: Scalars['ID'];
   role: Role;
   vrchat?: Maybe<VrChatUser>;

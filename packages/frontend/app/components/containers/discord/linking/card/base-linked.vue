@@ -22,23 +22,6 @@ export default Vue.extend({
       required: true,
     }
   },
-  computed: {
-    gradient () {
-      if (this.dark) {
-        return `
-          to bottom,
-            rgba(0, 0, 0, 0) 40%,
-            rgba(30, 30, 30, 20) 100%
-        `
-      }
-
-      return `
-        to bottom,
-          rgba(0, 0, 0, 0) 40%,
-          rgba(255, 255, 255, 20) 100%
-      `
-    },
-  }
 })
 </script>
 

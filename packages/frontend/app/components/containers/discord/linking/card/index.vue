@@ -55,16 +55,16 @@ export default Vue.extend({
 
       apollo-query(
         v-else
-        :query='dataQuery'
-        :variables='variables'
+        :query='urlQuery'
         notify-on-network-status-change
       )
         template(v-slot='{result: {loading, error, data}}')
           div(v-if='loading') Loading...
 
           discord-linking-card-base-unlinked(
-            v-else
+            v-else-if='data.discordOauthURL'
             :loading='loading'
             :user='data.user'
+            :discordOauthURL='data.discordOauthURL'
           )
 </template>
