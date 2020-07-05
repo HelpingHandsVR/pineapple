@@ -3,16 +3,20 @@ import { User, Role } from '~/entity'
 
 export default class CreateUsers implements Seeder {
   public async run (factory: Factory): Promise<void> {
-    const role = await Role.findOneOrFail({
-      name: 'STUDENT',
+    const rootAdmin = await Role.findOneOrFail({
+      name: 'ROOT_ADMIN',
     })
 
     await factory(User)()
       .map(async (user: User) => {
-        user.role = Promise.resolve(role)
+        user.role = Promise.resolve(rootAdmin)
+        user.email = 'decentm+pineapple-system@decentm.com'
+        user.emailVerified = true
+        user.disabled = true
+        user.display = 'SYSTEM'
 
         return user.save()
       })
-      .createMany(10)
+      .create()
   }
 }

@@ -31,6 +31,12 @@ export const applyMiddleware = async (app: Express, config: Config, connection: 
       return done(null, null)
     }
 
+    if (user.disabled) {
+      console.error(new Error(`Disabled user tried to use session: ${user.email}`))
+
+      return done(null, null)
+    }
+
     done(null, user)
   })
 

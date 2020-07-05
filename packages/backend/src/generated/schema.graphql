@@ -67,8 +67,9 @@ type Query {
 }
 
 input RegisterInput {
-  email: String
-  password: String
+  display: String!
+  email: String!
+  password: String!
 }
 
 type Role {
@@ -78,6 +79,7 @@ type Role {
 
 type User {
   discord: DiscordAccount
+  display: String!
   id: ID!
   role: Role!
   vrchat: VRChatUser

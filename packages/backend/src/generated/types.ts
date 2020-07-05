@@ -24,8 +24,9 @@ export interface NexusGenInputs {
     password?: string | null; // String
   }
   RegisterInput: { // input type
-    email?: string | null; // String
-    password?: string | null; // String
+    display: string; // String!
+    email: string; // String!
+    password: string; // String!
   }
   UserQueryWhereInput: { // input type
     id?: string | null; // ID
@@ -59,6 +60,7 @@ export interface NexusGenRootTypes {
     name: string; // String!
   }
   User: { // root type
+    display: string; // String!
     id: string; // ID!
   }
   VRChatConfig: { // root type
@@ -174,6 +176,7 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     discord: NexusGenRootTypes['DiscordAccount'] | null; // DiscordAccount
+    display: string; // String!
     id: string; // ID!
     role: NexusGenRootTypes['Role']; // Role!
     vrchat: NexusGenRootTypes['VRChatUser'] | null; // VRChatUser

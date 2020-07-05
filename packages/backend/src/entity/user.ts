@@ -46,6 +46,13 @@ export class User extends InternalEntity {
 
   @Column({
     type: 'varchar',
+    unique: true,
+    nullable: false,
+  })
+  display: string
+
+  @Column({
+    type: 'varchar',
     nullable: true,
   })
   pendingEmail: string
@@ -55,6 +62,13 @@ export class User extends InternalEntity {
     default: false,
   })
   emailVerified: boolean
+
+  @Column({
+    type: 'boolean',
+    nullable: true,
+    default: false,
+  })
+  disabled: boolean
 
   /**
    * Password related stuff
@@ -88,9 +102,9 @@ export class User extends InternalEntity {
 
   @BeforeInsert()
   private async attachDefaultRole () {
-    const role = await Role.findOne({
+    const role = await Role.findOneOrFail({
       where: {
-        name: 'STUDENT',
+        default: true,
       },
     })
 

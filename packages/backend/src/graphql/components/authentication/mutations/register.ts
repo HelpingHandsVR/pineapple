@@ -4,8 +4,15 @@ import { User } from '~/entity'
 export const RegisterInput = inputObjectType({
   name: 'RegisterInput',
   definition (t) {
-    t.string('email')
-    t.string('password')
+    t.string('email', {
+      required: true,
+    })
+    t.string('password', {
+      required: true,
+    })
+    t.string('display', {
+      required: true,
+    })
   },
 })
 
@@ -37,6 +44,7 @@ export const RegisterMutation = extendType({
 
         user.email = args.input.email
         user.password = args.input.password
+        user.display = args.input.display
 
         return context.connection.getRepository(User)
           .save(user)

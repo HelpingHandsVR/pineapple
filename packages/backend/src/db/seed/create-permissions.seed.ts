@@ -38,7 +38,7 @@ export default class CreatePermissions implements Seeder {
       .into(Role)
       .values([
         { name: 'ROOT_ADMIN', permissions: Promise.resolve([]) },
-        { name: 'USER', permissions: Promise.resolve([]) },
+        { name: 'USER', permissions: Promise.resolve([]), default: true },
       ])
       .execute()
 

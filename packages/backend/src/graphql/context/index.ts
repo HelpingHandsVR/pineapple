@@ -1,9 +1,11 @@
 import { Connection, createConnection } from 'typeorm'
 import { Request, Response } from 'express'
+import { Queue } from 'bull'
 
 import { VRChatAPIContext, makeVRChatAPIContext } from '../components/vrchat-api/context'
 import { Config } from '@/lib/config/type'
 
+import * as queues from '~/queues'
 import * as entities from '~/entity'
 import { DiscordContext, makeDiscordContext } from '../components/discord/context'
 import { AuthorisationContext, makeAuthorisationContext } from '../components/authorization/context'
@@ -12,6 +14,7 @@ import { AuthenticationContext, makeAuthenticationContext } from '../components/
 export type StaticContext = {
   config: Config,
   connection: Connection,
+  queues: Record<string, Queue>
 }
 
 export type IntegrationContext = {
@@ -32,8 +35,16 @@ export type Context =
   & ExpressContext
 
 const makeStaticContext = async (config: Config): Promise<StaticContext> => {
+  queues.devonImporter.clean(0)
+  queues.devonImporter.add(null, {
+    repeat: {
+      cron: '*/10 * * * *',
+    },
+  })
+
   return {
     config,
+    queues,
     connection: await createConnection({
       ...config.db,
       entities: Object.values(entities),

@@ -27,4 +27,10 @@ export class Role extends InternalEntity {
     lazy: true,
   })
   users: Promise<User[]>
+
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  default: boolean
 }

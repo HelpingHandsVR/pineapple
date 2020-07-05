@@ -1,5 +1,6 @@
 export enum AttendableType {
   LESSON,
-  MEETING,
+  MOVIE,
+  CLUB,
   OTHER,
 }

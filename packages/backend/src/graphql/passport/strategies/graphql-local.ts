@@ -19,6 +19,12 @@ export const makeStrategy = (config: Config, connection: Connection): GraphQLLoc
       return done(new Error('Authentication failed'))
     }
 
+    if (user.disabled) {
+      console.error(new Error(`Disabled user tried to log in: ${user.email}`))
+
+      return done(new Error('Authentication failed'), null)
+    }
+
     const result = await bcrypt.compare(password, user.password)
 
     if (!result) {
