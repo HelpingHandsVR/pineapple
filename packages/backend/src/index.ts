@@ -5,11 +5,14 @@ import { ApolloServer } from 'apollo-server-express'
 import { makeSchema } from '@nexus/schema'
 import { applyMiddleware } from 'graphql-middleware'
 
+import * as scalars from './graphql/scalars'
+
 import * as vrchatTypes from './graphql/components/vrchat-api'
 import * as discordTypes from './graphql/components/discord'
 import * as userTypes from './graphql/components/user'
 import * as authorisationTypes from './graphql/components/authorization'
 import * as authenticationTypes from './graphql/components/authentication'
+import * as attendableTypes from './graphql/components/attendable'
 
 import * as middlewares from './middlewares'
 import * as passport from './graphql/passport'
@@ -24,11 +27,14 @@ const main = async () => {
   const baseSchema = makeSchema({
     shouldGenerateArtifacts: process.env.NODE_ENV !== 'production',
     types: {
+      ...scalars,
+
       ...vrchatTypes,
       ...discordTypes,
       ...userTypes,
       ...authorisationTypes,
       ...authenticationTypes,
+      ...attendableTypes,
     },
     outputs: {
       schema: path.join(__dirname, 'generated/schema.graphql'),

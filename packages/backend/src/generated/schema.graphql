@@ -30,6 +30,25 @@ enum AbilitySubject {
   USER_SELF
 }
 
+type Attendable {
+  createdAt: DateTime!
+  createdBy: User!
+  endsAt: DateTime!
+  id: ID!
+  name: String!
+  startsAt: DateTime!
+  updatedAt: DateTime!
+  updatedBy: User!
+  world: VRChatWorld
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
+`date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO
+8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
 type DiscordAccount {
   account: DiscordUser!
   id: ID!
@@ -47,6 +66,12 @@ type DiscordUser {
   username: String!
 }
 
+"""
+A field whose value conforms to the standard internet email address format as
+specified in RFC822: https://www.w3.org/Protocols/rfc822/.
+"""
+scalar EmailAddress
+
 input LoginInput {
   email: String
   password: String
@@ -61,6 +86,7 @@ type Mutation {
 
 type Query {
   discordOauthURL: String!
+  upcomingAttendables(input: UpcomingAttendablesQueryInput!): [Attendable]!
   user(where: UserQueryWhereInput!): User
   viewer: Viewer
   vrchatUser(where: VRChatUserQueryWhereInput!): VRChatUser!
@@ -76,6 +102,15 @@ type Role {
   id: ID!
   name: String!
 }
+
+input UpcomingAttendablesQueryInput {
+  take: Int
+}
+
+"""
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar URL
 
 type User {
   discord: DiscordAccount
@@ -141,6 +176,22 @@ type VRChatExtendedUser implements VRChatUserBase {
   username: String!
 }
 
+"""User type, when the user has not sent a friend request to Pineapple"""
+type VRChatLimitedUser implements VRChatUserBase {
+  allowAvatarCopying: Boolean!
+  bio: String!
+  bioLinks: String!
+  currentAvatarImageUrl: String!
+  currentAvatarThumbnailImageUrl: String!
+  displayName: String!
+  id: ID!
+  isFriend: Boolean!
+  last_login: String!
+  last_platform: String!
+  role: VRChatUserRole!
+  username: String!
+}
+
 type VRChatUser implements VRChatUserBase {
   allowAvatarCopying: Boolean!
   bio: String!
@@ -174,9 +225,6 @@ interface VRChatUserBase {
   last_login: String!
   last_platform: String!
   role: VRChatUserRole!
-  state: String!
-  status: String!
-  statusDescription: String!
   username: String!
 }
 
@@ -190,4 +238,38 @@ enum VRChatUserRole {
   TRUSTED
   USER
   VISITOR
+}
+
+type VRChatWorld {
+  author: VRChatLimitedUser
+  authorId: ID!
+  authorName: String!
+  capacity: Int!
+  created_at: DateTime!
+  description: String!
+  favorites: Int!
+  featured: Boolean!
+  heat: Int!
+  id: ID!
+  imageUrl: URL!
+  instances: [VRChatWorldInstance]!
+  labsPublicationDate: DateTime!
+  name: String!
+  occupants: Int!
+  organization: String!
+  popularity: Int!
+  privateOccupants: Int!
+  publicationDate: DateTime!
+  publicOccupants: Int!
+  releaseStatus: String!
+  tags: [String]!
+  thumbnailImageUrl: URL!
+  updated_at: DateTime!
+  version: Int!
+  visits: Int!
+}
+
+type VRChatWorldInstance {
+  id: ID!
+  players: Int!
 }

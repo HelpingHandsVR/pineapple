@@ -1,17 +1,15 @@
 import { RESTDataSource, RequestOptions, HTTPCache } from 'apollo-datasource-rest'
-import Redis from 'ioredis'
+import { RedisCache } from 'apollo-server-cache-redis'
 
-import { userAgent, kvRedis } from '@/lib/data-source-helpers'
+import { userAgent } from '@/lib/data-source-helpers'
 import * as Types from './types'
 
 export class WithDevonAPI extends RESTDataSource {
   public baseURL = 'https://vrsl.withdevon.xyz/api/v2'
 
-  private redis = new Redis()
+  private redisCache = new RedisCache()
 
-  private kvRedis = kvRedis(this.redis)
-
-  public httpCache = new HTTPCache(this.kvRedis)
+  httpCache = new HTTPCache(this.redisCache)
 
   public willSendRequest (request: RequestOptions): void {
     request.headers.set('User-Agent', userAgent)

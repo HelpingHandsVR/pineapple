@@ -29,9 +29,9 @@ export class AttendableBase extends CrudEntity {
 
   @Column({
     type: 'varchar',
-    // VRC World IDs are wld_<uuid4>
-    length: 40,
+    // VRC World IDs are wrld_<uuid4>
+    length: 41,
     nullable: true,
   })
-  vrcWorldID: string
+  vrcWorldId: string
 }

@@ -85,6 +85,7 @@ export default {
       //-
       //- VRCHAT
       //-
+
       v-col(md='6')
         v-container
           vrchat-linking-card(:vrcUserId='viewer.user.vrchat')

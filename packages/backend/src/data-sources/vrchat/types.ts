@@ -200,3 +200,61 @@ export type VRCLogoutResult = ResponseBase & {
     status_code: number,
   },
 }
+
+/**
+ * Assets
+ */
+export type VRCUnityPackage = {
+  id: string,
+  assetUrl: string,
+  assetUrlObject: unknown,
+  pluginUrl: string,
+  pluginUrlObject: unknown,
+  unityVersion: string,
+  unitySortNumber: number,
+  assetVersion: number,
+  platform: string,
+  created_at: string,
+}
+
+/**
+ * Worlds
+ */
+export type VRCWorldInstanceTuple = [string, number]
+
+export type VRCWorld = ResponseBase & {
+  id: string,
+  name: string,
+  description: string,
+  featured: boolean,
+  authorId: string,
+  authorName: string,
+  capacity: number,
+  tags: string[],
+  releaseStatus: string,
+  imageUrl: string,
+  thumbnailImageUrl: string,
+  assetUrl: string,
+  assetUrlObject: unknown,
+  pluginUrl: string,
+  pluginUrlObject: unknown,
+  unityPackageUrl: string,
+  unityPackageObject: unknown,
+  namespace: string,
+  unityPackages: VRCUnityPackage[],
+  version: number,
+  organization: string,
+  previewYoutubeId: unknown | null,
+  favorites: number,
+  created_at: string,
+  updated_at: string,
+  publicationDate: string,
+  labsPublicationDate: string,
+  visits: number,
+  popularity: number,
+  heat: number,
+  publicOccupants: number,
+  privateOccupants: number,
+  occupants: number,
+  instances: VRCWorldInstanceTuple[],
+}

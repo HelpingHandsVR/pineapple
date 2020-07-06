@@ -11,6 +11,19 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /**
+   * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
+   * `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO
+   * 8601 standard for representation of dates and times using the Gregorian calendar.
+   */
+  DateTime: any;
+  /** A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt. */
+  URL: any;
+  /**
+   * A field whose value conforms to the standard internet email address format as
+   * specified in RFC822: https://www.w3.org/Protocols/rfc822/.
+   */
+  EmailAddress: any;
 };
 
 export type Ability = {
@@ -42,6 +55,20 @@ export enum AbilitySubject {
   UserSelf = 'USER_SELF'
 }
 
+export type Attendable = {
+  __typename?: 'Attendable';
+  createdAt: Scalars['DateTime'];
+  createdBy: User;
+  endsAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  startsAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  updatedBy: User;
+  world?: Maybe<VrChatWorld>;
+};
+
+
 export type DiscordAccount = {
   __typename?: 'DiscordAccount';
   account: DiscordUser;
@@ -60,6 +87,7 @@ export type DiscordUser = {
   id: Scalars['ID'];
   username: Scalars['String'];
 };
+
 
 export type LoginInput = {
   email?: Maybe<Scalars['String']>;
@@ -92,9 +120,15 @@ export type MutationRegisterArgs = {
 export type Query = {
   __typename?: 'Query';
   discordOauthURL: Scalars['String'];
+  upcomingAttendables: Array<Maybe<Attendable>>;
   user?: Maybe<User>;
   viewer?: Maybe<Viewer>;
   vrchatUser: VrChatUser;
+};
+
+
+export type QueryUpcomingAttendablesArgs = {
+  input: UpcomingAttendablesQueryInput;
 };
 
 
@@ -118,6 +152,11 @@ export type Role = {
   id: Scalars['ID'];
   name: Scalars['String'];
 };
+
+export type UpcomingAttendablesQueryInput = {
+  take?: Maybe<Scalars['Int']>;
+};
+
 
 export type User = {
   __typename?: 'User';
@@ -189,6 +228,23 @@ export type VrChatExtendedUser = VrChatUserBase & {
   username: Scalars['String'];
 };
 
+/** User type, when the user has not sent a friend request to Pineapple */
+export type VrChatLimitedUser = VrChatUserBase & {
+  __typename?: 'VRChatLimitedUser';
+  allowAvatarCopying: Scalars['Boolean'];
+  bio: Scalars['String'];
+  bioLinks: Scalars['String'];
+  currentAvatarImageUrl: Scalars['String'];
+  currentAvatarThumbnailImageUrl: Scalars['String'];
+  displayName: Scalars['String'];
+  id: Scalars['ID'];
+  isFriend: Scalars['Boolean'];
+  last_login: Scalars['String'];
+  last_platform: Scalars['String'];
+  role: VrChatUserRole;
+  username: Scalars['String'];
+};
+
 export type VrChatUser = VrChatUserBase & {
   __typename?: 'VRChatUser';
   allowAvatarCopying: Scalars['Boolean'];
@@ -223,9 +279,6 @@ export type VrChatUserBase = {
   last_login: Scalars['String'];
   last_platform: Scalars['String'];
   role: VrChatUserRole;
-  state: Scalars['String'];
-  status: Scalars['String'];
-  statusDescription: Scalars['String'];
   username: Scalars['String'];
 };
 
@@ -240,6 +293,42 @@ export enum VrChatUserRole {
   User = 'USER',
   Visitor = 'VISITOR'
 }
+
+export type VrChatWorld = {
+  __typename?: 'VRChatWorld';
+  author?: Maybe<VrChatLimitedUser>;
+  authorId: Scalars['ID'];
+  authorName: Scalars['String'];
+  capacity: Scalars['Int'];
+  created_at: Scalars['DateTime'];
+  description: Scalars['String'];
+  favorites: Scalars['Int'];
+  featured: Scalars['Boolean'];
+  heat: Scalars['Int'];
+  id: Scalars['ID'];
+  imageUrl: Scalars['URL'];
+  instances: Array<Maybe<VrChatWorldInstance>>;
+  labsPublicationDate: Scalars['DateTime'];
+  name: Scalars['String'];
+  occupants: Scalars['Int'];
+  organization: Scalars['String'];
+  popularity: Scalars['Int'];
+  privateOccupants: Scalars['Int'];
+  publicationDate: Scalars['DateTime'];
+  publicOccupants: Scalars['Int'];
+  releaseStatus: Scalars['String'];
+  tags: Array<Maybe<Scalars['String']>>;
+  thumbnailImageUrl: Scalars['URL'];
+  updated_at: Scalars['DateTime'];
+  version: Scalars['Int'];
+  visits: Scalars['Int'];
+};
+
+export type VrChatWorldInstance = {
+  __typename?: 'VRChatWorldInstance';
+  id: Scalars['ID'];
+  players: Scalars['Int'];
+};
 
 export type LoginFormLoginMutationVariables = Exact<{
   email: Scalars['String'];

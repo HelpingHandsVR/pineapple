@@ -11,6 +11,10 @@ export const VRChatUserBase = interfaceType({
   name: 'VRChatUserBase',
   definition (t) {
     t.resolveType((root) => {
+      if (!('status' in root)) {
+        return 'VRChatLimitedUser'
+      }
+
       if ('location' in root) {
         return 'VRChatUser'
       }
@@ -25,9 +29,6 @@ export const VRChatUserBase = interfaceType({
     t.string('bioLinks')
     t.string('currentAvatarImageUrl')
     t.string('currentAvatarThumbnailImageUrl')
-    t.string('status')
-    t.string('statusDescription')
-    t.string('state')
 
     t.field('role', {
       type: 'VRChatUserRole',
@@ -50,6 +51,17 @@ export const VRChatUser = objectType({
 
     t.string('location')
     t.string('worldId')
+    t.string('status')
+    t.string('statusDescription')
+    t.string('state')
+  },
+})
+
+export const VRChatLimitedUser = objectType({
+  name: 'VRChatLimitedUser',
+  description: 'User type, when the user has not sent a friend request to Pineapple',
+  definition (t) {
+    t.implements('VRChatUserBase')
   },
 })
 
@@ -58,6 +70,9 @@ export const VRChatExtendedUser = objectType({
   definition (t) {
     t.implements('VRChatUserBase')
 
+    t.string('status')
+    t.string('statusDescription')
+    t.string('state')
     t.string('email', {
       nullable: true,
     })

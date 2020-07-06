@@ -4,9 +4,21 @@
  */
 
 import * as ctx from "../graphql/context/index"
-
-
-
+import { core } from "@nexus/schema"
+declare global {
+  interface NexusGenCustomInputMethods<TypeName extends string> {
+    dateTime<FieldName extends string>(fieldName: FieldName, opts?: core.ScalarInputFieldConfig<core.GetGen3<"inputTypes", TypeName, FieldName>>): void // "DateTime";
+    email<FieldName extends string>(fieldName: FieldName, opts?: core.ScalarInputFieldConfig<core.GetGen3<"inputTypes", TypeName, FieldName>>): void // "EmailAddress";
+    url<FieldName extends string>(fieldName: FieldName, opts?: core.ScalarInputFieldConfig<core.GetGen3<"inputTypes", TypeName, FieldName>>): void // "URL";
+  }
+}
+declare global {
+  interface NexusGenCustomOutputMethods<TypeName extends string> {
+    dateTime<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
+    email<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "EmailAddress";
+    url<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "URL";
+  }
+}
 
 
 declare global {
@@ -28,6 +40,9 @@ export interface NexusGenInputs {
     email: string; // String!
     password: string; // String!
   }
+  UpcomingAttendablesQueryInput: { // input type
+    take?: number | null; // Int
+  }
   UserQueryWhereInput: { // input type
     id?: string | null; // ID
     vrcUserID?: string | null; // ID
@@ -45,6 +60,14 @@ export interface NexusGenEnums {
 
 export interface NexusGenRootTypes {
   Ability: any;
+  Attendable: { // root type
+    createdAt: any; // DateTime!
+    endsAt: any; // DateTime!
+    id: string; // ID!
+    name: string; // String!
+    startsAt: any; // DateTime!
+    updatedAt: any; // DateTime!
+  }
   DiscordAccount: { // root type
     id: string; // ID!
   }
@@ -103,6 +126,19 @@ export interface NexusGenRootTypes {
     twoFactorAuthEnabled: boolean; // Boolean!
     username: string; // String!
   }
+  VRChatLimitedUser: { // root type
+    allowAvatarCopying: boolean; // Boolean!
+    bio: string; // String!
+    bioLinks: string; // String!
+    currentAvatarImageUrl: string; // String!
+    currentAvatarThumbnailImageUrl: string; // String!
+    displayName: string; // String!
+    id: string; // ID!
+    isFriend: boolean; // Boolean!
+    last_login: string; // String!
+    last_platform: string; // String!
+    username: string; // String!
+  }
   VRChatUser: { // root type
     allowAvatarCopying: boolean; // Boolean!
     bio: string; // String!
@@ -121,22 +157,54 @@ export interface NexusGenRootTypes {
     username: string; // String!
     worldId: string; // String!
   }
+  VRChatWorld: { // root type
+    authorId: string; // ID!
+    authorName: string; // String!
+    capacity: number; // Int!
+    created_at: any; // DateTime!
+    description: string; // String!
+    favorites: number; // Int!
+    featured: boolean; // Boolean!
+    heat: number; // Int!
+    id: string; // ID!
+    imageUrl: any; // URL!
+    instances: Array<NexusGenRootTypes['VRChatWorldInstance'] | null>; // [VRChatWorldInstance]!
+    labsPublicationDate: any; // DateTime!
+    name: string; // String!
+    occupants: number; // Int!
+    organization: string; // String!
+    popularity: number; // Int!
+    privateOccupants: number; // Int!
+    publicationDate: any; // DateTime!
+    publicOccupants: number; // Int!
+    releaseStatus: string; // String!
+    tags: Array<string | null>; // [String]!
+    thumbnailImageUrl: any; // URL!
+    updated_at: any; // DateTime!
+    version: number; // Int!
+    visits: number; // Int!
+  }
+  VRChatWorldInstance: {};
   Viewer: { // root type
     ability: Array<NexusGenRootTypes['Ability'] | null>; // [Ability]!
     user: NexusGenRootTypes['User']; // User!
   }
-  VRChatUserBase: NexusGenRootTypes['VRChatUser'] | NexusGenRootTypes['VRChatExtendedUser'];
+  VRChatUserBase: NexusGenRootTypes['VRChatUser'] | NexusGenRootTypes['VRChatLimitedUser'] | NexusGenRootTypes['VRChatExtendedUser'];
   String: string;
   Int: number;
   Float: number;
   Boolean: boolean;
   ID: string;
+  DateTime: any;
+  EmailAddress: any;
+  URL: any;
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
   DiscordOauthMutationInput: NexusGenInputs['DiscordOauthMutationInput'];
   LoginInput: NexusGenInputs['LoginInput'];
   RegisterInput: NexusGenInputs['RegisterInput'];
+  UpcomingAttendablesQueryInput: NexusGenInputs['UpcomingAttendablesQueryInput'];
   UserQueryWhereInput: NexusGenInputs['UserQueryWhereInput'];
   VRChatUserQueryWhereInput: NexusGenInputs['VRChatUserQueryWhereInput'];
   AbilityAction: NexusGenEnums['AbilityAction'];
@@ -148,6 +216,17 @@ export interface NexusGenFieldTypes {
   Ability: { // field return type
     action: NexusGenEnums['AbilityAction']; // AbilityAction!
     subject: NexusGenEnums['AbilitySubject'] | null; // AbilitySubject
+  }
+  Attendable: { // field return type
+    createdAt: any; // DateTime!
+    createdBy: NexusGenRootTypes['User']; // User!
+    endsAt: any; // DateTime!
+    id: string; // ID!
+    name: string; // String!
+    startsAt: any; // DateTime!
+    updatedAt: any; // DateTime!
+    updatedBy: NexusGenRootTypes['User']; // User!
+    world: NexusGenRootTypes['VRChatWorld'] | null; // VRChatWorld
   }
   DiscordAccount: { // field return type
     account: NexusGenRootTypes['DiscordUser']; // DiscordUser!
@@ -166,6 +245,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     discordOauthURL: string; // String!
+    upcomingAttendables: Array<NexusGenRootTypes['Attendable'] | null>; // [Attendable]!
     user: NexusGenRootTypes['User'] | null; // User
     viewer: NexusGenRootTypes['Viewer'] | null; // Viewer
     vrchatUser: NexusGenRootTypes['VRChatUser']; // VRChatUser!
@@ -223,6 +303,20 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User'] | null; // User
     username: string; // String!
   }
+  VRChatLimitedUser: { // field return type
+    allowAvatarCopying: boolean; // Boolean!
+    bio: string; // String!
+    bioLinks: string; // String!
+    currentAvatarImageUrl: string; // String!
+    currentAvatarThumbnailImageUrl: string; // String!
+    displayName: string; // String!
+    id: string; // ID!
+    isFriend: boolean; // Boolean!
+    last_login: string; // String!
+    last_platform: string; // String!
+    role: NexusGenEnums['VRChatUserRole']; // VRChatUserRole!
+    username: string; // String!
+  }
   VRChatUser: { // field return type
     allowAvatarCopying: boolean; // Boolean!
     bio: string; // String!
@@ -243,6 +337,38 @@ export interface NexusGenFieldTypes {
     username: string; // String!
     worldId: string; // String!
   }
+  VRChatWorld: { // field return type
+    author: NexusGenRootTypes['VRChatLimitedUser'] | null; // VRChatLimitedUser
+    authorId: string; // ID!
+    authorName: string; // String!
+    capacity: number; // Int!
+    created_at: any; // DateTime!
+    description: string; // String!
+    favorites: number; // Int!
+    featured: boolean; // Boolean!
+    heat: number; // Int!
+    id: string; // ID!
+    imageUrl: any; // URL!
+    instances: Array<NexusGenRootTypes['VRChatWorldInstance'] | null>; // [VRChatWorldInstance]!
+    labsPublicationDate: any; // DateTime!
+    name: string; // String!
+    occupants: number; // Int!
+    organization: string; // String!
+    popularity: number; // Int!
+    privateOccupants: number; // Int!
+    publicationDate: any; // DateTime!
+    publicOccupants: number; // Int!
+    releaseStatus: string; // String!
+    tags: Array<string | null>; // [String]!
+    thumbnailImageUrl: any; // URL!
+    updated_at: any; // DateTime!
+    version: number; // Int!
+    visits: number; // Int!
+  }
+  VRChatWorldInstance: { // field return type
+    id: string; // ID!
+    players: number; // Int!
+  }
   Viewer: { // field return type
     ability: Array<NexusGenRootTypes['Ability'] | null>; // [Ability]!
     user: NexusGenRootTypes['User']; // User!
@@ -259,9 +385,6 @@ export interface NexusGenFieldTypes {
     last_login: string; // String!
     last_platform: string; // String!
     role: NexusGenEnums['VRChatUserRole']; // VRChatUserRole!
-    state: string; // String!
-    status: string; // String!
-    statusDescription: string; // String!
     username: string; // String!
   }
 }
@@ -279,6 +402,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    upcomingAttendables: { // args
+      input: NexusGenInputs['UpcomingAttendablesQueryInput']; // UpcomingAttendablesQueryInput!
+    }
     user: { // args
       where: NexusGenInputs['UserQueryWhereInput']; // UserQueryWhereInput!
     }
@@ -289,20 +415,20 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
-  VRChatUserBase: "VRChatUser" | "VRChatExtendedUser"
+  VRChatUserBase: "VRChatUser" | "VRChatLimitedUser" | "VRChatExtendedUser"
 }
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Ability" | "DiscordAccount" | "DiscordUser" | "Mutation" | "Query" | "Role" | "User" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatUser" | "Viewer";
+export type NexusGenObjectNames = "Ability" | "Attendable" | "DiscordAccount" | "DiscordUser" | "Mutation" | "Query" | "Role" | "User" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatLimitedUser" | "VRChatUser" | "VRChatWorld" | "VRChatWorldInstance" | "Viewer";
 
-export type NexusGenInputNames = "DiscordOauthMutationInput" | "LoginInput" | "RegisterInput" | "UserQueryWhereInput" | "VRChatUserQueryWhereInput";
+export type NexusGenInputNames = "DiscordOauthMutationInput" | "LoginInput" | "RegisterInput" | "UpcomingAttendablesQueryInput" | "UserQueryWhereInput" | "VRChatUserQueryWhereInput";
 
 export type NexusGenEnumNames = "AbilityAction" | "AbilitySubject" | "VRChatUserRole";
 
 export type NexusGenInterfaceNames = "VRChatUserBase";
 
-export type NexusGenScalarNames = "Boolean" | "Float" | "ID" | "Int" | "String";
+export type NexusGenScalarNames = "Boolean" | "DateTime" | "EmailAddress" | "Float" | "ID" | "Int" | "String" | "URL";
 
 export type NexusGenUnionNames = never;
 

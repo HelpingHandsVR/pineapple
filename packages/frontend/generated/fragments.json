@@ -9,6 +9,9 @@
             "name": "VRChatUser"
           },
           {
+            "name": "VRChatLimitedUser"
+          },
+          {
             "name": "VRChatExtendedUser"
           }
         ]

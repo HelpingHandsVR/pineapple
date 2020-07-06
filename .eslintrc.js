@@ -19,5 +19,6 @@ module.exports = {
         '=': 'after',
       },
     }],
+    'unicorn/no-fn-reference-in-iterator': 0,
   },
 }

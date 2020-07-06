@@ -8,9 +8,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "env-cmd nodemon -r tsconfig-paths/register src/index.ts",
-    "typeorm": "yarn env-cmd ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm",
-    "seeder": "ts-node -r tsconfig-paths/register ../../node_modules/typeorm-seeding/dist/cli.js",
+    "dev": "env-cmd nodemon --transpile-only -r tsconfig-paths/register src/index.ts",
+    "typeorm": "yarn env-cmd ts-node --transpile-only -r tsconfig-paths/register ./node_modules/.bin/typeorm",
+    "seeder": "ts-node --transpile-only -r tsconfig-paths/register ../../node_modules/typeorm-seeding/dist/cli.js",
     "seed": "yarn seeder seed"
   },
   "devDependencies": {
@@ -47,6 +47,7 @@
     "@drdgvhbh/postgres-error-codes": "^0.0.6",
     "@nexus/schema": "^0.14.0",
     "apollo-datasource-rest": "^0.9.2",
+    "apollo-server-cache-redis": "^1.2.2",
     "apollo-server-express": "^2.15.0",
     "bcrypt": "^5.0.0",
     "bull": "^3.15.0",
@@ -57,6 +58,7 @@
     "graphql-middleware": "^4.0.2",
     "graphql-middleware-error-handler": "^0.4.1",
     "graphql-passport": "^0.6.3",
+    "graphql-scalars": "^1.2.1",
     "graphql-shield": "^7.3.2",
     "helmet": "^3.23.3",
     "ioredis": "^4.17.3",
