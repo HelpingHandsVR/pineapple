@@ -27,6 +27,7 @@ export const getConfig = (env: NodeJS.ProcessEnv): Config => ({
     port: Number.parseInt(env.API_PORT, 10),
   },
   vrchat: {
+    pipelineWsURL: env.VRCHAT_PIPELINE_WS_URL,
     bot: {
       username: env.VRCHAT_BOT_USERNAME,
       password: env.VRCHAT_BOT_PASSWORD,

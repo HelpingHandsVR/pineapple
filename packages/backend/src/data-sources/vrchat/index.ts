@@ -12,7 +12,7 @@ export class VRChatAPI extends RESTDataSource {
 
   private apiKey: string
 
-  private authCookie: string
+  public authCookie: string
 
   constructor (
     private username: string,
@@ -84,10 +84,10 @@ export class VRChatAPI extends RESTDataSource {
   }
 
   // Authentication
-  public async login (username: string, password: string): Promise<Types.VRCLoginResult> {
+  public async login (): Promise<Types.VRCLoginResult> {
     return this.get('/auth/user', {}, {
       headers: {
-        Authorization: `Basic ${atob(`${username}:${password}`)}`,
+        Authorization: `Basic ${atob(`${this.username}:${this.password}`)}`,
       },
     })
   }

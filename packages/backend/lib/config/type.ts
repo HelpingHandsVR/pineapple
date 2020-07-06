@@ -17,6 +17,7 @@ export type Config = {
     port: number,
   },
   vrchat: {
+    pipelineWsURL: string,
     bot: {
       username: string,
       password: string,
