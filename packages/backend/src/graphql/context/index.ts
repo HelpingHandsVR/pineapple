@@ -14,7 +14,7 @@ import { AuthenticationContext, makeAuthenticationContext } from '../components/
 export type StaticContext = {
   config: Config,
   connection: Connection,
-  queues: Record<string, Queue>
+  queues: Record<string, Queue>,
 }
 
 export type IntegrationContext = {
@@ -64,13 +64,25 @@ type ContextCreator = (params: IntegrationContext) => Promise<Context>
 
 export const makeContextFactory = async (config: Config): Promise<ContextCreator> => {
   const staticContext = await makeStaticContext(config)
-  const discordContext = await makeDiscordContext(staticContext.config)
-  const vrcContext = await makeVRChatAPIContext(staticContext.config)
+
+  const [
+    discordContext,
+    vrcContext,
+  ] = await Promise.all([
+    makeDiscordContext(staticContext.config),
+    makeVRChatAPIContext(staticContext.config, staticContext),
+  ])
 
   return async (params: IntegrationContext): Promise<Context> => {
     const authenticationContext = await makeAuthenticationContext(params.req, params.res)
-    const authorisationContext = await makeAuthorisationContext(authenticationContext.authentication.getUser())
-    const expressContext = await makeExpressContext(params)
+
+    const [
+      authorisationContext,
+      expressContext,
+    ] = await Promise.all([
+      makeAuthorisationContext(authenticationContext.authentication.getUser()),
+      makeExpressContext(params),
+    ])
 
     return {
       ...staticContext,

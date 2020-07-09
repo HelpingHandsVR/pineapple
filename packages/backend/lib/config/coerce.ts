@@ -18,6 +18,11 @@ export const getConfig = (env: NodeJS.ProcessEnv): Config => ({
     logging: env.DB_LOGGING === 'true',
     migrationsRun: env.DB_MIGRATIONS === 'true',
   },
+  redis: {
+    host: env.REDIS_HOST,
+    port: Number.parseInt(env.REDIS_PORT, 10),
+    scope: env.REDIS_SCOPE,
+  },
   discord: {
     clientId: env.DISCORD_CLIENT_ID,
     clientSecret: env.DISCORD_CLIENT_SECRET,

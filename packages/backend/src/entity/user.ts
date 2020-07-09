@@ -70,6 +70,13 @@ export class User extends InternalEntity {
   })
   disabled: boolean
 
+  @Column({
+    type: 'boolean',
+    nullable: true,
+    default: false,
+  })
+  provisioned: boolean
+
   /**
    * Password related stuff
    */

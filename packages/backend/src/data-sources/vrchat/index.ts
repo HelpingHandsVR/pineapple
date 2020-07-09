@@ -106,4 +106,9 @@ export class VRChatAPI extends RESTDataSource {
   public async getWorld (worldId: string): Promise<Types.VRCWorld> {
     return this.get(`/worlds/${worldId}`)
   }
+
+  // Friends
+  public async answerFriendRequest (notificationId: string, answer: 'accept' | 'ignore'): Promise<Types.VRCFriendRequestAnswer> {
+    return this.put(`/auth/user/notifications/${notificationId}/${answer}`)
+  }
 }

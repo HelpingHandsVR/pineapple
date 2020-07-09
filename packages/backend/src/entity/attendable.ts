@@ -2,10 +2,12 @@ import {
   Entity,
   Column,
   ManyToOne,
+  OneToMany,
 } from 'typeorm'
 
 import { AttendableBase } from '~/db/entity-type/attendable-base'
 import { AttendableDefinition } from './attendable-definition'
+import { AttendanceRecord } from './attendance-record'
 
 @Entity({ name: 'Attendable' })
 export class Attendable extends AttendableBase {
@@ -25,4 +27,9 @@ export class Attendable extends AttendableBase {
     type: 'timestamp with time zone',
   })
   endsAt: Date
+
+  @OneToMany(() => AttendanceRecord, (record) => record.attendable, {
+    lazy: true,
+  })
+  attendances: Promise<AttendanceRecord[]>
 }

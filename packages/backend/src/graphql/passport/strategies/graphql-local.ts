@@ -13,16 +13,24 @@ export const makeStrategy = (config: Config, connection: Connection): GraphQLLoc
         email,
       })
 
+    const authFailedError = new Error('Authentication failed')
+
     if (!user) {
       console.log('Auth failed because no user', email)
 
-      return done(new Error('Authentication failed'))
+      return done(authFailedError)
+    }
+
+    if (!user.provisioned) {
+      console.error(new Error(`Unprovisioned user tried to log in: ${user.id}`))
+
+      return done(authFailedError, null)
     }
 
     if (user.disabled) {
       console.error(new Error(`Disabled user tried to log in: ${user.email}`))
 
-      return done(new Error('Authentication failed'), null)
+      return done(authFailedError, null)
     }
 
     const result = await bcrypt.compare(password, user.password)
@@ -30,7 +38,7 @@ export const makeStrategy = (config: Config, connection: Connection): GraphQLLoc
     if (!result) {
       console.log('Auth failed because password', email)
 
-      return done(new Error('Authentication failed'))
+      return done(authFailedError)
     }
 
     done(null, result ? user : null)

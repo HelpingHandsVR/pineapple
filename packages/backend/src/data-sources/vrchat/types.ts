@@ -119,7 +119,7 @@ type VRCExtendedUserSteamDetails = {
 /**
  * These properties are sent with responses about yourself and friends also
  */
-type VRCUserBase = ResponseBase & {
+export type VRCUserBase = {
   id: VRCUserId,
   username: string,
   displayName: string,
@@ -139,11 +139,13 @@ type VRCUserBase = ResponseBase & {
   friendKey: string,
 }
 
+type VRCUserBaseResponse = ResponseBase & VRCUserBase
+
 /**
  * So far I've only seen this extended user type being sent is when a user asks
  * about themselves.
  */
-export type VRCExtendedUser = VRCUserBase & {
+export type VRCExtendedUser = VRCUserBaseResponse & {
   pastDisplayNames: string[],
   hasEmail: boolean,
   hasPendingEmail: boolean,
@@ -176,7 +178,7 @@ export type VRCExtendedUser = VRCUserBase & {
 /**
  * This information is sent about users that are not the viewer
  */
-export type VRCUser = VRCUserBase & {
+export type VRCUser = VRCUserBaseResponse & {
   location: string | 'private',
   worldId: VRCWorldId | 'private',
 }
@@ -257,4 +259,15 @@ export type VRCWorld = ResponseBase & {
   privateOccupants: number,
   occupants: number,
   instances: VRCWorldInstanceTuple[],
+}
+
+/**
+ * Friend requests
+ */
+export type VRCFriendRequestAnswer = ResponseBase & {
+  type: 'friend-add',
+  content: {
+    userId: string,
+    user: VRCUserBase,
+  }
 }

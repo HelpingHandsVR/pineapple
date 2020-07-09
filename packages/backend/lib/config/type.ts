@@ -8,6 +8,11 @@ export type Config = {
     corsOrigin: string[],
   },
   db: PostgresConnectionOptions,
+  redis: {
+    port: number,
+    host: string,
+    scope: string,
+  },
   discord: {
     clientId: string,
     redirectUri: string,

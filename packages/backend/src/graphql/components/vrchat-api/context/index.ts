@@ -2,6 +2,9 @@ import WebSocket from 'ws'
 
 import { VRChatAPI } from '~/data-sources/vrchat'
 import { Config } from '@/lib/config/type'
+import { userAgent } from '@/lib/data-source-helpers'
+import { createListener } from '../listener'
+import { StaticContext } from '~/graphql/context'
 
 export type VRChatAPIContext = {
   vrchat: {
@@ -12,7 +15,7 @@ export type VRChatAPIContext = {
   }
 }
 
-export const makeVRChatAPIContext = async (config: Config): Promise<VRChatAPIContext> => {
+export const makeVRChatAPIContext = async (config: Config, staticContext: StaticContext): Promise<VRChatAPIContext> => {
   const vrchat = new VRChatAPI(config.vrchat.bot.username, config.vrchat.bot.password)
 
   // Need to perform the config request in order to obtain an auth cookie and
@@ -23,19 +26,25 @@ export const makeVRChatAPIContext = async (config: Config): Promise<VRChatAPICon
     throw new Error('The system VRChat account is protected with 2 factor authentication')
   }
 
-  const ws = new WebSocket(`wss://pipeline.vrchat.cloud/?authToken=${vrchat.authCookie}`)
-
-  ws.on('open', () => {
-    console.log('VRC Socket open')
+  const ws = new WebSocket(`${config.vrchat.pipelineWsURL}/?authToken=${vrchat.authCookie}`, {
+    headers: {
+      'User-Agent': userAgent,
+    },
   })
 
-  ws.on('close', () => {
-    console.log('VRC Socket closed')
-  })
+  ws
+    .on('open', () => {
+      console.log('VRC Socket open')
+    })
+    .on('close', () => {
+      console.log('VRC Socket closed')
+    })
+    .on('error', (err) => {
+      console.error('VRC pipeline websocket error', err)
+    })
 
-  ws.on('message', (data) => {
-    console.log('VRC Socket message', data)
-  })
+  // TODO: Side effect, this function actually returns its own destroy function
+  createListener(ws, staticContext, vrchat)
 
   return {
     vrchat: {
