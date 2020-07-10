@@ -1,6 +1,7 @@
 import { Connection, createConnection } from 'typeorm'
 import { Request, Response } from 'express'
 import { Queue } from 'bull'
+import { Logger } from 'pino'
 
 import { VRChatAPIContext, makeVRChatAPIContext } from '../components/vrchat-api/context'
 import { Config } from '@/lib/config/type'
@@ -10,11 +11,15 @@ import * as entities from '~/entity'
 import { DiscordContext, makeDiscordContext } from '../components/discord/context'
 import { AuthorisationContext, makeAuthorisationContext } from '../components/authorization/context'
 import { AuthenticationContext, makeAuthenticationContext } from '../components/authentication/context'
+import { log } from '@/lib/log'
+import { randomBytes } from 'crypto'
+import { TypeormPinoLogger } from '~/db/logger'
 
 export type StaticContext = {
   config: Config,
   connection: Connection,
   queues: Record<string, Queue>,
+  log: Logger,
 }
 
 export type IntegrationContext = {
@@ -45,10 +50,15 @@ const makeStaticContext = async (config: Config): Promise<StaticContext> => {
   return {
     config,
     queues,
+    log: log.child({
+      component: 'graphql',
+      chain: randomBytes(16).toString('hex'),
+    }),
     connection: await createConnection({
       ...config.db,
       entities: Object.values(entities),
       migrations: ['../../migration'],
+      logger: new TypeormPinoLogger(),
     }),
   }
 }

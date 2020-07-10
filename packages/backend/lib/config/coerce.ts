@@ -18,6 +18,10 @@ export const getConfig = (env: NodeJS.ProcessEnv): Config => ({
     logging: env.DB_LOGGING === 'true',
     migrationsRun: env.DB_MIGRATIONS === 'true',
   },
+  log: {
+    level: env.LOG_LEVEL,
+    prettyPrint: env.NODE_ENV === 'development',
+  },
   redis: {
     host: env.REDIS_HOST,
     port: Number.parseInt(env.REDIS_PORT, 10),

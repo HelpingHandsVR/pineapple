@@ -46,7 +46,6 @@ export class User extends InternalEntity {
 
   @Column({
     type: 'varchar',
-    unique: true,
     nullable: false,
   })
   display: string
@@ -84,6 +83,7 @@ export class User extends InternalEntity {
   @Column({
     type: 'varchar',
     unique: true,
+    nullable: true,
   })
   private passwordHash: string
 
@@ -102,7 +102,7 @@ export class User extends InternalEntity {
     // If the password is changed, re-hash it
     // If this entity is brand new, passwordHash will be falsey so this
     // comparison still works
-    if (this.password !== this.passwordHash) {
+    if (this.password && this.password !== this.passwordHash) {
       this.passwordHash = await bcrypt.hash(this.password, 12)
     }
   }

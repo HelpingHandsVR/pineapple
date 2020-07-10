@@ -5,6 +5,7 @@ import { Config } from '@/lib/config/type'
 import { userAgent } from '@/lib/data-source-helpers'
 import { createListener } from '../listener'
 import { StaticContext } from '~/graphql/context'
+import { log } from '@/lib/log'
 
 export type VRChatAPIContext = {
   vrchat: {
@@ -34,13 +35,13 @@ export const makeVRChatAPIContext = async (config: Config, staticContext: Static
 
   ws
     .on('open', () => {
-      console.log('VRC Socket open')
+      log.trace('VRC Socket open')
     })
     .on('close', () => {
-      console.log('VRC Socket closed')
+      log.trace('VRC Socket closed')
     })
     .on('error', (err) => {
-      console.error('VRC pipeline websocket error', err)
+      log.error('VRC pipeline websocket error', err)
     })
 
   // TODO: Side effect, this function actually returns its own destroy function

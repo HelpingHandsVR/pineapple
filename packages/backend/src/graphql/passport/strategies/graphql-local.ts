@@ -5,6 +5,11 @@ import bcrypt from 'bcrypt'
 
 import { Config } from '@/lib/config/type'
 import { User } from '~/entity'
+import { log as baseLog } from '@/lib/log'
+
+const log = baseLog.child({
+  component: 'passport-strategy-graphql-local',
+})
 
 export const makeStrategy = (config: Config, connection: Connection): GraphQLLocalStrategy<User, Request> => new GraphQLLocalStrategy(
   async (email: string, password: string, done: (err: Error | null, result?: User) => void) => {
@@ -16,19 +21,26 @@ export const makeStrategy = (config: Config, connection: Connection): GraphQLLoc
     const authFailedError = new Error('Authentication failed')
 
     if (!user) {
-      console.log('Auth failed because no user', email)
+      log.info({ email }, 'auth failed because no user')
 
       return done(authFailedError)
     }
 
     if (!user.provisioned) {
-      console.error(new Error(`Unprovisioned user tried to log in: ${user.id}`))
+      log.error({
+        userId: user.id,
+        userDisplay: user.display,
+      }, 'unprovisioned user tried to log in')
 
       return done(authFailedError, null)
     }
 
     if (user.disabled) {
-      console.error(new Error(`Disabled user tried to log in: ${user.email}`))
+      log.error({
+        userId: user.id,
+        userDisplay: user.display,
+        userEmail: user.email,
+      }, 'disabled user tried to log in')
 
       return done(authFailedError, null)
     }
@@ -36,7 +48,7 @@ export const makeStrategy = (config: Config, connection: Connection): GraphQLLoc
     const result = await bcrypt.compare(password, user.password)
 
     if (!result) {
-      console.log('Auth failed because password', email)
+      log.warn({ email }, 'auth failed because password')
 
       return done(authFailedError)
     }

@@ -6,9 +6,14 @@ import { RedisCache } from 'apollo-server-cache-redis'
 import * as Types from './types'
 import { atob } from '@/lib/base64'
 import { userAgent } from '@/lib/data-source-helpers'
+import { log } from '@/lib/log'
 
 export class VRChatAPI extends RESTDataSource {
   baseURL = 'https://api.vrchat.cloud/api/1'
+
+  private log = log.child({
+    component: 'vrchat-datasource',
+  })
 
   private apiKey: string
 
@@ -22,7 +27,9 @@ export class VRChatAPI extends RESTDataSource {
   }
 
   private customFetch = async (input: RequestInfo, init: RequestInit) => {
-    console.log('VRC', init ? init.method : 'GET', typeof input === 'string' ? input : input.url)
+    this.log.debug({
+      url: typeof input === 'string' ? input : input.url,
+    }, 'running HTTP request')
 
     const response = await fetch(input, init)
     const setCookieHeader = response.headers.get('set-cookie')
@@ -105,6 +112,14 @@ export class VRChatAPI extends RESTDataSource {
   // Worlds
   public async getWorld (worldId: string): Promise<Types.VRCWorld> {
     return this.get(`/worlds/${worldId}`)
+  }
+
+  public async getInstance (instanceString: string): Promise<unknown> {
+    return this.get(`/instances/${instanceString}`)
+  }
+
+  public async getInstanceShortName (instanceString: string): Promise<string> {
+    return this.get(`/instances/${instanceString}/shortName`)
   }
 
   // Friends

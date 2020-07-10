@@ -4,6 +4,7 @@ import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import { makeSchema } from '@nexus/schema'
 import { applyMiddleware } from 'graphql-middleware'
+import createHttpLogger from 'pino-http'
 
 import * as scalars from './graphql/scalars'
 
@@ -21,6 +22,7 @@ import { permissions } from './graphql/permissions'
 import { getConfig } from '@/lib/config/coerce'
 import { getConnection } from 'typeorm'
 import { makeErrorHandlerMiddleware } from './graphql/error-handler'
+import { log } from '@/lib/log'
 
 const main = async () => {
   const config = getConfig(process.env)
@@ -63,6 +65,23 @@ const main = async () => {
     schema = applyMiddleware(baseSchema, ...middleware)
   }
 
+  const httpLogger = createHttpLogger({
+    logger: log,
+    useLevel: 'trace',
+    serializers: {
+      req (req) {
+        Reflect.deleteProperty(req, 'headers')
+
+        return req
+      },
+      res (res) {
+        Reflect.deleteProperty(res, 'headers')
+
+        return res
+      },
+    },
+  })
+
   const server = new ApolloServer({
     schema,
     context: await makeContextFactory(config),
@@ -72,6 +91,8 @@ const main = async () => {
   })
 
   const app = express()
+
+  app.use(httpLogger)
 
   middlewares.applyAll(app, config)
   await passport.applyMiddleware(app, config, getConnection('default'))
@@ -89,7 +110,7 @@ const main = async () => {
   })
 
   app.listen({ port: config.api.port }, () => {
-    console.log(`Server running: http://[::1]:${config.api.port}${server.graphqlPath}`)
+    log.info(`Server running: http://[::1]:${config.api.port}${server.graphqlPath}`)
   })
 }
 

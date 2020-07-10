@@ -11,6 +11,12 @@ import { AttendanceRecord } from './attendance-record'
 
 @Entity({ name: 'Attendable' })
 export class Attendable extends AttendableBase {
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  vrcWorldInstance: string
+
   @ManyToOne(() => AttendableDefinition, (definition) => definition.attendables, {
     lazy: true,
     // If null, it's synced from an external source

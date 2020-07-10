@@ -1,4 +1,5 @@
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
+import { LoggerOptions } from 'pino'
 
 export type Config = {
   features: {
@@ -8,6 +9,7 @@ export type Config = {
     corsOrigin: string[],
   },
   db: PostgresConnectionOptions,
+  log: LoggerOptions,
   redis: {
     port: number,
     host: string,
