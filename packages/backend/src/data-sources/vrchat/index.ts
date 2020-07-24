@@ -86,7 +86,7 @@ export class VRChatAPI extends RESTDataSource {
   }
 
   // Get other users
-  public async getUser (userId: string): Promise<Types.VRCUser> {
+  public async getUser (userId: Types.VRCUserId): Promise<Types.VRCUser> {
     return this.get(`/users/${userId}`)
   }
 
@@ -105,12 +105,12 @@ export class VRChatAPI extends RESTDataSource {
     })
   }
 
-  public async logout (): Promise<Types.VRCLogoutResult> {
+  public async logout (): Promise<Types.VRCOperationResult> {
     return this.put('/logout', {})
   }
 
   // Worlds
-  public async getWorld (worldId: string): Promise<Types.VRCWorld> {
+  public async getWorld (worldId: Types.VRCWorldId): Promise<Types.VRCWorld> {
     return this.get(`/worlds/${worldId}`)
   }
 
@@ -118,12 +118,33 @@ export class VRChatAPI extends RESTDataSource {
     return this.get(`/instances/${instanceString}`)
   }
 
-  public async getInstanceShortName (instanceString: string): Promise<string> {
-    return this.get(`/instances/${instanceString}/shortName`)
+  public async getInstanceShortName (worldString: string, instanceId?: string): Promise<string> {
+    return this.get(`/instances/${worldString}${instanceId ? `:${instanceId}` : ''}/shortName`)
+  }
+
+  public async inviteSelfToWorld (worldString: string, instanceId?: string): Promise<Types.VRCOperationResult> {
+    return this.post(`/instances/${worldString}${instanceId ? `:${instanceId}` : ''}/invite`)
+  }
+
+  // Notifications
+  private async sendNotification (type: Types.NotificationType, targetUser: Types.VRCUserId, message = '', details: Record<string, unknown> = {}): Promise<Types.NotificationInfo> {
+    return this.post(`/user/${targetUser}/notification`, {
+      type,
+      message,
+      details,
+    })
+  }
+
+  public async sendFriendRequest (targetUser: Types.VRCUserId): Promise<Types.NotificationInfo> {
+    return this.sendNotification('friendrequest', targetUser)
+  }
+
+  public async sendInvite (targetUser: Types.VRCUserId, worldId: Types.VRCWorldId, message = ''): Promise<Types.NotificationInfo> {
+    return this.sendNotification('invite', targetUser, message, { worldId })
   }
 
   // Friends
-  public async answerFriendRequest (notificationId: string, answer: 'accept' | 'ignore'): Promise<Types.VRCFriendRequestAnswer> {
+  public async answerFriendRequest (notificationId: Types.VRCNotificationId, answer: 'accept' | 'ignore'): Promise<Types.VRCFriendRequestAnswer> {
     return this.put(`/auth/user/notifications/${notificationId}/${answer}`)
   }
 }

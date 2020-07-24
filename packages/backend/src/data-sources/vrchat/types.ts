@@ -8,9 +8,17 @@ type ResponseBase = {
   __headers: Response['headers']
 }
 
-type VRCWorldId = string
-type VRCUserId = string
-type VRCAvatarId = string
+export type VRCWorldId = string
+export type VRCUserId = string
+export type VRCAvatarId = string
+export type VRCFavoriteId = string
+export type VRCInstanceId = string
+export type VRCNotificationId = string
+export type VRCModerationId = string
+export type VRCDateTimeString = string
+
+type SortOption = 'popularity' | 'created' | 'updated' | 'order' | '_created_at' | '_updated_at'
+type OrderOption = 'ascending' | 'descending'
 
 type VRCConfigAnnouncement = {
   name: string,
@@ -196,7 +204,7 @@ export type VRCTotpVerificationResult = ResponseBase & {
   verified: boolean,
 }
 
-export type VRCLogoutResult = ResponseBase & {
+export type VRCOperationResult = ResponseBase & {
   success: {
     message: string,
     status_code: number,
@@ -270,4 +278,43 @@ export type VRCFriendRequestAnswer = ResponseBase & {
     userId: string,
     user: VRCUserBase,
   }
+}
+
+/**
+ * Notifications
+ */
+export type NotificationType = 'all' | 'message' | 'friendrequest' | 'invite' | 'votetokick' | 'halp' | 'hidden'
+
+export type Details = {
+  invite: VRCWorldId,
+  votetokick: 'userToKickId' | 'initiatorUserId'
+  // halp: 'halpId' | 'worldId'
+  halp: string
+}
+
+export type NotificationInfo = {
+  id: VRCNotificationId
+  type: NotificationType
+  senderUserId: VRCUserId
+  receiverUserId: VRCUserId
+  message: string
+  details: Details
+  jobName: string
+  jobColor: string
+}
+
+export type SendNotificationOptions = {
+  message: string
+  details: Partial<Details>
+}
+
+export type NotificationDetail = {
+  id: VRCNotificationId
+  type: NotificationType
+  senderUserId: VRCUserId
+  receiverUserId: VRCUserId
+  message: string
+  details: Details
+  seen: boolean
+  created_at: VRCDateTimeString
 }
