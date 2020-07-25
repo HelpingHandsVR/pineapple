@@ -56,6 +56,8 @@ devonImporter.process(async (job) => {
   const connection = getConnection('default')
   const events = await api.getEvents()
 
+  job.progress(8)
+
   log.debug(`received ${events.length} events`)
 
   const systemUser = await connection.getRepository(User)
@@ -64,6 +66,10 @@ devonImporter.process(async (job) => {
         display: 'SYSTEM',
       },
     })
+
+  job.progress(10)
+
+  const progressStep = 90 / events.length
 
   const tasks = events.map((event, index) => {
     const startsAt = DateTime.fromMillis(Number.parseInt(event.timestamp, 10))
@@ -95,7 +101,7 @@ devonImporter.process(async (job) => {
 
         const saved = await existing.save()
 
-        job.progress(index + 1)
+        job.progress(index + progressStep)
 
         return saved
       }

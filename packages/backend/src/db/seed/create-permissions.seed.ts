@@ -23,6 +23,7 @@ const allPermissions = [
   { action: Action.ATTACH, subject: Subject.DISCORD_ACCOUNT_SELF },
   { action: Action.DETACH, subject: Subject.DISCORD_ACCOUNT_OTHERS },
   { action: Action.READ, subject: Subject.DISCORD_OAUTH_REQUEST_SELF },
+  { action: Action.READ, subject: Subject.SYSTEM_QUEUE },
 ]
 
 export default class CreatePermissions implements Seeder {

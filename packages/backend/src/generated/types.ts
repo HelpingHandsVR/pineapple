@@ -61,7 +61,7 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   AbilityAction: 7 | 0 | 4 | 8 | 5 | 6 | 1 | 3 | 2
-  AbilitySubject: 11 | 10 | 9 | 8 | 5 | 4 | 6 | 3 | 2 | 7 | 1 | 0
+  AbilitySubject: 11 | 10 | 9 | 8 | 5 | 4 | 6 | 3 | 2 | 7 | 12 | 1 | 0
   PaginationInputOrder: "ASC" | "DESC"
   VRChatUserRole: 3 | 1 | 4 | 2 | 0
 }

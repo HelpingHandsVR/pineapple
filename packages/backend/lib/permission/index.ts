@@ -33,4 +33,6 @@ export enum Subject {
 
   ATTENDABLE_SELF,
   ATTENDABLE_OTHERS,
+
+  SYSTEM_QUEUE,
 }

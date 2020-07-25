@@ -101,8 +101,8 @@ const main = async () => {
 
   app.use(httpLogger)
 
-  middlewares.applyAll(app, config)
   await passport.applyMiddleware(app, config, getConnection('default'))
+  middlewares.applyAll(app, config)
   server.applyMiddleware({
     app,
     cors: {

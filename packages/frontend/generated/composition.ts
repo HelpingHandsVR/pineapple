@@ -55,6 +55,7 @@ export enum AbilitySubject {
   LessonOthers = 'LESSON_OTHERS',
   LessonSelf = 'LESSON_SELF',
   PermissionSelf = 'PERMISSION_SELF',
+  SystemQueue = 'SYSTEM_QUEUE',
   UserOthers = 'USER_OTHERS',
   UserSelf = 'USER_SELF'
 }
