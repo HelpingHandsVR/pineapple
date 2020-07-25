@@ -45,6 +45,10 @@ export enum AbilityAction {
 }
 
 export enum AbilitySubject {
+  AttendableOthers = 'ATTENDABLE_OTHERS',
+  AttendableSelf = 'ATTENDABLE_SELF',
+  AttendanceRecordOthers = 'ATTENDANCE_RECORD_OTHERS',
+  AttendanceRecordSelf = 'ATTENDANCE_RECORD_SELF',
   DiscordAccountOthers = 'DISCORD_ACCOUNT_OTHERS',
   DiscordAccountSelf = 'DISCORD_ACCOUNT_SELF',
   DiscordOauthRequestSelf = 'DISCORD_OAUTH_REQUEST_SELF',
@@ -66,6 +70,26 @@ export type Attendable = {
   updatedAt: Scalars['DateTime'];
   updatedBy: User;
   world?: Maybe<VrChatWorld>;
+};
+
+export type AttendanceRecord = {
+  __typename?: 'AttendanceRecord';
+  attendable: Attendable;
+  endsAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  startsAt: Scalars['DateTime'];
+};
+
+export type AttendanceRecordPagination = PaginationResult & {
+  __typename?: 'AttendanceRecordPagination';
+  cursor: PaginationResultCursor;
+  data: Array<Maybe<AttendanceRecord>>;
+};
+
+export type CreateAttendaceRecordMutationInput = {
+  attendableId: Scalars['ID'];
+  endsAt?: Maybe<Scalars['DateTime']>;
+  startsAt?: Maybe<Scalars['DateTime']>;
 };
 
 
@@ -100,6 +124,7 @@ export type Mutation = {
   login: User;
   logout: Scalars['Boolean'];
   register: User;
+  upsertAttendanceRecord: AttendanceRecord;
 };
 
 
@@ -117,13 +142,46 @@ export type MutationRegisterArgs = {
   input: RegisterInput;
 };
 
+
+export type MutationUpsertAttendanceRecordArgs = {
+  input: CreateAttendaceRecordMutationInput;
+};
+
+export type PaginationInput = {
+  afterCursor?: Maybe<Scalars['String']>;
+  beforeCursor?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  order?: Maybe<PaginationInputOrder>;
+};
+
+export enum PaginationInputOrder {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
+
+export type PaginationResult = {
+  cursor: PaginationResultCursor;
+};
+
+export type PaginationResultCursor = {
+  __typename?: 'PaginationResultCursor';
+  afterCursor?: Maybe<Scalars['String']>;
+  beforeCursor?: Maybe<Scalars['String']>;
+};
+
 export type Query = {
   __typename?: 'Query';
+  attendanceRecords: AttendanceRecordPagination;
   discordOauthURL: Scalars['String'];
   upcomingAttendables: Array<Maybe<Attendable>>;
   user?: Maybe<User>;
   viewer?: Maybe<Viewer>;
   vrchatUser: VrChatUser;
+};
+
+
+export type QueryAttendanceRecordsArgs = {
+  pagination?: Maybe<PaginationInput>;
 };
 
 

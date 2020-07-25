@@ -20,6 +20,10 @@ enum AbilityAction {
 }
 
 enum AbilitySubject {
+  ATTENDABLE_OTHERS
+  ATTENDABLE_SELF
+  ATTENDANCE_RECORD_OTHERS
+  ATTENDANCE_RECORD_SELF
   DISCORD_ACCOUNT_OTHERS
   DISCORD_ACCOUNT_SELF
   DISCORD_OAUTH_REQUEST_SELF
@@ -40,6 +44,24 @@ type Attendable {
   updatedAt: DateTime!
   updatedBy: User!
   world: VRChatWorld
+}
+
+type AttendanceRecord {
+  attendable: Attendable!
+  endsAt: DateTime!
+  id: ID!
+  startsAt: DateTime!
+}
+
+type AttendanceRecordPagination implements PaginationResult {
+  cursor: PaginationResultCursor!
+  data: [AttendanceRecord]!
+}
+
+input CreateAttendaceRecordMutationInput {
+  attendableId: ID!
+  endsAt: DateTime
+  startsAt: DateTime
 }
 
 """
@@ -82,9 +104,32 @@ type Mutation {
   login(input: LoginInput!): User!
   logout: Boolean!
   register(input: RegisterInput!): User!
+  upsertAttendanceRecord(input: CreateAttendaceRecordMutationInput!): AttendanceRecord!
+}
+
+input PaginationInput {
+  afterCursor: String
+  beforeCursor: String
+  limit: Int = 15
+  order: PaginationInputOrder = ASC
+}
+
+enum PaginationInputOrder {
+  ASC
+  DESC
+}
+
+interface PaginationResult {
+  cursor: PaginationResultCursor!
+}
+
+type PaginationResultCursor {
+  afterCursor: String
+  beforeCursor: String
 }
 
 type Query {
+  attendanceRecords(pagination: PaginationInput): AttendanceRecordPagination!
   discordOauthURL: String!
   upcomingAttendables(input: UpcomingAttendablesQueryInput!): [Attendable]!
   user(where: UserQueryWhereInput!): User

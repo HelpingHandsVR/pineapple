@@ -1,3 +1,6 @@
+// REMINDER: Always add new items to the bottom of the enum as the database
+// stores the index, not the string representation of the value
+
 export enum Action {
   CREATE,
   READ,
@@ -24,4 +27,10 @@ export enum Subject {
   DISCORD_OAUTH_REQUEST_SELF,
 
   PERMISSION_SELF,
+
+  ATTENDANCE_RECORD_SELF,
+  ATTENDANCE_RECORD_OTHERS,
+
+  ATTENDABLE_SELF,
+  ATTENDABLE_OTHERS,
 }

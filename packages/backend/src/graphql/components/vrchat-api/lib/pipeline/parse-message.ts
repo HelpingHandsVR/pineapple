@@ -1,6 +1,11 @@
 /* eslint-disable camelcase */
 
 import { VRCUserBase } from '~/data-sources/vrchat/types'
+import { log as logger } from '@/lib/log'
+
+const log = logger.child({
+  component: 'vrchat-message-parser',
+})
 
 /**
  * notification
@@ -79,7 +84,13 @@ export type VRCPipelineMessage =
 
 export const parseMessage = (message: string): VRCPipelineMessage => {
   const { type, content: rawContent } = JSON.parse(message)
-  const content = JSON.parse(rawContent)
+  let content = null
+
+  try {
+    content = JSON.parse(rawContent)
+  } catch (error) {
+    log.error(error, `failed to parse a message, skipping it (${rawContent})`)
+  }
 
   return {
     type,

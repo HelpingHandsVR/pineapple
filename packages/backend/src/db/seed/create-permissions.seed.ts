@@ -17,6 +17,8 @@ const allPermissions = [
   ...fullCrudFor(Subject.USER_SELF),
   ...fullCrudFor(Subject.USER_OTHERS),
   ...fullCrudFor(Subject.PERMISSION_SELF),
+  ...fullCrudFor(Subject.ATTENDANCE_RECORD_SELF),
+  ...fullCrudFor(Subject.ATTENDANCE_RECORD_OTHERS),
 
   { action: Action.ATTACH, subject: Subject.DISCORD_ACCOUNT_SELF },
   { action: Action.DETACH, subject: Subject.DISCORD_ACCOUNT_OTHERS },

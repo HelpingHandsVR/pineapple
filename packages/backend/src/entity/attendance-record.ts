@@ -1,8 +1,6 @@
 import { InternalEntity } from '~/db/entity-type/internal'
 import {
   Entity,
-  OneToOne,
-  JoinColumn,
   Column,
   ManyToOne,
 } from 'typeorm'
@@ -12,11 +10,10 @@ import { Attendable } from './attendable'
 
 @Entity({ name: 'AttendanceRecord' })
 export class AttendanceRecord extends InternalEntity {
-  @OneToOne(() => User, {
+  @ManyToOne(() => User, {
     lazy: true,
     nullable: false,
   })
-  @JoinColumn()
   user: Promise<User>
 
   @Column({

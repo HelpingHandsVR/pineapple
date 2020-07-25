@@ -27,7 +27,11 @@ export const makeVRChatAPIContext = async (config: Config, staticContext: Static
     throw new Error('The system VRChat account is protected with 2 factor authentication')
   }
 
-  const ws = new WebSocket(`${config.vrchat.pipelineWsURL}/?authToken=${vrchat.authCookie}`, {
+  const url = `${config.vrchat.pipelineWsURL}/?authToken=${vrchat.authCookie}`
+
+  log.debug(`opening Websocket to VRC pipeline using URL: ${url}`)
+
+  const ws = new WebSocket(url, {
     headers: {
       'User-Agent': userAgent,
     },

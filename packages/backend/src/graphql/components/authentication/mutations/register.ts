@@ -32,12 +32,22 @@ export const RegisterMutation = extendType({
             where: {
               email: args.input.email,
             },
-            select: ['id'],
           })
 
-        if (duplicate) {
+        if (duplicate && duplicate.provisioned) {
           // TODO: This could be used to enumerate users, so need to rate-limit
           throw new Error('You already have an account, Please log in instead of registering.')
+        } else if (duplicate && !duplicate.provisioned) {
+          // We already have data stored for this account, but the user hasn't
+          // logged in yet
+
+          duplicate.provisioned = true
+          duplicate.email = args.input.email
+          duplicate.password = args.input.password
+          duplicate.display = args.input.display
+
+          return context.connection.getRepository(User)
+            .save(duplicate)
         }
 
         const user = new User()
@@ -45,6 +55,7 @@ export const RegisterMutation = extendType({
         user.email = args.input.email
         user.password = args.input.password
         user.display = args.input.display
+        user.provisioned = true
 
         return context.connection.getRepository(User)
           .save(user)

@@ -40,12 +40,16 @@ export type Context =
   & ExpressContext
 
 const makeStaticContext = async (config: Config): Promise<StaticContext> => {
-  queues.devonImporter.clean(0)
-  queues.devonImporter.add(null, {
-    repeat: {
-      cron: '*/10 * * * *',
-    },
-  })
+  const job = await queues.devonImporter.getJob('devon-importer')
+
+  if (!job) {
+    await queues.devonImporter.add(null, {
+      jobId: 'devon-importer',
+      repeat: {
+        cron: '*/10 * * * *',
+      },
+    })
+  }
 
   return {
     config,

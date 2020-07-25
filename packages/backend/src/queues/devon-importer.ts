@@ -6,6 +6,12 @@ import { DateTime } from 'luxon'
 import { WithDevonAPI } from '~/data-sources/devon'
 import { Attendable, User } from '~/entity'
 import { AttendableType } from '~/db/enums'
+import { BetweenDates } from '@/lib/typeorm/helpers'
+import { log as logger } from '@/lib/log'
+
+const log = logger.child({
+  component: 'external-event-importer',
+})
 
 const devonImporter = new Queue('import events from devon')
 
@@ -41,6 +47,8 @@ const determineWorldId = (worldName: string): HHWorld | null => {
 devonImporter.process(async (job) => {
   const api = new WithDevonAPI()
 
+  log.debug('importing events from Devon\'s API')
+
   // Get the connection from the builtin connection manager
   // This has to be refactored if we want to run this queue in a separate
   // process, as the connection manager is not shared outside the current
@@ -48,10 +56,7 @@ devonImporter.process(async (job) => {
   const connection = getConnection('default')
   const events = await api.getEvents()
 
-  await connection.getRepository(Attendable)
-    .delete({
-      definition: null,
-    })
+  log.debug(`received ${events.length} events`)
 
   const systemUser = await connection.getRepository(User)
     .findOneOrFail({
@@ -61,11 +66,45 @@ devonImporter.process(async (job) => {
     })
 
   const tasks = events.map((event, index) => {
-    return async () => {
-      const attendable = new Attendable()
-      const startsAt = DateTime.fromMillis(Number.parseInt(event.timestamp, 10))
+    const startsAt = DateTime.fromMillis(Number.parseInt(event.timestamp, 10))
 
-      attendable.name = `${event.language} with ${event.presenter} - ${event.location}`
+    return async () => {
+      log.debug(`processing ${event.language} (${event.presenter})`)
+
+      // If this event was already registered, update it
+      // There's no key, so we need to guess based on the name.
+      // TODO: Cancelled events will not be removed from the db!
+      const existing = await connection.getRepository(Attendable)
+        .findOne({
+          where: {
+            name: event.language,
+            startsAt: BetweenDates(startsAt.startOf('day'), startsAt.endOf('day')),
+            definition: null,
+          },
+        })
+
+      if (existing) {
+        log.debug('is updating existing attendable')
+
+        existing.name = event.language
+        existing.startsAt = startsAt.toJSDate()
+        existing.endsAt = startsAt.plus({ hours: 2 }).toJSDate()
+        existing.type = AttendableType.LESSON
+        existing.createdBy = systemUser.id
+        existing.vrcWorldId = determineWorldId(event.location)
+
+        const saved = await existing.save()
+
+        job.progress(index + 1)
+
+        return saved
+      }
+
+      log.debug('creating new attendable')
+
+      const attendable = new Attendable()
+
+      attendable.name = event.language
       attendable.startsAt = startsAt.toJSDate()
       attendable.endsAt = startsAt.plus({ hours: 2 }).toJSDate()
       attendable.type = AttendableType.LESSON

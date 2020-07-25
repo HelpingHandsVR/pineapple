@@ -76,6 +76,7 @@
     "pino-pretty": "^4.0.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.25",
+    "typeorm-cursor-pagination": "^0.4.1",
     "typeorm-seeding": "^1.6.1",
     "udp-proxy": "^1.2.0",
     "ws": "^7.3.1"

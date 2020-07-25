@@ -7,6 +7,7 @@ import { applyMiddleware } from 'graphql-middleware'
 import createHttpLogger from 'pino-http'
 
 import * as scalars from './graphql/scalars'
+import * as paginationTypes from './graphql/pagination-types'
 
 import * as vrchatTypes from './graphql/components/vrchat-api'
 import * as discordTypes from './graphql/components/discord'
@@ -30,6 +31,7 @@ const main = async () => {
     shouldGenerateArtifacts: process.env.NODE_ENV !== 'production',
     types: {
       ...scalars,
+      ...paginationTypes,
 
       ...vrchatTypes,
       ...discordTypes,
@@ -43,6 +45,9 @@ const main = async () => {
       typegen: path.join(__dirname, 'generated/types.ts'),
     },
     typegenAutoConfig: {
+      headers: [
+        "import * as entity from '../entity'",
+      ],
       debug: false,
       sources: [
         {
@@ -57,7 +62,7 @@ const main = async () => {
   let schema = null
 
   if (config.features.disableMiddleware) {
-    console.warn('Middlewares are disabled, no permission checks will run!')
+    log.warn('Middlewares are disabled, no permission checks will run!')
     schema = applyMiddleware(baseSchema, makeErrorHandlerMiddleware())
   } else {
     const middleware = [...permissions, makeErrorHandlerMiddleware()]
@@ -66,7 +71,9 @@ const main = async () => {
   }
 
   const httpLogger = createHttpLogger({
-    logger: log,
+    logger: log.child({
+      component: 'http-server',
+    }),
     useLevel: 'trace',
     serializers: {
       req (req) {
