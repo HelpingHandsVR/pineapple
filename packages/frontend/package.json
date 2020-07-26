@@ -6,9 +6,9 @@
     "dev": "yarn concurrently 'env-cmd nuxt-ts' 'yarn gen:watch'",
     "gen:watch": "graphql-codegen --config codegen.yml -w",
     "gen": "graphql-codegen --config codegen.yml",
-    "build": "env-cmd nuxt-ts build",
+    "build": "nuxt-ts build",
     "prebuild": "yarn gen",
-    "start": "env-cmd nuxt-ts start",
+    "start": "nuxt-ts start",
     "generate": "nuxt-ts generate",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint": "yarn lint:js"

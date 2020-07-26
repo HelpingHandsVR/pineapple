@@ -27,6 +27,7 @@ import { log } from '@/lib/log'
 
 const main = async () => {
   const config = getConfig(process.env)
+
   const baseSchema = makeSchema({
     shouldGenerateArtifacts: process.env.NODE_ENV !== 'production',
     types: {
@@ -41,8 +42,8 @@ const main = async () => {
       ...attendableTypes,
     },
     outputs: {
-      schema: path.join(__dirname, 'generated/schema.graphql'),
-      typegen: path.join(__dirname, 'generated/types.ts'),
+      schema: path.resolve(path.join(__dirname, 'generated/schema.graphql')),
+      typegen: path.resolve(path.join(__dirname, 'generated/types.ts')),
     },
     typegenAutoConfig: {
       headers: [

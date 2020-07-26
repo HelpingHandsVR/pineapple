@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "dev": "env-cmd nodemon --transpile-only -r tsconfig-paths/register src/index.ts",
-    "build": "tsc",
+    "build": "yarn env-cmd backpack build",
     "typeorm": "yarn env-cmd ts-node --transpile-only -r tsconfig-paths/register ./node_modules/.bin/typeorm",
     "seeder": "ts-node --transpile-only -r tsconfig-paths/register ../../node_modules/typeorm-seeding/dist/cli.js",
     "seed": "yarn seeder seed"
@@ -33,6 +33,7 @@
     "@types/ws": "^7.2.6",
     "@typescript-eslint/eslint-plugin": "^3.3.0",
     "@typescript-eslint/parser": "^3.3.0",
+    "backpack-core": "^0.8.4",
     "env-cmd": "^10.1.0",
     "eslint": "^7.2.0",
     "eslint-config-standard": "^14.1.1",
@@ -43,8 +44,10 @@
     "eslint-plugin-unicorn": "^20.1.0",
     "nodemon": "^2.0.4",
     "patch-package": "^6.2.2",
+    "ts-loader": "^8.0.1",
     "ts-node": "^8.10.2",
     "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
     "typescript": "^3.9.5"
   },
   "dependencies": {
