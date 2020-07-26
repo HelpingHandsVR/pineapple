@@ -6,6 +6,7 @@
     "types.d.ts"
   ],
   "compilerOptions": {
+    "noEmit": false,
     "target": "es2016",
     "module": "commonjs",
     "outDir": "build",
