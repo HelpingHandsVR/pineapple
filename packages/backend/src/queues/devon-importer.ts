@@ -69,7 +69,7 @@ devonImporter.process(async (job) => {
 
   job.progress(10)
 
-  const progressStep = 90 / events.length
+  const progressStep = 100 / events.length
 
   const tasks = events.map((event, index) => {
     const startsAt = DateTime.fromMillis(Number.parseInt(event.timestamp, 10))

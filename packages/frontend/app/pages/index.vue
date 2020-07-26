@@ -1,5 +1,6 @@
 <script lang="ts">
 import { mapGetters } from 'vuex'
+import { withQSRefetch } from '../mixins/refetch-qs'
 
 import {
   IndexPageViewerDocument,
@@ -12,7 +13,6 @@ import DiscordLinkingCard from '../components/containers/discord/linking/card/in
 
 type Data = {
   viewer: Viewer,
-  discordOauthURL: string,
 }
 
 export default {
@@ -28,35 +28,10 @@ export default {
   data (): Data {
     return {
       viewer: null,
-      discordOauthURL: null,
     }
   },
-  middleware: [
-    'auth'
-  ],
-  mounted () {
-    if ('refetch' in this.$route.query) {
-      this.$apollo.queries.viewer.refetch()
-      this.$router.push('/')
-    }
-  },
-  computed: {
-    mockEvents () {
-      const now = new Date().getTime()
-
-      return new Array(20).fill(null).map((value, index) => {
-        const start = now + 8000000 * index
-        const end = start + 3800000
-
-        return {
-          name: 'ASL Test',
-          start,
-          end,
-          timed: true
-        }
-      })
-    }
-  },
+  middleware: ['auth'],
+  mixins: [ withQSRefetch('viewer') ],
 }
 </script>
 
@@ -64,23 +39,13 @@ export default {
   v-skeleton-loader(v-if='$apollo.queries.viewer.loading')
   v-container(v-else-if='viewer')
     v-row
-      v-col(md='6')
+      //-
+      //- DISCORD
+      //-
 
+      v-col(md='6')
         v-container
           discord-linking-card(:user-id='viewer.user.id')
-
-        v-container
-          v-card
-            v-card-title
-              | Upcoming events today
-            v-card-subtitle
-              | unfinished, mock data
-            v-card-text
-              v-sheet(height='500')
-                v-calendar(
-                  type='day'
-                  :events='mockEvents'
-                )
 
       //-
       //- VRCHAT

@@ -2,18 +2,11 @@ query profileMenuViewer {
   viewer {
     user {
       id
+      display
 
       role {
         id
         name
-      }
-
-      vrchat {
-        id
-        displayName
-        currentAvatarImageUrl
-        currentAvatarThumbnailImageUrl
-        role
       }
     }
   }

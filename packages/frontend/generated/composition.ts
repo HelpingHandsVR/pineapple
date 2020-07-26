@@ -420,14 +420,11 @@ export type ProfileMenuViewerQuery = (
     { __typename?: 'Viewer' }
     & { user: (
       { __typename?: 'User' }
-      & Pick<User, 'id'>
+      & Pick<User, 'id' | 'display'>
       & { role: (
         { __typename?: 'Role' }
         & Pick<Role, 'id' | 'name'>
-      ), vrchat?: Maybe<(
-        { __typename?: 'VRChatUser' }
-        & Pick<VrChatUser, 'id' | 'displayName' | 'currentAvatarImageUrl' | 'currentAvatarThumbnailImageUrl' | 'role'>
-      )> }
+      ) }
     ) }
   )> }
 );
@@ -480,6 +477,29 @@ export type ProfileCardQueryQuery = (
       & Pick<Role, 'id' | 'name'>
     ) }
   )> }
+);
+
+export type AttendancePageAttendanceRecordsQueryVariables = Exact<{
+  pagination: PaginationInput;
+}>;
+
+
+export type AttendancePageAttendanceRecordsQuery = (
+  { __typename?: 'Query' }
+  & { attendanceRecords: (
+    { __typename?: 'AttendanceRecordPagination' }
+    & { cursor: (
+      { __typename?: 'PaginationResultCursor' }
+      & Pick<PaginationResultCursor, 'afterCursor' | 'beforeCursor'>
+    ), data: Array<Maybe<(
+      { __typename?: 'AttendanceRecord' }
+      & Pick<AttendanceRecord, 'id' | 'startsAt' | 'endsAt'>
+      & { attendable: (
+        { __typename?: 'Attendable' }
+        & Pick<Attendable, 'id' | 'name'>
+      ) }
+    )>> }
+  ) }
 );
 
 export type IndexPageViewerQueryVariables = Exact<{ [key: string]: never; }>;
@@ -577,16 +597,10 @@ export const ProfileMenuViewerDocument = gql`
   viewer {
     user {
       id
+      display
       role {
         id
         name
-      }
-      vrchat {
-        id
-        displayName
-        currentAvatarImageUrl
-        currentAvatarThumbnailImageUrl
-        role
       }
     }
   }
@@ -715,6 +729,46 @@ export function useProfileCardQueryQuery(variables: ProfileCardQueryQueryVariabl
             return VueApolloComposable.useQuery<ProfileCardQueryQuery, ProfileCardQueryQueryVariables>(ProfileCardQueryDocument, variables, options);
           }
 export type ProfileCardQueryQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<ProfileCardQueryQuery, ProfileCardQueryQueryVariables>;
+export const AttendancePageAttendanceRecordsDocument = gql`
+    query attendancePageAttendanceRecords($pagination: PaginationInput!) {
+  attendanceRecords(pagination: $pagination) {
+    cursor {
+      afterCursor
+      beforeCursor
+    }
+    data {
+      id
+      startsAt
+      endsAt
+      attendable {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useAttendancePageAttendanceRecordsQuery__
+ *
+ * To run a query within a Vue component, call `useAttendancePageAttendanceRecordsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAttendancePageAttendanceRecordsQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useAttendancePageAttendanceRecordsQuery(
+ *   {
+ *      pagination: // value for 'pagination'
+ *   }
+ * );
+ */
+export function useAttendancePageAttendanceRecordsQuery(variables: AttendancePageAttendanceRecordsQueryVariables | VueCompositionApi.Ref<AttendancePageAttendanceRecordsQueryVariables> | ReactiveFunction<AttendancePageAttendanceRecordsQueryVariables>, options: VueApolloComposable.UseQueryOptions<AttendancePageAttendanceRecordsQuery, AttendancePageAttendanceRecordsQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<AttendancePageAttendanceRecordsQuery, AttendancePageAttendanceRecordsQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<AttendancePageAttendanceRecordsQuery, AttendancePageAttendanceRecordsQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<AttendancePageAttendanceRecordsQuery, AttendancePageAttendanceRecordsQueryVariables>(AttendancePageAttendanceRecordsDocument, variables, options);
+          }
+export type AttendancePageAttendanceRecordsQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<AttendancePageAttendanceRecordsQuery, AttendancePageAttendanceRecordsQueryVariables>;
 export const IndexPageViewerDocument = gql`
     query indexPageViewer {
   viewer {

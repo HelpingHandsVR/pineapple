@@ -1,0 +1,18 @@
+query attendancePageAttendanceRecords ($pagination: PaginationInput!) {
+  attendanceRecords (pagination: $pagination) {
+    cursor {
+      afterCursor
+      beforeCursor
+    }
+
+    data {
+      id
+      startsAt
+      endsAt
+      attendable {
+        id
+        name
+      }
+    }
+  }
+}

@@ -2,10 +2,12 @@
 import Vue from 'vue'
 
 import {ProfileMenuViewerDocument, Viewer} from '../../../../generated/composition'
+import Anon from '../../../assets/anon.png'
 
 type Data = {
   value: boolean,
   viewer: Viewer,
+  Anon: string,
 }
 
 export default {
@@ -18,6 +20,7 @@ export default {
     return {
       value: false,
       viewer: null,
+      Anon,
     }
   },
 }
@@ -33,8 +36,15 @@ export default {
         v-on='on'
         :loading='$apollo.queries.viewer.loading'
       )
-        v-avatar
-          v-img(v-if='!$apollo.queries.viewer.loading && viewer.user.vrchat', :src='viewer.user.vrchat.currentAvatarThumbnailImageUrl')
+        v-avatar(size='40px')
+          v-img(
+            v-if='!$apollo.queries.viewer.loading && viewer.user.vrchat'
+            :src='viewer.user.vrchat.currentAvatarThumbnailImageUrl'
+          )
+          v-img(
+            v-else
+            :src='Anon'
+          )
 
     v-list
       v-list-item(@click.stop, v-if='!$apollo.queries.viewer.loading && viewer.user.vrchat')
