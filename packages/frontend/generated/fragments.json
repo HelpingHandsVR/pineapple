@@ -3,15 +3,6 @@
     "types": [
       {
         "kind": "INTERFACE",
-        "name": "PaginationResult",
-        "possibleTypes": [
-          {
-            "name": "AttendanceRecordPagination"
-          }
-        ]
-      },
-      {
-        "kind": "INTERFACE",
         "name": "VRChatUserBase",
         "possibleTypes": [
           {
@@ -22,6 +13,18 @@
           },
           {
             "name": "VRChatExtendedUser"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "PaginationResult",
+        "possibleTypes": [
+          {
+            "name": "AttendablePagination"
+          },
+          {
+            "name": "AttendanceRecordPagination"
           }
         ]
       }

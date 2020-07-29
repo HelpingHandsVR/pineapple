@@ -33,6 +33,11 @@ export default Vue.extend({
           title: 'Attendance',
           to: '/attendance',
         },
+        {
+          icon: 'mdi-code-tags',
+          title: 'Playground',
+          to: '/playground',
+        },
       ],
     }
   },

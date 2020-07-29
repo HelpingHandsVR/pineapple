@@ -12,7 +12,7 @@ export type Toast = {
 
 type State = {
   dark: boolean,
-  menuOpen: boolean | null,
+  menuOpen: boolean,
   menuSmall: boolean,
   toasts: Toast[]
   theme: string,
@@ -20,7 +20,7 @@ type State = {
 
 export const state = (): State => ({
   dark: false,
-  menuOpen: null,
+  menuOpen: false,
   menuSmall: true,
   toasts: [],
   theme: 'pineapple',

@@ -1,0 +1,27 @@
+query attendanceUpsertFormAttendables ($pagination: PaginationInput!, $where: AttendablesQueryWhereInput!, $search: String!) {
+  attendables (pagination: $pagination, where: $where, search: {name: $search}) {
+    data {
+      id
+      value: id
+      text: name
+      startsAt
+      endsAt
+    }
+  }
+}
+
+query attendanceUpsertFormAttendable ($where: AttendableQueryWhereInput!) {
+  attendable (where: $where) {
+    id
+    startsAt
+    endsAt
+  }
+}
+
+mutation attendanceUpsertFormSubmit ($input: UpsertAttendaceRecordMutationInput!) {
+  upsertAttendanceRecord(input: $input) {
+    id
+    startsAt
+    endsAt
+  }
+}

@@ -37,3 +37,14 @@ export const AttendableType = objectType({
     })
   },
 })
+
+export const AttendablePagination = objectType({
+  name: 'AttendablePagination',
+  definition (t) {
+    t.implements('PaginationResult')
+    t.field('data', {
+      list: [false],
+      type: 'Attendable',
+    })
+  },
+})

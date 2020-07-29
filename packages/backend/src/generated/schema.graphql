@@ -47,6 +47,29 @@ type Attendable {
   world: VRChatWorld
 }
 
+type AttendablePagination implements PaginationResult {
+  cursor: PaginationResultCursor!
+  data: [Attendable]!
+}
+
+input AttendableQueryWhereInput {
+  id: ID!
+}
+
+input AttendablesQuerySearchInput {
+  name: String!
+}
+
+input AttendablesQueryWhereInput {
+  endsAt: AttendablesQueryWhereInputDateConstraint
+  startsAt: AttendablesQueryWhereInputDateConstraint
+}
+
+input AttendablesQueryWhereInputDateConstraint {
+  after: DateTime
+  before: DateTime
+}
+
 type AttendanceRecord {
   attendable: Attendable!
   endsAt: DateTime!
@@ -57,12 +80,6 @@ type AttendanceRecord {
 type AttendanceRecordPagination implements PaginationResult {
   cursor: PaginationResultCursor!
   data: [AttendanceRecord]!
-}
-
-input CreateAttendaceRecordMutationInput {
-  attendableId: ID!
-  endsAt: DateTime
-  startsAt: DateTime
 }
 
 """
@@ -105,7 +122,7 @@ type Mutation {
   login(input: LoginInput!): User!
   logout: Boolean!
   register(input: RegisterInput!): User!
-  upsertAttendanceRecord(input: CreateAttendaceRecordMutationInput!): AttendanceRecord!
+  upsertAttendanceRecord(input: UpsertAttendaceRecordMutationInput!): AttendanceRecord!
 }
 
 input PaginationInput {
@@ -130,6 +147,8 @@ type PaginationResultCursor {
 }
 
 type Query {
+  attendable(where: AttendableQueryWhereInput): Attendable
+  attendables(pagination: PaginationInput, search: AttendablesQuerySearchInput, where: AttendablesQueryWhereInput): AttendablePagination!
   attendanceRecords(pagination: PaginationInput): AttendanceRecordPagination!
   discordOauthURL: String!
   upcomingAttendables(input: UpcomingAttendablesQueryInput!): [Attendable]!
@@ -151,6 +170,12 @@ type Role {
 
 input UpcomingAttendablesQueryInput {
   take: Int
+}
+
+input UpsertAttendaceRecordMutationInput {
+  attendableId: ID!
+  endsAt: DateTime
+  startsAt: DateTime
 }
 
 """
