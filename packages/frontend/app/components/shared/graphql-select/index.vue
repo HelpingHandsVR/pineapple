@@ -39,6 +39,16 @@ export default Vue.extend({
     value: {
       type: String,
       required: false,
+    },
+    order: {
+      type: String,
+      required: false,
+      default: 'ASC'
+    },
+    orderBy: {
+      type: String,
+      required: false,
+      default: 'id'
     }
   },
   data () {
@@ -46,6 +56,8 @@ export default Vue.extend({
       variables: {
         pagination: {
           limit: 10,
+          order: this.order,
+          orderBy: this.orderBy,
         },
         where: {
           // Request only events that are currently running or ones that have

@@ -3,6 +3,7 @@ import AttendanceContainer from '../../components/containers/attendance/index.vu
 
 export default {
   layout: 'flush',
+  middleware: ['auth'],
   components: {
     AttendanceContainer,
   }

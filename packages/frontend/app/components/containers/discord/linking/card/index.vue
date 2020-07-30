@@ -10,6 +10,7 @@ import DiscordLinkingCardBaseUnlinked from './base-unlinked.vue'
 
 export default Vue.extend({
   name: 'discord-linking-card',
+  inject: ['theme'],
   components: {
     DiscordLinkingCardBaseLinked,
     DiscordLinkingCardBaseUnlinked,
@@ -43,28 +44,32 @@ export default Vue.extend({
     :query='dataQuery'
     :variables='variables'
     notify-on-network-status-change
+    tag=''
   )
     template(v-slot='{result: {loading, error, data}}')
-      div(v-if='loading') Loading...
+      v-fade-transition(mode='out-in')
+        v-sheet(
+          :color='`grey ${theme.isDark ? "darken-2" : "lighten-4"}`'
+          v-if='loading'
+        )
+          v-skeleton-loader(type='card', height='160', elevation='2')
 
-      discord-linking-card-base-linked(
-        v-else-if='data.user.discord'
-        :loading='loading'
-        :user='data.user'
-      )
+        discord-linking-card-base-linked(
+          v-else-if='data.user.discord'
+          :loading='loading'
+          :user='data.user'
+        )
 
-      apollo-query(
-        v-else
-        :query='urlQuery'
-        notify-on-network-status-change
-      )
-        template(v-slot='{result: {loading, error, data}}')
-          div(v-if='loading') Loading...
-
-          discord-linking-card-base-unlinked(
-            v-else-if='data.discordOauthURL'
-            :loading='loading'
-            :user='data.user'
-            :discordOauthURL='data.discordOauthURL'
-          )
+        apollo-query(
+          v-else
+          :query='urlQuery'
+          notify-on-network-status-change
+          tag=''
+        )
+          template(v-slot='{result: {loading, error, data}}')
+            discord-linking-card-base-unlinked(
+              :loading='loading'
+              :user='loading ? null : data.user'
+              :discordOauthURL='loading ? null : data.discordOauthURL'
+            )
 </template>

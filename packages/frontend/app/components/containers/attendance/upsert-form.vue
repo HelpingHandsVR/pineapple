@@ -80,6 +80,8 @@ export default Vue.extend({
       search
       auto-select-first
       hint='Showing past and current events for this week only'
+      order='DESC'
+      order-by='startsAt'
     )
       template(v-slot:item='{item}')
         span

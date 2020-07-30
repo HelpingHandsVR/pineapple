@@ -189,7 +189,7 @@ export default Vue.extend({
         @dblclick:row='(event) => $emit("dblclick:row", event)'
       )
         template(v-slot:top)
-          v-toolbar.pr-4.pl-4(flat, color='secondary')
+          v-toolbar.pr-4.pl-4(flat, color='secondary', dark)
             v-toolbar-title {{title}}
             v-spacer
             slot(name='crud-actions')

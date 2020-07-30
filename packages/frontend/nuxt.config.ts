@@ -95,14 +95,13 @@ const config: Configuration = {
    */
   apollo: {
     tokenName: 'apollo-auth',
-    errorHandler: '~/plugins/apollo-error-handler.ts',
     clientConfigs: {
-      default: '~/plugins/apollo-config.js',
+      default: '~/plugins/apollo-config.ts',
     },
     defaultOptions: {
       $query: {
-        fetchPolocy: 'cache-and-network',
-      } as any,
+        fetchPolicy: 'cache-and-network',
+      },
     },
   },
 }

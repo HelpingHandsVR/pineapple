@@ -10,7 +10,7 @@ import {
   PaginationInputOrder,
 } from '../../../../generated/composition'
 
-export default {
+export default Vue.extend({
   components: {
     TitleBar,
   },
@@ -46,8 +46,7 @@ export default {
       return DateTime.fromISO(date).toRelative()
     },
   },
-  middleware: ['auth'],
-}
+})
 </script>
 
 <template lang="pug">
@@ -55,7 +54,7 @@ export default {
     :query='AttendancePageAttendanceRecordsDocument'
     :headers='headers'
     :get-result='getResult'
-    title='Attendances'
+    title='Your attendances'
   )
     template(v-slot:item.startsAt='{item}')
       span {{formatDate(item.startsAt)}}

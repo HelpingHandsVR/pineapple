@@ -1,0 +1,13 @@
+diff --git a/node_modules/@nuxtjs/apollo/types/nuxt.d.ts b/node_modules/@nuxtjs/apollo/types/nuxt.d.ts
+index 50bce20..5b7cef1 100644
+--- a/node_modules/@nuxtjs/apollo/types/nuxt.d.ts
++++ b/node_modules/@nuxtjs/apollo/types/nuxt.d.ts
+@@ -8,7 +8,7 @@ import Vue, { ComponentOptions } from 'vue'
+ import { ApolloHelpers, CookieAttributes } from '.'
+ 
+ export interface ApolloClientConfig extends ApolloClientClientConfig<any> {
+-  httpEndpoint: string
++  httpEndpoint?: string
+   websocketsOnly?: boolean
+ }
+ 

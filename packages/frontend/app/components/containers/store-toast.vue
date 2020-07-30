@@ -7,6 +7,7 @@ type Data = {
 }
 
 export default Vue.extend({
+  name: 'store-toast',
   props: {
     timeout: {
       type: Number,
@@ -65,8 +66,24 @@ export default Vue.extend({
   }
 </style>
 
+<style lang="scss">
+  .store-toast {
+    .v-snack__wrapper {
+      width: 400px;
+    }
+
+    .v-snack__action {
+      position: absolute;
+      top: .5rem;
+      right: 0;
+    }
+  }
+</style>
+
 <template lang="pug">
-  v-snackbar(
+client-only
+  v-snackbar.store-toast(
+    app
     key='layout-toast'
     bottom
     right
@@ -75,10 +92,11 @@ export default Vue.extend({
     @input='dismiss'
     :color='first ? first.type : null'
     multi-line
+    :width='300'
   )
     template(v-slot:action='{ attrs }', v-if='first')
-      v-btn(color='accent', text, v-bind='attrs', @click='dismiss')
-        | Close
+      v-btn(color='accent', icon, v-bind='attrs', @click='dismiss')
+        v-icon(color='white') mdi-close
 
     template(v-slot:default, v-if='first')
       v-badge.toast-badge(

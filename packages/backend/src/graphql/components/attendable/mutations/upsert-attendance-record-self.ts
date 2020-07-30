@@ -50,8 +50,8 @@ export const CreateAttendaceRecordMutation = extendType({
         const existing = await context.connection.getRepository(AttendanceRecord)
           .findOne({
             where: {
-              attendable: Promise.resolve(attendable),
-              user: Promise.resolve(context.authentication.getUser()),
+              attendable: attendable.id,
+              user: context.authentication.getUser().id,
             },
           })
 
@@ -64,11 +64,11 @@ export const CreateAttendaceRecordMutation = extendType({
 
         if (existing) {
           existing.startsAt = args.input.startsAt
-            ? DateTime.max(boundaries.start, DateTime.fromISO(args.input.startsAt)).toJSDate()
+            ? DateTime.max(boundaries.start, DateTime.fromJSDate(args.input.startsAt)).toJSDate()
             : boundaries.start.toJSDate()
 
           existing.endsAt = args.input.endsAt
-            ? DateTime.min(boundaries.end, DateTime.fromISO(args.input.endsAt)).toJSDate()
+            ? DateTime.min(boundaries.end, DateTime.fromJSDate(args.input.endsAt)).toJSDate()
             : boundaries.end.toJSDate()
 
           return context.connection.getRepository(AttendanceRecord)

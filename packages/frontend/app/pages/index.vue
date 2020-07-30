@@ -36,22 +36,22 @@ export default {
 </script>
 
 <template lang="pug">
-  v-skeleton-loader(v-if='$apollo.queries.viewer.loading')
-  v-container(v-else-if='viewer')
-    v-row
-      //-
-      //- DISCORD
-      //-
+  v-fade-transition(mode='out-in')
+    v-container(v-if='viewer')
+      v-row
+        //-
+        //- DISCORD
+        //-
 
-      v-col(md='6')
-        v-container
-          discord-linking-card(:user-id='viewer.user.id')
+        v-col(md='6')
+          v-container
+            discord-linking-card(:user-id='viewer.user.id')
 
-      //-
-      //- VRCHAT
-      //-
+        //-
+        //- VRCHAT
+        //-
 
-      v-col(md='6')
-        v-container
-          vrchat-linking-card(:vrcUserId='viewer.user.vrchat')
+        v-col(md='6')
+          v-container
+            vrchat-linking-card(:vrc-user-id='viewer.user.vrchat')
 </template>

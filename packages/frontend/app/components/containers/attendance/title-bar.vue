@@ -14,23 +14,28 @@ export default Vue.extend({
   },
   data () {
     return {
+      AttendanceUpsertFormSubmitDocument,
       dialog: false,
       formValue: null,
     }
   },
-  methods: {
-    async handleSubmit () {
-      await this.$apollo.mutate({
-        mutation: AttendanceUpsertFormSubmitDocument,
-        variables: {
-          input: {
-            attendableId: this.formValue.attendable,
-            startsAt: this.formValue.timeRange ? DateTime.fromISO(this.formValue.timeRange.start).toISO() : null,
-            endsAt: this.formValue.timeRange ? DateTime.fromISO(this.formValue.timeRange.end).toISO() : null,
-          }
-        }
-      })
+  computed: {
+    variables () {
+      if (!this.formValue) {
+        return null
+      }
 
+      return {
+        input: {
+          attendableId: this.formValue.attendable,
+          startsAt: this.formValue.timeRange ? DateTime.fromISO(this.formValue.timeRange.start).toISO() : null,
+          endsAt: this.formValue.timeRange ? DateTime.fromISO(this.formValue.timeRange.end).toISO() : null,
+        }
+      }
+    }
+  },
+  methods: {
+    handleMutationDone () {
       this.dialog = false
     }
   }
@@ -52,19 +57,39 @@ export default Vue.extend({
           | Record your attendance
         v-card-subtitle
           | If you want to edit an existing record, just select the same event
-        v-card-text
-          upsert-form(v-model='formValue', @submit='handleSubmit')
+        apollo-mutation(
+          :mutation='AttendanceUpsertFormSubmitDocument'
+          :variables='variables'
+          @done='handleMutationDone'
+        )
+          template(v-slot='{mutate, loading, error}')
+            v-card-text
+              upsert-form(
+                v-model='formValue',
+                @submit='mutate'
+              )
 
-        v-card-actions
-          v-btn(
-            text
-            color='error',
-            @click.stop='dialog = false'
-          ) Cancel
+            template(v-if='error')
+              v-banner(
+                single-line
+                color='error'
+                dark
+                v-for='(graphQLError, index) in error.graphQLErrors'
+                :key='index'
+              )
+                | {{graphQLError.message}}
 
-          v-spacer
+            v-card-actions
+              v-btn(
+                text
+                color='error',
+                @click.stop='dialog = false'
+              ) Cancel
 
-          v-btn(
-            @click.stop='handleSubmit'
-          ) Submit
+              v-spacer
+
+              v-btn(
+                @click.stop='mutate'
+                :loading='loading'
+              ) Submit
 </template>
