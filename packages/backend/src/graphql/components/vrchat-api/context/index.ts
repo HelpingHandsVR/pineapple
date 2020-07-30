@@ -9,7 +9,7 @@ import { log } from '@/lib/log'
 
 export type VRChatAPIContext = {
   vrchat: {
-    ws: WebSocket,
+    ws: WebSocket | null,
   }
   dataSources: {
     vrchat: VRChatAPI | null,
@@ -17,6 +17,17 @@ export type VRChatAPIContext = {
 }
 
 export const makeVRChatAPIContext = async (config: Config, staticContext: StaticContext): Promise<VRChatAPIContext> => {
+  if (!config.vrchat.bot.username || !config.vrchat.bot.password) {
+    return {
+      vrchat: {
+        ws: null,
+      },
+      dataSources: {
+        vrchat: null,
+      },
+    }
+  }
+
   const vrchat = new VRChatAPI(config.vrchat.bot.username, config.vrchat.bot.password)
 
   // Need to perform the config request in order to obtain an auth cookie and

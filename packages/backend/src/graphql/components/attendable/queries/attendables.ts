@@ -79,6 +79,10 @@ export const AttendablesQuery = extendType({
           .createQueryBuilder('Attendable')
           .where('1 = 1')
 
+        if (args.pagination?.orderBy) {
+          qb.orderBy(args.pagination?.orderBy)
+        }
+
         if (args.search) {
           qb.andWhere('"Attendable"."name" ILIKE :name', {
             name: `%${args.search.name}%`,

@@ -1,7 +1,7 @@
 import { extendType, inputObjectType } from '@nexus/schema'
 import { AttendanceRecord, Attendable } from '~/entity'
 import { DateTime } from 'luxon'
-import { MoreThan, LessThan } from 'typeorm'
+import { LessThan } from 'typeorm'
 
 export const CreateAttendaceRecordMutationInput = inputObjectType({
   name: 'UpsertAttendaceRecordMutationInput',
@@ -38,13 +38,13 @@ export const CreateAttendaceRecordMutation = extendType({
           .findOne({
             where: {
               id: args.input.attendableId,
-              startsAt: MoreThan(DateTime.local().startOf('week').toJSDate()),
+              startsAt: LessThan(DateTime.local().toJSDate()),
               endsAt: LessThan(DateTime.local().endOf('week').toJSDate()),
             },
           })
 
         if (!attendable) {
-          throw new Error('You can only log your time on the week the event happened.')
+          throw new Error('You can only log your time on the week the event happened, after it started.')
         }
 
         const existing = await context.connection.getRepository(AttendanceRecord)

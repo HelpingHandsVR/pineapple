@@ -7,7 +7,7 @@ import { applyMiddleware } from 'graphql-middleware'
 import createHttpLogger from 'pino-http'
 
 import * as scalars from './graphql/scalars'
-import * as paginationTypes from './graphql/pagination-types'
+import * as paginationTypes from './graphql/pagination'
 
 import * as vrchatTypes from './graphql/components/vrchat-api'
 import * as discordTypes from './graphql/components/discord'

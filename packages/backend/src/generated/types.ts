@@ -50,6 +50,7 @@ export interface NexusGenInputs {
     beforeCursor?: string | null; // String
     limit?: number | null; // Int
     order?: NexusGenEnums['PaginationInputOrder'] | null; // PaginationInputOrder
+    orderBy?: string | null; // String
   }
   RegisterInput: { // input type
     display: string; // String!

@@ -35,6 +35,10 @@ export const PaginationInput = inputObjectType({
       default: 'ASC',
     })
 
+    t.string('orderBy', {
+      required: false,
+    })
+
     t.string('afterCursor', {
       required: false,
     })

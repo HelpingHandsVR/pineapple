@@ -13,6 +13,7 @@ export const UpcomingAttendablesQuery = extendType({
   type: 'Query',
   definition (t) {
     t.field('upcomingAttendables', {
+      deprecation: 'Use the "attendables" query',
       type: 'Attendable',
       list: [false],
       args: {

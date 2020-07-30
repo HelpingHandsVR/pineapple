@@ -130,6 +130,7 @@ input PaginationInput {
   beforeCursor: String
   limit: Int = 15
   order: PaginationInputOrder = ASC
+  orderBy: String
 }
 
 enum PaginationInputOrder {
@@ -151,7 +152,7 @@ type Query {
   attendables(pagination: PaginationInput, search: AttendablesQuerySearchInput, where: AttendablesQueryWhereInput): AttendablePagination!
   attendanceRecords(pagination: PaginationInput): AttendanceRecordPagination!
   discordOauthURL: String!
-  upcomingAttendables(input: UpcomingAttendablesQueryInput!): [Attendable]!
+  upcomingAttendables(input: UpcomingAttendablesQueryInput!): [Attendable]! @deprecated(reason: "Use the \"attendables\" query")
   user(where: UserQueryWhereInput!): User
   viewer: Viewer
   vrchatUser(where: VRChatUserQueryWhereInput!): VRChatUser!

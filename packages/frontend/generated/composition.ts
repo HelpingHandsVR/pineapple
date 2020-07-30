@@ -171,6 +171,7 @@ export type PaginationInput = {
   beforeCursor?: Maybe<Scalars['String']>;
   limit?: Maybe<Scalars['Int']>;
   order?: Maybe<PaginationInputOrder>;
+  orderBy?: Maybe<Scalars['String']>;
 };
 
 export enum PaginationInputOrder {
@@ -194,6 +195,7 @@ export type Query = {
   attendables: AttendablePagination;
   attendanceRecords: AttendanceRecordPagination;
   discordOauthURL: Scalars['String'];
+  /** @deprecated Use the "attendables" query */
   upcomingAttendables: Array<Maybe<Attendable>>;
   user?: Maybe<User>;
   viewer?: Maybe<Viewer>;
