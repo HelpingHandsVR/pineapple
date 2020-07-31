@@ -90,6 +90,14 @@ COPY --from=proddependencies /app/packages/frontend/node_modules /app/packages/f
 COPY --from=build /app/packages/backend/build /app/packages/backend
 COPY --from=build /app/packages/frontend/.nuxt /app/packages/frontend/.nuxt
 
+COPY --from=build /app/tsconfig.json \
+  /app/
+
+COPY --from=build \
+  /app/packages/frontend/nuxt.config.ts \
+  /app/packages/frontend/tsconfig.json \
+  /app/packages/frontend/
+
 EXPOSE 3000 4000
 
 ENTRYPOINT [ "supervisord", "-c", "/app/supervisord.conf" ]
