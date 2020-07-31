@@ -7,6 +7,9 @@ import * as Types from './types'
 import { atob } from '@/lib/base64'
 import { userAgent } from '@/lib/data-source-helpers'
 import { log } from '@/lib/log'
+import { getConfig } from '@/lib/config/coerce'
+
+const config = getConfig(process.env)
 
 export class VRChatAPI extends RESTDataSource {
   baseURL = 'https://api.vrchat.cloud/api/1'
@@ -46,7 +49,7 @@ export class VRChatAPI extends RESTDataSource {
     return response
   }
 
-  private redisCache = new RedisCache()
+  private redisCache = new RedisCache(config.redis)
 
   httpCache = new HTTPCache(this.redisCache, this.customFetch)
 

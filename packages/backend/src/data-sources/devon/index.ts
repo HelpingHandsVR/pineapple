@@ -3,11 +3,14 @@ import { RedisCache } from 'apollo-server-cache-redis'
 
 import { userAgent } from '@/lib/data-source-helpers'
 import * as Types from './types'
+import { getConfig } from '@/lib/config/coerce'
+
+const config = getConfig(process.env)
 
 export class WithDevonAPI extends RESTDataSource {
   public baseURL = 'https://vrsl.withdevon.xyz/api/v2'
 
-  private redisCache = new RedisCache()
+  private redisCache = new RedisCache(config.redis)
 
   httpCache = new HTTPCache(this.redisCache)
 

@@ -8,12 +8,17 @@ import { Attendable, User } from '~/entity'
 import { AttendableType } from '~/db/enums'
 import { BetweenDates } from '@/lib/typeorm/helpers'
 import { log as logger } from '@/lib/log'
+import { getConfig } from '@/lib/config/coerce'
+
+const config = getConfig(process.env)
 
 const log = logger.child({
   component: 'external-event-importer',
 })
 
-const devonImporter = new Queue('import events from devon')
+const devonImporter = new Queue('import events from devon', {
+  redis: config.redis,
+})
 
 enum HHWorld {
   GlobalHelpingHands = 'wrld_43955869-159c-4517-9677-661253f483bf',

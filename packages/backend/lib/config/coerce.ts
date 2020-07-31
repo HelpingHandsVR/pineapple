@@ -25,7 +25,6 @@ export const getConfig = (env: NodeJS.ProcessEnv): Config => ({
   redis: {
     host: env.REDIS_HOST,
     port: Number.parseInt(env.REDIS_PORT, 10),
-    scope: env.REDIS_SCOPE,
   },
   discord: {
     clientId: env.DISCORD_CLIENT_ID,

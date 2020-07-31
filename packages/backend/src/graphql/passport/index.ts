@@ -11,7 +11,7 @@ import { User } from '~/entity'
 
 export const applyMiddleware = async (app: Express, config: Config, connection: Connection): Promise<void> => {
   const RedisStore = createStore(session)
-  const redisClient = new Redis()
+  const redisClient = new Redis(config.redis)
 
   passport.serializeUser((user: User, done) => {
     done(null, user.id)

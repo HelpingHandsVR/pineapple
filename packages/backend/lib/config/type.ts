@@ -1,5 +1,6 @@
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
 import { LoggerOptions } from 'pino'
+import IORedis from 'ioredis'
 
 export type Config = {
   features: {
@@ -10,11 +11,7 @@ export type Config = {
   },
   db: PostgresConnectionOptions,
   log: LoggerOptions,
-  redis: {
-    port: number,
-    host: string,
-    scope: string,
-  },
+  redis: IORedis.RedisOptions,
   discord: {
     clientId: string,
     redirectUri: string,
