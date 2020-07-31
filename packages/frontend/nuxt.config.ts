@@ -41,7 +41,7 @@ const config: Configuration = {
    */
   build: {
     cache: true,
-    hardSource: true,
+    hardSource: false,
   },
   /*
    ** Global CSS

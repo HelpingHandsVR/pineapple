@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:12 as sources
+FROM mhart/alpine-node:12 as dependencysleketon
 
 RUN mkdir -p /app/packages
 
@@ -12,19 +12,32 @@ COPY \
   ./
 
 COPY \
-  packages/ \
-  ./packages/
+  packages/backend/package.json \
+  ./packages/backend/
+
+COPY \
+  packages/frontend/package.json \
+  ./packages/frontend/
 
 COPY \
   patches \
   ./patches/
 
-FROM sources as proddependencies
+RUN yarn global add lerna
+
+##
+# SOURCES
+##
+
+FROM dependencysleketon as proddependencies
 
 ENV NODE_ENV=production
 
-RUN yarn global add lerna
 RUN lerna bootstrap
+
+##
+# DEPS
+##
 
 FROM proddependencies as devdependencies
 
@@ -32,18 +45,51 @@ ENV NODE_ENV=development
 
 RUN lerna bootstrap
 
-FROM devdependencies as build
+##
+# BUILD
+##
+
+FROM dependencysleketon as build
+
+COPY --from=devdependencies \
+  /app/node_modules \
+  /app/node_modules
+
+COPY --from=devdependencies \
+  /app/packages/frontend/node_modules \
+  /app/packages/frontend/node_modules
+
+COPY --from=devdependencies \
+  /app/packages/backend/node_modules \
+  /app/packages/backend/node_modules
+
+COPY . .
 
 RUN lerna run build --stream
 
-FROM mhart/alpine-node:slim-12 as runtime
+##
+# RUNTIME
+##
+
+FROM mhart/alpine-node:slim-12 as runtime-base
+
+WORKDIR /app
+
+RUN apk add supervisor
+
+COPY \
+  conf/supervisord.conf \
+  ./
+
+FROM runtime-base as runtime
 
 COPY --from=proddependencies /app/node_modules /app/node_modules
 COPY --from=proddependencies /app/packages/backend/node_modules /app/packages/backend/node_modules
 COPY --from=proddependencies /app/packages/frontend/node_modules /app/packages/frontend/node_modules
 
-COPY --from=build /app/backend/build /app/backend
-COPY --from=build /app/frontend/.nuxt /app/frontend/.nuxt
+COPY --from=build /app/packages/backend/build /app/packages/backend
+COPY --from=build /app/packages/frontend/.nuxt /app/packages/frontend/.nuxt
 
-RUN find /app
-RUN node /app/backend/index.js
+EXPOSE 3000 4000
+
+ENTRYPOINT [ "supervisord", "-c", "/app/supervisord.conf" ]

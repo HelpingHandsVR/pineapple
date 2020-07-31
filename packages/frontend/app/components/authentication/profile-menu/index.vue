@@ -29,22 +29,23 @@ export default {
 <template lang="pug">
   v-menu(v-model='value', top, right, min-width='200px')
     template(v-slot:activator='{on, attrs}')
-      v-btn(
-        icon
-        x-large
-        v-bind='attrs'
-        v-on='on'
-        :loading='$apollo.queries.viewer.loading'
-      )
-        v-avatar(size='40px')
-          v-img(
-            v-if='!$apollo.queries.viewer.loading && viewer.user.vrchat'
-            :src='viewer.user.vrchat.currentAvatarThumbnailImageUrl'
-          )
-          v-img(
-            v-else
-            :src='Anon'
-          )
+      client-only
+        v-btn(
+          icon
+          x-large
+          v-bind='attrs'
+          v-on='on'
+          :loading='$apollo.queries.viewer.loading'
+        )
+          v-avatar(size='40px')
+            v-img(
+              v-if='!$apollo.queries.viewer.loading && viewer.user.vrchat'
+              :src='viewer.user.vrchat.currentAvatarThumbnailImageUrl'
+            )
+            v-img(
+              v-else
+              :src='Anon'
+            )
 
     v-list
       v-list-item(@click.stop, v-if='!$apollo.queries.viewer.loading && viewer.user.vrchat')

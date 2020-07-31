@@ -8,6 +8,8 @@ import { Config } from '@/lib/config/type'
 
 import * as queues from '~/queues'
 import * as entities from '~/entity'
+import * as allMigrations from '~/db/all-migrations'
+
 import { DiscordContext, makeDiscordContext } from '../components/discord/context'
 import { AuthorisationContext, makeAuthorisationContext } from '../components/authorization/context'
 import { AuthenticationContext, makeAuthenticationContext } from '../components/authentication/context'
@@ -61,7 +63,7 @@ const makeStaticContext = async (config: Config): Promise<StaticContext> => {
     connection: await createConnection({
       ...config.db,
       entities: Object.values(entities),
-      migrations: ['../../migration'],
+      migrations: Object.values(allMigrations),
       logger: new TypeormPinoLogger(),
     }),
   }
