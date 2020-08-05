@@ -21,11 +21,13 @@ const allPermissions = [
   ...fullCrudFor(Subject.ATTENDANCE_RECORD_OTHERS),
   ...fullCrudFor(Subject.ATTENDABLE_SELF),
   ...fullCrudFor(Subject.ATTENDABLE_OTHERS),
+  ...fullCrudFor(Subject.SYSTEM_ROLE),
 
   { action: Action.ATTACH, subject: Subject.DISCORD_ACCOUNT_SELF },
   { action: Action.DETACH, subject: Subject.DISCORD_ACCOUNT_OTHERS },
   { action: Action.READ, subject: Subject.DISCORD_OAUTH_REQUEST_SELF },
   { action: Action.READ, subject: Subject.SYSTEM_QUEUE },
+  { action: Action.READ, subject: Subject.SYSTEM_PERMISSION },
 ]
 
 export default class CreatePermissions implements Seeder {

@@ -36,6 +36,10 @@ export interface NexusGenInputs {
     after?: any | null; // DateTime
     before?: any | null; // DateTime
   }
+  CreateRoleMutationInput: { // input type
+    name?: string | null; // String
+    permissions?: Array<string | null> | null; // [ID]
+  }
   DiscordOauthMutationInput: { // input type
     accessToken?: string | null; // String
     expiresIn?: number | null; // Int
@@ -52,13 +56,26 @@ export interface NexusGenInputs {
     order?: NexusGenEnums['PaginationInputOrder'] | null; // PaginationInputOrder
     orderBy?: string | null; // String
   }
+  PermissionQueryWhereInput: { // input type
+    id?: string | null; // ID
+  }
   RegisterInput: { // input type
     display: string; // String!
     email: string; // String!
     password: string; // String!
   }
+  RoleQueryWhereInput: { // input type
+    id?: string | null; // ID
+  }
   UpcomingAttendablesQueryInput: { // input type
     take?: number | null; // Int
+  }
+  UpdateRoleMutationInput: { // input type
+    name?: string | null; // String
+    permissions?: Array<string | null> | null; // [ID]
+  }
+  UpdateRoleMutationWhereInput: { // input type
+    id?: string | null; // ID
   }
   UpsertAttendaceRecordMutationInput: { // input type
     attendableId: string; // ID!
@@ -76,7 +93,7 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   AbilityAction: 7 | 0 | 4 | 8 | 5 | 6 | 1 | 3 | 2
-  AbilitySubject: 11 | 10 | 9 | 8 | 5 | 4 | 6 | 3 | 2 | 7 | 12 | 1 | 0
+  AbilitySubject: 11 | 10 | 9 | 8 | 5 | 4 | 6 | 3 | 2 | 7 | 14 | 12 | 13 | 1 | 0
   PaginationInputOrder: "ASC" | "DESC"
   VRChatUserRole: 3 | 1 | 4 | 2 | 0
 }
@@ -106,10 +123,23 @@ export interface NexusGenRootTypes {
     afterCursor?: string | null; // String
     beforeCursor?: string | null; // String
   }
+  Permission: { // root type
+    action: NexusGenEnums['AbilityAction']; // AbilityAction!
+    id: string; // ID!
+    subject: NexusGenEnums['AbilitySubject']; // AbilitySubject!
+  }
+  PermissionPagination: { // root type
+    cursor: NexusGenRootTypes['PaginationResultCursor']; // PaginationResultCursor!
+    data: Array<NexusGenRootTypes['Permission'] | null>; // [Permission]!
+  }
   Query: {};
   Role: { // root type
     id: string; // ID!
     name: string; // String!
+  }
+  RolePagination: { // root type
+    cursor: NexusGenRootTypes['PaginationResultCursor']; // PaginationResultCursor!
+    data: Array<NexusGenRootTypes['Role'] | null>; // [Role]!
   }
   User: { // root type
     display: string; // String!
@@ -218,7 +248,7 @@ export interface NexusGenRootTypes {
     ability: Array<NexusGenRootTypes['Ability'] | null>; // [Ability]!
     user: NexusGenRootTypes['User']; // User!
   }
-  PaginationResult: NexusGenRootTypes['AttendablePagination'] | NexusGenRootTypes['AttendanceRecordPagination'];
+  PaginationResult: NexusGenRootTypes['AttendablePagination'] | NexusGenRootTypes['AttendanceRecordPagination'] | NexusGenRootTypes['PermissionPagination'] | NexusGenRootTypes['RolePagination'];
   VRChatUserBase: NexusGenRootTypes['VRChatUser'] | NexusGenRootTypes['VRChatLimitedUser'] | NexusGenRootTypes['VRChatExtendedUser'];
   String: string;
   Int: number;
@@ -235,11 +265,16 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   AttendablesQuerySearchInput: NexusGenInputs['AttendablesQuerySearchInput'];
   AttendablesQueryWhereInput: NexusGenInputs['AttendablesQueryWhereInput'];
   AttendablesQueryWhereInputDateConstraint: NexusGenInputs['AttendablesQueryWhereInputDateConstraint'];
+  CreateRoleMutationInput: NexusGenInputs['CreateRoleMutationInput'];
   DiscordOauthMutationInput: NexusGenInputs['DiscordOauthMutationInput'];
   LoginInput: NexusGenInputs['LoginInput'];
   PaginationInput: NexusGenInputs['PaginationInput'];
+  PermissionQueryWhereInput: NexusGenInputs['PermissionQueryWhereInput'];
   RegisterInput: NexusGenInputs['RegisterInput'];
+  RoleQueryWhereInput: NexusGenInputs['RoleQueryWhereInput'];
   UpcomingAttendablesQueryInput: NexusGenInputs['UpcomingAttendablesQueryInput'];
+  UpdateRoleMutationInput: NexusGenInputs['UpdateRoleMutationInput'];
+  UpdateRoleMutationWhereInput: NexusGenInputs['UpdateRoleMutationWhereInput'];
   UpsertAttendaceRecordMutationInput: NexusGenInputs['UpsertAttendaceRecordMutationInput'];
   UserQueryWhereInput: NexusGenInputs['UserQueryWhereInput'];
   VRChatUserQueryWhereInput: NexusGenInputs['VRChatUserQueryWhereInput'];
@@ -289,30 +324,50 @@ export interface NexusGenFieldTypes {
     username: string; // String!
   }
   Mutation: { // field return type
+    createRole: NexusGenRootTypes['Role']; // Role!
     discordOauthCallback: NexusGenRootTypes['DiscordUser']; // DiscordUser!
     login: NexusGenRootTypes['User']; // User!
     logout: boolean; // Boolean!
     register: NexusGenRootTypes['User']; // User!
     seed: string; // String!
+    updateRole: NexusGenRootTypes['Role']; // Role!
     upsertAttendanceRecord: NexusGenRootTypes['AttendanceRecord']; // AttendanceRecord!
   }
   PaginationResultCursor: { // field return type
     afterCursor: string | null; // String
     beforeCursor: string | null; // String
   }
+  Permission: { // field return type
+    action: NexusGenEnums['AbilityAction']; // AbilityAction!
+    id: string; // ID!
+    subject: NexusGenEnums['AbilitySubject']; // AbilitySubject!
+  }
+  PermissionPagination: { // field return type
+    cursor: NexusGenRootTypes['PaginationResultCursor']; // PaginationResultCursor!
+    data: Array<NexusGenRootTypes['Permission'] | null>; // [Permission]!
+  }
   Query: { // field return type
     attendable: NexusGenRootTypes['Attendable'] | null; // Attendable
     attendables: NexusGenRootTypes['AttendablePagination']; // AttendablePagination!
     attendanceRecords: NexusGenRootTypes['AttendanceRecordPagination']; // AttendanceRecordPagination!
     discordOauthURL: string; // String!
+    permission: NexusGenRootTypes['Permission'] | null; // Permission
+    permissions: NexusGenRootTypes['PermissionPagination']; // PermissionPagination!
+    role: NexusGenRootTypes['Role'] | null; // Role
+    roles: NexusGenRootTypes['RolePagination']; // RolePagination!
     upcomingAttendables: Array<NexusGenRootTypes['Attendable'] | null>; // [Attendable]!
     user: NexusGenRootTypes['User'] | null; // User
     viewer: NexusGenRootTypes['Viewer'] | null; // Viewer
     vrchatUser: NexusGenRootTypes['VRChatUser']; // VRChatUser!
   }
   Role: { // field return type
+    ability: Array<NexusGenRootTypes['Ability'] | null>; // [Ability]!
     id: string; // ID!
     name: string; // String!
+  }
+  RolePagination: { // field return type
+    cursor: NexusGenRootTypes['PaginationResultCursor']; // PaginationResultCursor!
+    data: Array<NexusGenRootTypes['Role'] | null>; // [Role]!
   }
   User: { // field return type
     discord: NexusGenRootTypes['DiscordAccount'] | null; // DiscordAccount
@@ -454,6 +509,9 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createRole: { // args
+      input: NexusGenInputs['CreateRoleMutationInput']; // CreateRoleMutationInput!
+    }
     discordOauthCallback: { // args
       input: NexusGenInputs['DiscordOauthMutationInput']; // DiscordOauthMutationInput!
     }
@@ -462,6 +520,10 @@ export interface NexusGenArgTypes {
     }
     register: { // args
       input: NexusGenInputs['RegisterInput']; // RegisterInput!
+    }
+    updateRole: { // args
+      input: NexusGenInputs['UpdateRoleMutationInput']; // UpdateRoleMutationInput!
+      where: NexusGenInputs['UpdateRoleMutationWhereInput']; // UpdateRoleMutationWhereInput!
     }
     upsertAttendanceRecord: { // args
       input: NexusGenInputs['UpsertAttendaceRecordMutationInput']; // UpsertAttendaceRecordMutationInput!
@@ -479,6 +541,18 @@ export interface NexusGenArgTypes {
     attendanceRecords: { // args
       pagination?: NexusGenInputs['PaginationInput'] | null; // PaginationInput
     }
+    permission: { // args
+      where: NexusGenInputs['PermissionQueryWhereInput']; // PermissionQueryWhereInput!
+    }
+    permissions: { // args
+      pagination?: NexusGenInputs['PaginationInput'] | null; // PaginationInput
+    }
+    role: { // args
+      where: NexusGenInputs['RoleQueryWhereInput']; // RoleQueryWhereInput!
+    }
+    roles: { // args
+      pagination?: NexusGenInputs['PaginationInput'] | null; // PaginationInput
+    }
     upcomingAttendables: { // args
       input: NexusGenInputs['UpcomingAttendablesQueryInput']; // UpcomingAttendablesQueryInput!
     }
@@ -492,15 +566,15 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
-  PaginationResult: "AttendablePagination" | "AttendanceRecordPagination"
+  PaginationResult: "AttendablePagination" | "AttendanceRecordPagination" | "PermissionPagination" | "RolePagination"
   VRChatUserBase: "VRChatUser" | "VRChatLimitedUser" | "VRChatExtendedUser"
 }
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Ability" | "Attendable" | "AttendablePagination" | "AttendanceRecord" | "AttendanceRecordPagination" | "DiscordAccount" | "DiscordUser" | "Mutation" | "PaginationResultCursor" | "Query" | "Role" | "User" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatLimitedUser" | "VRChatUser" | "VRChatWorld" | "VRChatWorldInstance" | "Viewer";
+export type NexusGenObjectNames = "Ability" | "Attendable" | "AttendablePagination" | "AttendanceRecord" | "AttendanceRecordPagination" | "DiscordAccount" | "DiscordUser" | "Mutation" | "PaginationResultCursor" | "Permission" | "PermissionPagination" | "Query" | "Role" | "RolePagination" | "User" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatLimitedUser" | "VRChatUser" | "VRChatWorld" | "VRChatWorldInstance" | "Viewer";
 
-export type NexusGenInputNames = "AttendableQueryWhereInput" | "AttendablesQuerySearchInput" | "AttendablesQueryWhereInput" | "AttendablesQueryWhereInputDateConstraint" | "DiscordOauthMutationInput" | "LoginInput" | "PaginationInput" | "RegisterInput" | "UpcomingAttendablesQueryInput" | "UpsertAttendaceRecordMutationInput" | "UserQueryWhereInput" | "VRChatUserQueryWhereInput";
+export type NexusGenInputNames = "AttendableQueryWhereInput" | "AttendablesQuerySearchInput" | "AttendablesQueryWhereInput" | "AttendablesQueryWhereInputDateConstraint" | "CreateRoleMutationInput" | "DiscordOauthMutationInput" | "LoginInput" | "PaginationInput" | "PermissionQueryWhereInput" | "RegisterInput" | "RoleQueryWhereInput" | "UpcomingAttendablesQueryInput" | "UpdateRoleMutationInput" | "UpdateRoleMutationWhereInput" | "UpsertAttendaceRecordMutationInput" | "UserQueryWhereInput" | "VRChatUserQueryWhereInput";
 
 export type NexusGenEnumNames = "AbilityAction" | "AbilitySubject" | "PaginationInputOrder" | "VRChatUserRole";
 

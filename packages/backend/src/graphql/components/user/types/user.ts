@@ -1,6 +1,6 @@
 import { objectType } from '@nexus/schema'
 
-export const User = objectType({
+export const UserType = objectType({
   name: 'User',
   definition (t) {
     t.id('id')

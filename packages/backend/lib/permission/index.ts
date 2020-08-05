@@ -35,4 +35,6 @@ export enum Subject {
   ATTENDABLE_OTHERS,
 
   SYSTEM_QUEUE,
+  SYSTEM_ROLE,
+  SYSTEM_PERMISSION,
 }

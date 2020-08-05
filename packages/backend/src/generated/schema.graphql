@@ -30,7 +30,9 @@ enum AbilitySubject {
   LESSON_OTHERS
   LESSON_SELF
   PERMISSION_SELF
+  SYSTEM_PERMISSION
   SYSTEM_QUEUE
+  SYSTEM_ROLE
   USER_OTHERS
   USER_SELF
 }
@@ -82,6 +84,11 @@ type AttendanceRecordPagination implements PaginationResult {
   data: [AttendanceRecord]!
 }
 
+input CreateRoleMutationInput {
+  name: String
+  permissions: [ID]
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO
@@ -118,11 +125,13 @@ input LoginInput {
 }
 
 type Mutation {
+  createRole(input: CreateRoleMutationInput!): Role!
   discordOauthCallback(input: DiscordOauthMutationInput!): DiscordUser!
   login(input: LoginInput!): User!
   logout: Boolean!
   register(input: RegisterInput!): User!
   seed: String!
+  updateRole(input: UpdateRoleMutationInput!, where: UpdateRoleMutationWhereInput!): Role!
   upsertAttendanceRecord(input: UpsertAttendaceRecordMutationInput!): AttendanceRecord!
 }
 
@@ -148,11 +157,30 @@ type PaginationResultCursor {
   beforeCursor: String
 }
 
+type Permission {
+  action: AbilityAction!
+  id: ID!
+  subject: AbilitySubject!
+}
+
+type PermissionPagination implements PaginationResult {
+  cursor: PaginationResultCursor!
+  data: [Permission]!
+}
+
+input PermissionQueryWhereInput {
+  id: ID
+}
+
 type Query {
   attendable(where: AttendableQueryWhereInput): Attendable
   attendables(pagination: PaginationInput, search: AttendablesQuerySearchInput, where: AttendablesQueryWhereInput): AttendablePagination!
   attendanceRecords(pagination: PaginationInput): AttendanceRecordPagination!
   discordOauthURL: String!
+  permission(where: PermissionQueryWhereInput!): Permission
+  permissions(pagination: PaginationInput): PermissionPagination!
+  role(where: RoleQueryWhereInput!): Role
+  roles(pagination: PaginationInput): RolePagination!
   upcomingAttendables(input: UpcomingAttendablesQueryInput!): [Attendable]! @deprecated(reason: "Use the \"attendables\" query")
   user(where: UserQueryWhereInput!): User
   viewer: Viewer
@@ -166,12 +194,31 @@ input RegisterInput {
 }
 
 type Role {
+  ability: [Ability]!
   id: ID!
   name: String!
 }
 
+type RolePagination implements PaginationResult {
+  cursor: PaginationResultCursor!
+  data: [Role]!
+}
+
+input RoleQueryWhereInput {
+  id: ID
+}
+
 input UpcomingAttendablesQueryInput {
   take: Int
+}
+
+input UpdateRoleMutationInput {
+  name: String
+  permissions: [ID]
+}
+
+input UpdateRoleMutationWhereInput {
+  id: ID
 }
 
 input UpsertAttendaceRecordMutationInput {
