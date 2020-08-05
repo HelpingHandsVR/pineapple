@@ -1,6 +1,6 @@
 <script lang="ts">
-import LoginForm from '../components/authentication/login-form/index.vue'
-import RegisterForm from '../components/authentication/register-form/index.vue'
+import LoginForm from '../components/containers/authentication/login-form/index.vue'
+import RegisterForm from '../components/containers/authentication/register-form/index.vue'
 
 const cardBackground = require('~/assets/pineapple-bg.jpg')
 

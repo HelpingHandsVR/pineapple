@@ -4,7 +4,7 @@ import {mapGetters, mapMutations} from 'vuex'
 
 import {ProfileMenuLogoutDocument} from '../../../../generated/composition'
 
-import ProfileMenu from '../../authentication/profile-menu/index.vue'
+import ProfileMenu from '../../containers/authentication/profile-menu/index.vue'
 import StoreToast from '../../containers/store-toast.vue'
 import StoreTheme from '../../containers/store-theme.vue'
 import NavigationDrawer from '../../containers/navigation/drawer.vue'

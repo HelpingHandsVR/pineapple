@@ -430,6 +430,51 @@ export type VrChatWorldInstance = {
   players: Scalars['Int'];
 };
 
+export type AttendanceUpsertFormAttendablesQueryVariables = Exact<{
+  pagination: PaginationInput;
+  where: AttendablesQueryWhereInput;
+  search: Scalars['String'];
+}>;
+
+
+export type AttendanceUpsertFormAttendablesQuery = (
+  { __typename?: 'Query' }
+  & { attendables: (
+    { __typename?: 'AttendablePagination' }
+    & { data: Array<Maybe<(
+      { __typename?: 'Attendable' }
+      & Pick<Attendable, 'id' | 'startsAt' | 'endsAt'>
+      & { value: Attendable['id'], text: Attendable['name'] }
+    )>> }
+  ) }
+);
+
+export type AttendanceUpsertFormAttendableQueryVariables = Exact<{
+  where: AttendableQueryWhereInput;
+}>;
+
+
+export type AttendanceUpsertFormAttendableQuery = (
+  { __typename?: 'Query' }
+  & { attendable?: Maybe<(
+    { __typename?: 'Attendable' }
+    & Pick<Attendable, 'id' | 'startsAt' | 'endsAt'>
+  )> }
+);
+
+export type AttendanceUpsertFormSubmitMutationVariables = Exact<{
+  input: UpsertAttendaceRecordMutationInput;
+}>;
+
+
+export type AttendanceUpsertFormSubmitMutation = (
+  { __typename?: 'Mutation' }
+  & { upsertAttendanceRecord: (
+    { __typename?: 'AttendanceRecord' }
+    & Pick<AttendanceRecord, 'id' | 'startsAt' | 'endsAt'>
+  ) }
+);
+
 export type LoginFormLoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -484,51 +529,6 @@ export type RegisterFormRegisterMutation = (
       { __typename?: 'Role' }
       & Pick<Role, 'id' | 'name'>
     ) }
-  ) }
-);
-
-export type AttendanceUpsertFormAttendablesQueryVariables = Exact<{
-  pagination: PaginationInput;
-  where: AttendablesQueryWhereInput;
-  search: Scalars['String'];
-}>;
-
-
-export type AttendanceUpsertFormAttendablesQuery = (
-  { __typename?: 'Query' }
-  & { attendables: (
-    { __typename?: 'AttendablePagination' }
-    & { data: Array<Maybe<(
-      { __typename?: 'Attendable' }
-      & Pick<Attendable, 'id' | 'startsAt' | 'endsAt'>
-      & { value: Attendable['id'], text: Attendable['name'] }
-    )>> }
-  ) }
-);
-
-export type AttendanceUpsertFormAttendableQueryVariables = Exact<{
-  where: AttendableQueryWhereInput;
-}>;
-
-
-export type AttendanceUpsertFormAttendableQuery = (
-  { __typename?: 'Query' }
-  & { attendable?: Maybe<(
-    { __typename?: 'Attendable' }
-    & Pick<Attendable, 'id' | 'startsAt' | 'endsAt'>
-  )> }
-);
-
-export type AttendanceUpsertFormSubmitMutationVariables = Exact<{
-  input: UpsertAttendaceRecordMutationInput;
-}>;
-
-
-export type AttendanceUpsertFormSubmitMutation = (
-  { __typename?: 'Mutation' }
-  & { upsertAttendanceRecord: (
-    { __typename?: 'AttendanceRecord' }
-    & Pick<AttendanceRecord, 'id' | 'startsAt' | 'endsAt'>
   ) }
 );
 
@@ -639,6 +639,103 @@ export type DiscordOauthCallbackMutation = (
 );
 
 
+export const AttendanceUpsertFormAttendablesDocument = gql`
+    query attendanceUpsertFormAttendables($pagination: PaginationInput!, $where: AttendablesQueryWhereInput!, $search: String!) {
+  attendables(pagination: $pagination, where: $where, search: {name: $search}) {
+    data {
+      id
+      value: id
+      text: name
+      startsAt
+      endsAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useAttendanceUpsertFormAttendablesQuery__
+ *
+ * To run a query within a Vue component, call `useAttendanceUpsertFormAttendablesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAttendanceUpsertFormAttendablesQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useAttendanceUpsertFormAttendablesQuery(
+ *   {
+ *      pagination: // value for 'pagination'
+ *      where: // value for 'where'
+ *      search: // value for 'search'
+ *   }
+ * );
+ */
+export function useAttendanceUpsertFormAttendablesQuery(variables: AttendanceUpsertFormAttendablesQueryVariables | VueCompositionApi.Ref<AttendanceUpsertFormAttendablesQueryVariables> | ReactiveFunction<AttendanceUpsertFormAttendablesQueryVariables>, options: VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables>(AttendanceUpsertFormAttendablesDocument, variables, options);
+          }
+export type AttendanceUpsertFormAttendablesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables>;
+export const AttendanceUpsertFormAttendableDocument = gql`
+    query attendanceUpsertFormAttendable($where: AttendableQueryWhereInput!) {
+  attendable(where: $where) {
+    id
+    startsAt
+    endsAt
+  }
+}
+    `;
+
+/**
+ * __useAttendanceUpsertFormAttendableQuery__
+ *
+ * To run a query within a Vue component, call `useAttendanceUpsertFormAttendableQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAttendanceUpsertFormAttendableQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useAttendanceUpsertFormAttendableQuery(
+ *   {
+ *      where: // value for 'where'
+ *   }
+ * );
+ */
+export function useAttendanceUpsertFormAttendableQuery(variables: AttendanceUpsertFormAttendableQueryVariables | VueCompositionApi.Ref<AttendanceUpsertFormAttendableQueryVariables> | ReactiveFunction<AttendanceUpsertFormAttendableQueryVariables>, options: VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables>(AttendanceUpsertFormAttendableDocument, variables, options);
+          }
+export type AttendanceUpsertFormAttendableQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables>;
+export const AttendanceUpsertFormSubmitDocument = gql`
+    mutation attendanceUpsertFormSubmit($input: UpsertAttendaceRecordMutationInput!) {
+  upsertAttendanceRecord(input: $input) {
+    id
+    startsAt
+    endsAt
+  }
+}
+    `;
+
+/**
+ * __useAttendanceUpsertFormSubmitMutation__
+ *
+ * To run a mutation, you first call `useAttendanceUpsertFormSubmitMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useAttendanceUpsertFormSubmitMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useAttendanceUpsertFormSubmitMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAttendanceUpsertFormSubmitMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables>) {
+            return VueApolloComposable.useMutation<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables>(AttendanceUpsertFormSubmitDocument, options);
+          }
+export type AttendanceUpsertFormSubmitMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables>;
 export const LoginFormLoginDocument = gql`
     mutation loginFormLogin($email: String!, $password: String!) {
   loginFormLogin: login(input: {email: $email, password: $password}) {
@@ -763,103 +860,6 @@ export function useRegisterFormRegisterMutation(options: VueApolloComposable.Use
             return VueApolloComposable.useMutation<RegisterFormRegisterMutation, RegisterFormRegisterMutationVariables>(RegisterFormRegisterDocument, options);
           }
 export type RegisterFormRegisterMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<RegisterFormRegisterMutation, RegisterFormRegisterMutationVariables>;
-export const AttendanceUpsertFormAttendablesDocument = gql`
-    query attendanceUpsertFormAttendables($pagination: PaginationInput!, $where: AttendablesQueryWhereInput!, $search: String!) {
-  attendables(pagination: $pagination, where: $where, search: {name: $search}) {
-    data {
-      id
-      value: id
-      text: name
-      startsAt
-      endsAt
-    }
-  }
-}
-    `;
-
-/**
- * __useAttendanceUpsertFormAttendablesQuery__
- *
- * To run a query within a Vue component, call `useAttendanceUpsertFormAttendablesQuery` and pass it any options that fit your needs.
- * When your component renders, `useAttendanceUpsertFormAttendablesQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useAttendanceUpsertFormAttendablesQuery(
- *   {
- *      pagination: // value for 'pagination'
- *      where: // value for 'where'
- *      search: // value for 'search'
- *   }
- * );
- */
-export function useAttendanceUpsertFormAttendablesQuery(variables: AttendanceUpsertFormAttendablesQueryVariables | VueCompositionApi.Ref<AttendanceUpsertFormAttendablesQueryVariables> | ReactiveFunction<AttendanceUpsertFormAttendablesQueryVariables>, options: VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables>(AttendanceUpsertFormAttendablesDocument, variables, options);
-          }
-export type AttendanceUpsertFormAttendablesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables>;
-export const AttendanceUpsertFormAttendableDocument = gql`
-    query attendanceUpsertFormAttendable($where: AttendableQueryWhereInput!) {
-  attendable(where: $where) {
-    id
-    startsAt
-    endsAt
-  }
-}
-    `;
-
-/**
- * __useAttendanceUpsertFormAttendableQuery__
- *
- * To run a query within a Vue component, call `useAttendanceUpsertFormAttendableQuery` and pass it any options that fit your needs.
- * When your component renders, `useAttendanceUpsertFormAttendableQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useAttendanceUpsertFormAttendableQuery(
- *   {
- *      where: // value for 'where'
- *   }
- * );
- */
-export function useAttendanceUpsertFormAttendableQuery(variables: AttendanceUpsertFormAttendableQueryVariables | VueCompositionApi.Ref<AttendanceUpsertFormAttendableQueryVariables> | ReactiveFunction<AttendanceUpsertFormAttendableQueryVariables>, options: VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables>(AttendanceUpsertFormAttendableDocument, variables, options);
-          }
-export type AttendanceUpsertFormAttendableQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables>;
-export const AttendanceUpsertFormSubmitDocument = gql`
-    mutation attendanceUpsertFormSubmit($input: UpsertAttendaceRecordMutationInput!) {
-  upsertAttendanceRecord(input: $input) {
-    id
-    startsAt
-    endsAt
-  }
-}
-    `;
-
-/**
- * __useAttendanceUpsertFormSubmitMutation__
- *
- * To run a mutation, you first call `useAttendanceUpsertFormSubmitMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useAttendanceUpsertFormSubmitMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useAttendanceUpsertFormSubmitMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useAttendanceUpsertFormSubmitMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables>) {
-            return VueApolloComposable.useMutation<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables>(AttendanceUpsertFormSubmitDocument, options);
-          }
-export type AttendanceUpsertFormSubmitMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables>;
 export const DiscordLinkingCardQueryDocument = gql`
     query discordLinkingCardQuery($where: UserQueryWhereInput!) {
   user(where: $where) {

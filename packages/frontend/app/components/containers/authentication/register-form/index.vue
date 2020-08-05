@@ -7,7 +7,7 @@ import RegisterFormBase, { RegisterFormData } from './base.vue'
 import {
   RegisterFormRegisterDocument,
   User,
-} from '../../../../generated/composition'
+} from '../../../../../generated/composition'
 
 export default Vue.extend({
   components: {

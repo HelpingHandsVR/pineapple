@@ -6,11 +6,27 @@ type Item = {
   icon: string,
   title: string,
   to: string,
+  hide?: boolean,
 }
 
-type Data = {
-  items: Item[],
-}
+const menuItems: Item[] = [
+  {
+    icon: 'mdi-apps',
+    title: 'Welcome',
+    to: '/',
+  },
+  {
+    icon: 'mdi-timeline-clock',
+    title: 'Attendance',
+    to: '/attendance',
+  },
+  {
+    icon: 'mdi-code-tags',
+    title: 'Playground',
+    to: '/playground',
+    hide: process.env.NODE_ENV !== 'development',
+  },
+]
 
 export default Vue.extend({
   props: {
@@ -20,34 +36,16 @@ export default Vue.extend({
     }
   },
 
-  data (): Data {
-    return {
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/',
-        },
-        {
-          icon: 'mdi-timeline-clock',
-          title: 'Attendance',
-          to: '/attendance',
-        },
-        {
-          icon: 'mdi-code-tags',
-          title: 'Playground',
-          to: '/playground',
-        },
-      ],
-    }
-  },
-
   computed: {
     ...mapGetters({
       dark: 'ui/isDark',
       theme: 'ui/themeName',
       loggedIn: 'auth/loggedIn',
     }),
+
+    items () {
+      return menuItems.filter((item) => !item.hide)
+    },
 
     forceLarge () {
       // On mobile, `mini` will cause text to disappear from the menu, so we

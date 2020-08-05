@@ -32,11 +32,11 @@ const handleServer = ({ store, req }: Context): void => {
       getItem (key) {
         return userCookie[key]
       },
-      setItem () {
-        return null
+      setItem (key, value) {
+        userCookie[key] = value
       },
-      removeItem () {
-        return null
+      removeItem (key) {
+        Reflect.deleteProperty(userCookie, key)
       },
     },
   })(store)

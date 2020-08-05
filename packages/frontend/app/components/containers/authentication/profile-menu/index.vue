@@ -1,8 +1,9 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import {ProfileMenuViewerDocument, Viewer} from '../../../../generated/composition'
-import Anon from '../../../assets/anon.png'
+import {ProfileMenuViewerDocument, Viewer} from '../../../../../generated/composition'
+
+const Anon = require('../../../../assets/anon.png')
 
 type Data = {
   value: boolean,
@@ -27,7 +28,7 @@ export default {
 </script>
 
 <template lang="pug">
-  v-menu(v-model='value', top, right, min-width='200px')
+  v-menu(v-model='value', top, right, min-width='300px')
     template(v-slot:activator='{on, attrs}')
       client-only
         v-btn(
@@ -47,15 +48,24 @@ export default {
               :src='Anon'
             )
 
-    v-list
+    v-list(v-if='viewer')
       v-list-item(@click.stop, v-if='!$apollo.queries.viewer.loading && viewer.user.vrchat')
         v-list-item-content
           v-list-item-title
             b {{viewer.user.vrchat.displayName}}
           v-list-item-subtitle VRC role: {{viewer.user.vrchat.role}}
           v-list-item-subtitle Pineapple role: {{viewer.user.role.name}}
-        v-list-item-avatar(size='64px')
+        v-list-item-avatar(size='40px')
           v-img(:src='viewer.user.vrchat.currentAvatarThumbnailImageUrl')
+
+      v-list-item(v-else)
+        v-list-item-content
+          v-list-item-title
+            b {{viewer.user.display}}
+            v-list-item-subtitle Role: {{viewer.user.role.name}}
+
+        v-list-item-avatar(size='40px')
+          v-img(:src='Anon')
 
       v-divider
 
