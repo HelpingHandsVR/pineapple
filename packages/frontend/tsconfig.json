@@ -15,6 +15,9 @@
       ],
       "@/*": [
         "./app/*"
+      ],
+      "@casl/vue/patch": [
+        "src/shims-ability.d.ts"
       ]
     },
     "types": [

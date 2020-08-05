@@ -55,7 +55,9 @@ export enum AbilitySubject {
   LessonOthers = 'LESSON_OTHERS',
   LessonSelf = 'LESSON_SELF',
   PermissionSelf = 'PERMISSION_SELF',
+  SystemPermission = 'SYSTEM_PERMISSION',
   SystemQueue = 'SYSTEM_QUEUE',
+  SystemRole = 'SYSTEM_ROLE',
   UserOthers = 'USER_OTHERS',
   UserSelf = 'USER_SELF'
 }
@@ -111,6 +113,11 @@ export type AttendanceRecordPagination = PaginationResult & {
   data: Array<Maybe<AttendanceRecord>>;
 };
 
+export type CreateRoleMutationInput = {
+  name?: Maybe<Scalars['String']>;
+  permissions?: Maybe<Array<Maybe<Scalars['ID']>>>;
+};
+
 
 export type DiscordAccount = {
   __typename?: 'DiscordAccount';
@@ -139,12 +146,19 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createRole: Role;
   discordOauthCallback: DiscordUser;
   login: User;
   logout: Scalars['Boolean'];
   register: User;
   seed: Scalars['String'];
+  updateRole: Role;
   upsertAttendanceRecord: AttendanceRecord;
+};
+
+
+export type MutationCreateRoleArgs = {
+  input: CreateRoleMutationInput;
 };
 
 
@@ -160,6 +174,12 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   input: RegisterInput;
+};
+
+
+export type MutationUpdateRoleArgs = {
+  input: UpdateRoleMutationInput;
+  where: UpdateRoleMutationWhereInput;
 };
 
 
@@ -190,12 +210,33 @@ export type PaginationResultCursor = {
   beforeCursor?: Maybe<Scalars['String']>;
 };
 
+export type Permission = {
+  __typename?: 'Permission';
+  action: AbilityAction;
+  id: Scalars['ID'];
+  subject: AbilitySubject;
+};
+
+export type PermissionPagination = PaginationResult & {
+  __typename?: 'PermissionPagination';
+  cursor: PaginationResultCursor;
+  data: Array<Maybe<Permission>>;
+};
+
+export type PermissionQueryWhereInput = {
+  id?: Maybe<Scalars['ID']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   attendable?: Maybe<Attendable>;
   attendables: AttendablePagination;
   attendanceRecords: AttendanceRecordPagination;
   discordOauthURL: Scalars['String'];
+  permission?: Maybe<Permission>;
+  permissions: PermissionPagination;
+  role?: Maybe<Role>;
+  roles: RolePagination;
   /** @deprecated Use the "attendables" query */
   upcomingAttendables: Array<Maybe<Attendable>>;
   user?: Maybe<User>;
@@ -217,6 +258,26 @@ export type QueryAttendablesArgs = {
 
 
 export type QueryAttendanceRecordsArgs = {
+  pagination?: Maybe<PaginationInput>;
+};
+
+
+export type QueryPermissionArgs = {
+  where: PermissionQueryWhereInput;
+};
+
+
+export type QueryPermissionsArgs = {
+  pagination?: Maybe<PaginationInput>;
+};
+
+
+export type QueryRoleArgs = {
+  where: RoleQueryWhereInput;
+};
+
+
+export type QueryRolesArgs = {
   pagination?: Maybe<PaginationInput>;
 };
 
@@ -243,12 +304,32 @@ export type RegisterInput = {
 
 export type Role = {
   __typename?: 'Role';
+  ability: Array<Maybe<Ability>>;
   id: Scalars['ID'];
   name: Scalars['String'];
 };
 
+export type RolePagination = PaginationResult & {
+  __typename?: 'RolePagination';
+  cursor: PaginationResultCursor;
+  data: Array<Maybe<Role>>;
+};
+
+export type RoleQueryWhereInput = {
+  id?: Maybe<Scalars['ID']>;
+};
+
 export type UpcomingAttendablesQueryInput = {
   take?: Maybe<Scalars['Int']>;
+};
+
+export type UpdateRoleMutationInput = {
+  name?: Maybe<Scalars['String']>;
+  permissions?: Maybe<Array<Maybe<Scalars['ID']>>>;
+};
+
+export type UpdateRoleMutationWhereInput = {
+  id?: Maybe<Scalars['ID']>;
 };
 
 export type UpsertAttendaceRecordMutationInput = {
@@ -486,6 +567,14 @@ export type LoginFormLoginMutation = (
   & { loginFormLogin: (
     { __typename?: 'User' }
     & Pick<User, 'id'>
+    & { role: (
+      { __typename?: 'Role' }
+      & Pick<Role, 'id' | 'name'>
+      & { ability: Array<Maybe<(
+        { __typename?: 'Ability' }
+        & Pick<Ability, 'action' | 'subject'>
+      )>> }
+    ) }
   ) }
 );
 
@@ -510,6 +599,10 @@ export type ProfileMenuViewerQuery = (
       & { role: (
         { __typename?: 'Role' }
         & Pick<Role, 'id' | 'name'>
+        & { ability: Array<Maybe<(
+          { __typename?: 'Ability' }
+          & Pick<Ability, 'action' | 'subject'>
+        )>> }
       ) }
     ) }
   )> }
@@ -740,6 +833,14 @@ export const LoginFormLoginDocument = gql`
     mutation loginFormLogin($email: String!, $password: String!) {
   loginFormLogin: login(input: {email: $email, password: $password}) {
     id
+    role {
+      id
+      name
+      ability {
+        action
+        subject
+      }
+    }
   }
 }
     `;
@@ -801,6 +902,10 @@ export const ProfileMenuViewerDocument = gql`
       role {
         id
         name
+        ability {
+          action
+          subject
+        }
       }
     }
   }

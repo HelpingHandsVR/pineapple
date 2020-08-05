@@ -26,6 +26,11 @@ const menuItems: Item[] = [
     to: '/playground',
     hide: process.env.NODE_ENV !== 'development',
   },
+  {
+    icon: 'mdi-cog',
+    title: 'System preferences',
+    to: '/admin',
+  },
 ]
 
 export default Vue.extend({

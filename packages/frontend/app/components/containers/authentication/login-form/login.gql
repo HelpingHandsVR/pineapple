@@ -4,5 +4,13 @@ mutation loginFormLogin ($email: String!, $password: String!) {
     password: $password
   }) {
     id
+    role {
+      id
+      name
+      ability {
+        action
+        subject
+      }
+    }
   }
 }

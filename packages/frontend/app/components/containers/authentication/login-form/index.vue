@@ -22,9 +22,12 @@ export default Vue.extend({
     ...mapMutations({
       setLoggedIn: 'auth/setLoggedIn'
     }),
-    onLoginComplete () {
+    onLoginComplete (rules: unknown) {
       this.loading = false
       this.setLoggedIn(true)
+
+      this.$ability.update(rules)
+
       this.$router.push('/')
       return null
     },
@@ -41,12 +44,9 @@ export default Vue.extend({
         })
 
         if (initialResult.data.loginFormLogin && initialResult.data.loginFormLogin.id) {
-          // Login is complete, two-factor isn't enabled on the account
-          return this.onLoginComplete()
+          return this.onLoginComplete(initialResult.data.loginFormLogin.role.ability)
         }
 
-        // Login is successful but the session needs to be elevated using two
-        // factor
         this.loading = false
       }
     },

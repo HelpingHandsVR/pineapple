@@ -25,6 +25,12 @@
           },
           {
             "name": "AttendanceRecordPagination"
+          },
+          {
+            "name": "PermissionPagination"
+          },
+          {
+            "name": "RolePagination"
           }
         ]
       }

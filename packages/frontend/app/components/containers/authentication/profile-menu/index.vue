@@ -14,7 +14,10 @@ type Data = {
 export default {
   apollo: {
     viewer: {
-      query: ProfileMenuViewerDocument
+      query: ProfileMenuViewerDocument,
+      result (result: any) {
+        this.$ability.update(result.data.viewer.user.role.ability)
+      },
     }
   },
   data (): Data {
