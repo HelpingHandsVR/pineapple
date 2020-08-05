@@ -79,8 +79,8 @@ export default Vue.extend({
       placeholder='Select an event to log time for'
       search
       auto-select-first
-      hint='Showing past and current events for this week only'
-      order='DESC'
+      hint='Showing events for this week only'
+      order='ASC'
       order-by='startsAt'
     )
       template(v-slot:item='{item}')

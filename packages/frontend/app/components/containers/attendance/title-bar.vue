@@ -47,9 +47,11 @@ export default Vue.extend({
     button-dark
     button-colour='primary'
     v-model='dialog'
+    text
   )
     template(v-slot:button)
-      | Open me
+      v-icon.mr-2 mdi-clock-check
+      | Enter time
 
     template
       v-card

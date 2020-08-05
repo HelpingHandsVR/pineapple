@@ -3,6 +3,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'dialog-button',
+  inheritAttrs: false,
   props: {
     buttonColour: {
       type: String,
@@ -17,7 +18,7 @@ export default Vue.extend({
     value: {
       type: Boolean,
       required: true,
-    }
+    },
   },
 })
 </script>
@@ -33,7 +34,7 @@ export default Vue.extend({
       v-btn(
         :color='buttonColour'
         :dark='buttonDark'
-        v-bind='attrs'
+        v-bind='{...attrs, ...$attrs}'
         v-on='on'
       )
         slot(name='button')
