@@ -160,6 +160,7 @@ type PaginationResultCursor {
 type Permission {
   action: AbilityAction!
   id: ID!
+  name: String!
   subject: AbilitySubject!
 }
 

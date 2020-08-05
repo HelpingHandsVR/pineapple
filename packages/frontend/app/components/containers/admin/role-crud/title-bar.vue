@@ -1,20 +1,20 @@
 <script lang="ts">
 import Vue from 'vue'
-
-import UpsertForm from './upsert-form.vue'
-import {
-  AttendanceUpsertFormSubmitDocument,
-} from '../../../../generated/composition'
 import { DateTime } from 'luxon'
 
+import CreateForm from './create-form.vue'
+import {
+  AdminRoleCrudCreateDocument
+} from '../../../../../generated/composition'
+
 export default Vue.extend({
-  name: 'attendance-title-bar',
+  name: 'adin-role-crud-title-bar',
   components: {
-    UpsertForm,
+    CreateForm,
   },
   data () {
     return {
-      AttendanceUpsertFormSubmitDocument,
+      AdminRoleCrudCreateDocument,
       dialog: false,
       formValue: null,
     }
@@ -25,13 +25,7 @@ export default Vue.extend({
         return null
       }
 
-      return {
-        input: {
-          attendableId: this.formValue.attendable,
-          startsAt: this.formValue.timeRange ? DateTime.fromISO(this.formValue.timeRange.start).toISO() : null,
-          endsAt: this.formValue.timeRange ? DateTime.fromISO(this.formValue.timeRange.end).toISO() : null,
-        }
-      }
+      return {}
     }
   },
   methods: {
@@ -48,25 +42,25 @@ export default Vue.extend({
     button-colour='primary'
     v-model='dialog'
     text
+    max-width='1200px'
   )
     template(v-slot:button)
-      v-icon.mr-2 mdi-clock-check
-      | Enter time
+      v-icon.mr-2 mdi-plus
+      | Create role
 
     template
       v-card
         v-card-title
-          | Record your attendance
-        v-card-subtitle
-          | If you want to edit an existing record, just select the same event
+          | Create a new role
+
         apollo-mutation(
-          :mutation='AttendanceUpsertFormSubmitDocument'
+          :mutation='AdminRoleCrudCreateDocument'
           :variables='variables'
           @done='handleMutationDone'
         )
           template(v-slot='{mutate, loading, error}')
             v-card-text
-              upsert-form(
+              create-form(
                 v-model='formValue',
                 @submit='mutate'
               )

@@ -33,6 +33,13 @@ export default Vue.extend({
     title: {
       type: String,
       required: true,
+    },
+    itemsPerPageOptions: {
+      type: Array,
+      required: false,
+      default () {
+        return [10, 15, 30, 50]
+      }
     }
   },
   data (): Data {
@@ -54,7 +61,7 @@ export default Vue.extend({
     footerProps () {
       return {
         pageText: '',
-        itemsPerPageOptions: [10, 15, 30, 50]
+        itemsPerPageOptions: this.itemsPerPageOptions,
       }
     },
 

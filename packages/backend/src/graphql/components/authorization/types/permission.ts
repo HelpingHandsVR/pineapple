@@ -2,6 +2,7 @@ import { objectType } from '@nexus/schema'
 
 export const PermissionType = objectType({
   name: 'Permission',
+  rootTyping: 'entity.Permission',
   definition (t) {
     t.id('id')
     t.field('action', {
@@ -9,6 +10,12 @@ export const PermissionType = objectType({
     })
     t.field('subject', {
       type: 'AbilitySubject',
+    })
+
+    t.string('name', {
+      resolve (root) {
+        return root.getName()
+      },
     })
   },
 })

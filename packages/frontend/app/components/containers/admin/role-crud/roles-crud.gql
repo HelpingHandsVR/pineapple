@@ -1,0 +1,33 @@
+query adminRoleCrudTable ($pagination: PaginationInput!) {
+  roles (pagination: $pagination) {
+    cursor {
+      afterCursor
+      beforeCursor
+    }
+
+    data {
+      id
+      name
+    }
+  }
+}
+
+mutation adminRoleCrudCreate ($input: CreateRoleMutationInput!) {
+  createRole(input: $input) {
+    id
+  }
+}
+
+query adminRoleCrudPermissions ($pagination: PaginationInput!) {
+  permissions (pagination: $pagination) {
+    cursor {
+      afterCursor
+      beforeCursor
+    }
+
+    data {
+      id
+      name
+    }
+  }
+}

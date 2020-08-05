@@ -214,6 +214,7 @@ export type Permission = {
   __typename?: 'Permission';
   action: AbilityAction;
   id: Scalars['ID'];
+  name: Scalars['String'];
   subject: AbilitySubject;
 };
 
@@ -511,6 +512,57 @@ export type VrChatWorldInstance = {
   players: Scalars['Int'];
 };
 
+export type AdminRoleCrudTableQueryVariables = Exact<{
+  pagination: PaginationInput;
+}>;
+
+
+export type AdminRoleCrudTableQuery = (
+  { __typename?: 'Query' }
+  & { roles: (
+    { __typename?: 'RolePagination' }
+    & { cursor: (
+      { __typename?: 'PaginationResultCursor' }
+      & Pick<PaginationResultCursor, 'afterCursor' | 'beforeCursor'>
+    ), data: Array<Maybe<(
+      { __typename?: 'Role' }
+      & Pick<Role, 'id' | 'name'>
+    )>> }
+  ) }
+);
+
+export type AdminRoleCrudCreateMutationVariables = Exact<{
+  input: CreateRoleMutationInput;
+}>;
+
+
+export type AdminRoleCrudCreateMutation = (
+  { __typename?: 'Mutation' }
+  & { createRole: (
+    { __typename?: 'Role' }
+    & Pick<Role, 'id'>
+  ) }
+);
+
+export type AdminRoleCrudPermissionsQueryVariables = Exact<{
+  pagination: PaginationInput;
+}>;
+
+
+export type AdminRoleCrudPermissionsQuery = (
+  { __typename?: 'Query' }
+  & { permissions: (
+    { __typename?: 'PermissionPagination' }
+    & { cursor: (
+      { __typename?: 'PaginationResultCursor' }
+      & Pick<PaginationResultCursor, 'afterCursor' | 'beforeCursor'>
+    ), data: Array<Maybe<(
+      { __typename?: 'Permission' }
+      & Pick<Permission, 'id' | 'name'>
+    )>> }
+  ) }
+);
+
 export type AttendanceUpsertFormAttendablesQueryVariables = Exact<{
   pagination: PaginationInput;
   where: AttendablesQueryWhereInput;
@@ -732,6 +784,105 @@ export type DiscordOauthCallbackMutation = (
 );
 
 
+export const AdminRoleCrudTableDocument = gql`
+    query adminRoleCrudTable($pagination: PaginationInput!) {
+  roles(pagination: $pagination) {
+    cursor {
+      afterCursor
+      beforeCursor
+    }
+    data {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminRoleCrudTableQuery__
+ *
+ * To run a query within a Vue component, call `useAdminRoleCrudTableQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminRoleCrudTableQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useAdminRoleCrudTableQuery(
+ *   {
+ *      pagination: // value for 'pagination'
+ *   }
+ * );
+ */
+export function useAdminRoleCrudTableQuery(variables: AdminRoleCrudTableQueryVariables | VueCompositionApi.Ref<AdminRoleCrudTableQueryVariables> | ReactiveFunction<AdminRoleCrudTableQueryVariables>, options: VueApolloComposable.UseQueryOptions<AdminRoleCrudTableQuery, AdminRoleCrudTableQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<AdminRoleCrudTableQuery, AdminRoleCrudTableQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<AdminRoleCrudTableQuery, AdminRoleCrudTableQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<AdminRoleCrudTableQuery, AdminRoleCrudTableQueryVariables>(AdminRoleCrudTableDocument, variables, options);
+          }
+export type AdminRoleCrudTableQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<AdminRoleCrudTableQuery, AdminRoleCrudTableQueryVariables>;
+export const AdminRoleCrudCreateDocument = gql`
+    mutation adminRoleCrudCreate($input: CreateRoleMutationInput!) {
+  createRole(input: $input) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useAdminRoleCrudCreateMutation__
+ *
+ * To run a mutation, you first call `useAdminRoleCrudCreateMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useAdminRoleCrudCreateMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useAdminRoleCrudCreateMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminRoleCrudCreateMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<AdminRoleCrudCreateMutation, AdminRoleCrudCreateMutationVariables>) {
+            return VueApolloComposable.useMutation<AdminRoleCrudCreateMutation, AdminRoleCrudCreateMutationVariables>(AdminRoleCrudCreateDocument, options);
+          }
+export type AdminRoleCrudCreateMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AdminRoleCrudCreateMutation, AdminRoleCrudCreateMutationVariables>;
+export const AdminRoleCrudPermissionsDocument = gql`
+    query adminRoleCrudPermissions($pagination: PaginationInput!) {
+  permissions(pagination: $pagination) {
+    cursor {
+      afterCursor
+      beforeCursor
+    }
+    data {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminRoleCrudPermissionsQuery__
+ *
+ * To run a query within a Vue component, call `useAdminRoleCrudPermissionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminRoleCrudPermissionsQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useAdminRoleCrudPermissionsQuery(
+ *   {
+ *      pagination: // value for 'pagination'
+ *   }
+ * );
+ */
+export function useAdminRoleCrudPermissionsQuery(variables: AdminRoleCrudPermissionsQueryVariables | VueCompositionApi.Ref<AdminRoleCrudPermissionsQueryVariables> | ReactiveFunction<AdminRoleCrudPermissionsQueryVariables>, options: VueApolloComposable.UseQueryOptions<AdminRoleCrudPermissionsQuery, AdminRoleCrudPermissionsQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<AdminRoleCrudPermissionsQuery, AdminRoleCrudPermissionsQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<AdminRoleCrudPermissionsQuery, AdminRoleCrudPermissionsQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<AdminRoleCrudPermissionsQuery, AdminRoleCrudPermissionsQueryVariables>(AdminRoleCrudPermissionsDocument, variables, options);
+          }
+export type AdminRoleCrudPermissionsQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<AdminRoleCrudPermissionsQuery, AdminRoleCrudPermissionsQueryVariables>;
 export const AttendanceUpsertFormAttendablesDocument = gql`
     query attendanceUpsertFormAttendables($pagination: PaginationInput!, $where: AttendablesQueryWhereInput!, $search: String!) {
   attendables(pagination: $pagination, where: $where, search: {name: $search}) {

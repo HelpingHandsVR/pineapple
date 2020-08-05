@@ -123,11 +123,7 @@ export interface NexusGenRootTypes {
     afterCursor?: string | null; // String
     beforeCursor?: string | null; // String
   }
-  Permission: { // root type
-    action: NexusGenEnums['AbilityAction']; // AbilityAction!
-    id: string; // ID!
-    subject: NexusGenEnums['AbilitySubject']; // AbilitySubject!
-  }
+  Permission: entity.Permission;
   PermissionPagination: { // root type
     cursor: NexusGenRootTypes['PaginationResultCursor']; // PaginationResultCursor!
     data: Array<NexusGenRootTypes['Permission'] | null>; // [Permission]!
@@ -340,6 +336,7 @@ export interface NexusGenFieldTypes {
   Permission: { // field return type
     action: NexusGenEnums['AbilityAction']; // AbilityAction!
     id: string; // ID!
+    name: string; // String!
     subject: NexusGenEnums['AbilitySubject']; // AbilitySubject!
   }
   PermissionPagination: { // field return type

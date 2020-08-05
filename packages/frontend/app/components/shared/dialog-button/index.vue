@@ -19,6 +19,11 @@ export default Vue.extend({
       type: Boolean,
       required: true,
     },
+    maxWidth: {
+      type: String,
+      required: false,
+      default: '600px'
+    }
   },
 })
 </script>
@@ -26,7 +31,7 @@ export default Vue.extend({
 <template lang="pug">
   v-dialog(
     :value='value'
-    max-width='600px'
+    :max-width='maxWidth'
     persistent
     @input='(value) => $emit("input", value)'
   )

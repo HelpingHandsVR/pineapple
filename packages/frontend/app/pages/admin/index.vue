@@ -1,13 +1,17 @@
 <script lang="ts">
 import Vue from 'vue'
 
-export default {
+import AdminContainer from '../../components/containers/admin/index.vue'
 
+export default {
+  layout: 'flush',
+  middleware: ['auth'],
+  components: {
+    AdminContainer,
+  }
 }
 </script>
 
 <template lang="pug">
-  div
-    can(I='CREATE' a='LESSON_SELF' pass-through v-slot='{ allowed }')
-      | Result: {{allowed}}
+  admin-container
 </template>
