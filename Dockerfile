@@ -13,10 +13,12 @@ COPY \
 
 COPY \
   packages/backend/package.json \
+  packages/backend/tsconfig.json \
   ./packages/backend/
 
 COPY \
   packages/frontend/package.json \
+  packages/frontend/tsconfig.json \
   ./packages/frontend/
 
 COPY \
