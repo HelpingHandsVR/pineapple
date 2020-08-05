@@ -1,0 +1,10 @@
+mutation registerFormRegister ($input: RegisterInput!) {
+  registerFormRegister: register (input: $input) {
+    id
+    display
+    role {
+      id
+      name
+    }
+  }
+}

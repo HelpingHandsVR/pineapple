@@ -16,6 +16,16 @@ export default Vue.extend({
       type: String,
       required: false,
     },
+    restrictMin: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    restrictMax: {
+      type: Boolean,
+      required: false,
+      default: false,
+    }
   },
   methods: {
     onChange (side: 'start' | 'end', newValue: string) {
@@ -23,8 +33,18 @@ export default Vue.extend({
         start: side === 'start' ? newValue : this.value.start,
         end: side === 'end' ? newValue : this.value.end,
       })
-    }
-  },
+    },
+    getActualMin (time: string): string | void {
+      if (this.restrictMin) {
+        return time
+      }
+    },
+    getActualMax (time: string): string | void {
+      if (this.restrictMax) {
+        return time
+      }
+    },
+  }
 })
 </script>
 
@@ -34,7 +54,7 @@ export default Vue.extend({
       h2 From:
       v-time-picker(
         :value='value.start'
-        :max='value.end'
+        :max='getActualMax(value.end)'
         :min='min'
         @input='(value) => onChange("start", value)'
         width='200px'
@@ -44,7 +64,7 @@ export default Vue.extend({
       h2 To:
       v-time-picker(
         :value='value.end'
-        :min='value.start'
+        :min='getActualMin(value.start)'
         :max='max'
         @input='(value) => onChange("end", value)'
         width='200px'

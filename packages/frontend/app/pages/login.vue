@@ -1,29 +1,51 @@
 <script lang="ts">
 import LoginForm from '../components/authentication/login-form/index.vue'
+import RegisterForm from '../components/authentication/register-form/index.vue'
+
+const cardBackground = require('~/assets/pineapple-bg.jpg')
 
 export default {
   middleware: [
     'no-auth',
   ],
+  layout: 'flush',
   components: {
     LoginForm,
-  }
+    RegisterForm,
+  },
+  data () {
+    return {
+      cardBackground,
+      windowState: 0,
+    }
+  },
 }
 </script>
 
-<template lang="pug">
-  v-layout(column, justify-center, align-center)
-    v-flex(xs12, sm8, md6)
-      v-card.mb-3
-        v-card-title.headline
-          | Authentication
-        v-card-text.
-          Please log in with your VRChat account. Your username and password will not be
-          stored in this app.
+<style lang="scss" scoped>
+  .full-height {
+    height: 100%
+  }
 
-      v-card
-        v-card-title.headline
-          | Log in
-        v-card-text
-          login-form
+  .constrain {
+    max-width: 500px;
+  }
+</style>
+
+<template lang="pug">
+  v-layout.full-height(column, justify-center, align-center)
+    gradient-card.constrain(
+      :src='cardBackground'
+    )
+      template(v-slot:image-content)
+        | Welcome!
+
+      template
+        | Please log in with your Pineapple account, or register here.
+        v-window(v-model='windowState')
+          v-window-item(key='login')
+            login-form(@to-register='windowState = 1')
+
+          v-window-item(key='register')
+            register-form(@to-login='windowState = 0')
 </template>

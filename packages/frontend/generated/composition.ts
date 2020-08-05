@@ -143,6 +143,7 @@ export type Mutation = {
   login: User;
   logout: Scalars['Boolean'];
   register: User;
+  seed: Scalars['String'];
   upsertAttendanceRecord: AttendanceRecord;
 };
 
@@ -469,6 +470,23 @@ export type ProfileMenuViewerQuery = (
   )> }
 );
 
+export type RegisterFormRegisterMutationVariables = Exact<{
+  input: RegisterInput;
+}>;
+
+
+export type RegisterFormRegisterMutation = (
+  { __typename?: 'Mutation' }
+  & { registerFormRegister: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'display'>
+    & { role: (
+      { __typename?: 'Role' }
+      & Pick<Role, 'id' | 'name'>
+    ) }
+  ) }
+);
+
 export type AttendanceUpsertFormAttendablesQueryVariables = Exact<{
   pagination: PaginationInput;
   where: AttendablesQueryWhereInput;
@@ -711,6 +729,40 @@ export function useProfileMenuViewerQuery(options: VueApolloComposable.UseQueryO
             return VueApolloComposable.useQuery<ProfileMenuViewerQuery, undefined>(ProfileMenuViewerDocument, undefined, options);
           }
 export type ProfileMenuViewerQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<ProfileMenuViewerQuery, ProfileMenuViewerQueryVariables>;
+export const RegisterFormRegisterDocument = gql`
+    mutation registerFormRegister($input: RegisterInput!) {
+  registerFormRegister: register(input: $input) {
+    id
+    display
+    role {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useRegisterFormRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterFormRegisterMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterFormRegisterMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useRegisterFormRegisterMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRegisterFormRegisterMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<RegisterFormRegisterMutation, RegisterFormRegisterMutationVariables>) {
+            return VueApolloComposable.useMutation<RegisterFormRegisterMutation, RegisterFormRegisterMutationVariables>(RegisterFormRegisterDocument, options);
+          }
+export type RegisterFormRegisterMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<RegisterFormRegisterMutation, RegisterFormRegisterMutationVariables>;
 export const AttendanceUpsertFormAttendablesDocument = gql`
     query attendanceUpsertFormAttendables($pagination: PaginationInput!, $where: AttendablesQueryWhereInput!, $search: String!) {
   attendables(pagination: $pagination, where: $where, search: {name: $search}) {

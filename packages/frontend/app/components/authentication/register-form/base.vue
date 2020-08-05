@@ -2,9 +2,10 @@
 import Vue from 'vue'
 import {validate} from 'email-validator'
 
-export type LoginFormData = {
+export type RegisterFormData = {
   email: string,
   password: string,
+  display: string,
 }
 
 export default Vue.extend({
@@ -20,6 +21,8 @@ export default Vue.extend({
       formData: {
         email: '',
         password: '',
+        passwordConfirm: '',
+        display: '',
       },
       valid: false,
     }
@@ -45,6 +48,13 @@ export default Vue.extend({
         password: [
           (v: string) => !!v || 'Password is required'
         ],
+        passwordConfirm: [
+          (v: string) => !!v || 'Password confirmation is required',
+          (v: string) => v === this.formData.password || 'Password confirmation doesn\'t match password',
+        ],
+        username: [
+          (v: string) => !!v || 'Username is required'
+        ]
       }
     }
   }
@@ -57,13 +67,26 @@ export default Vue.extend({
     v-model='valid'
     @submit.prevent='handleSubmit'
   )
-    v-text-field(
-      v-model='formData.email'
-      label='E-mail address'
-      required
-      :disabled='loading'
-      :rules='rules.email'
-    )
+    v-row
+      v-col
+        v-text-field(
+          v-model='formData.email'
+          label='E-mail address'
+          required
+          :disabled='loading'
+          :rules='rules.email'
+        )
+
+      v-col
+        v-text-field(
+          v-model='formData.display'
+          label='Username'
+          type='text'
+          required
+          :disabled='loading'
+          :rules='rules.display'
+        )
+
     v-text-field(
       v-model='formData.password'
       label='Password'
@@ -72,16 +95,24 @@ export default Vue.extend({
       :disabled='loading'
       :rules='rules.password'
     )
+    v-text-field(
+      v-model='formData.passwordConfirm'
+      label='Password confirmation'
+      type='password'
+      required
+      :disabled='loading'
+      :rules='rules.passwordConfirm'
+    )
 
     v-row
       v-col
         v-btn(color='primary', type='submit', :loading='loading')
-          | Log in
+          | Register
 
       v-spacer
 
       v-col.d-flex.justify-end
-        v-btn(color='primary', text, @click.stop='$emit("to-register")')
-          | Register
-          v-icon mdi-arrow-right
+        v-btn(color='primary', text, @click.stop='$emit("to-login")')
+          v-icon mdi-arrow-left
+          | Log in
 </template>

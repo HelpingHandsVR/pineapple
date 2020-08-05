@@ -49,6 +49,9 @@ export default Vue.extend({
         // factor
         this.loading = false
       }
+    },
+    handleRegister () {
+      this.$emit('to-register')
     }
   },
 })
@@ -58,5 +61,6 @@ export default Vue.extend({
   login-form-base(
     @submit='handleFormSubmit'
     :loading='loading'
+    @to-register='handleRegister'
   )
 </template>
