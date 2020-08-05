@@ -293,6 +293,7 @@ export interface NexusGenFieldTypes {
     login: NexusGenRootTypes['User']; // User!
     logout: boolean; // Boolean!
     register: NexusGenRootTypes['User']; // User!
+    seed: string; // String!
     upsertAttendanceRecord: NexusGenRootTypes['AttendanceRecord']; // AttendanceRecord!
   }
   PaginationResultCursor: { // field return type

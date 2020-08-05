@@ -122,6 +122,7 @@ type Mutation {
   login(input: LoginInput!): User!
   logout: Boolean!
   register(input: RegisterInput!): User!
+  seed: String!
   upsertAttendanceRecord(input: UpsertAttendaceRecordMutationInput!): AttendanceRecord!
 }
 

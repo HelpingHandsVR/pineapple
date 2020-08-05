@@ -15,6 +15,7 @@ import * as userTypes from './graphql/components/user'
 import * as authorisationTypes from './graphql/components/authorization'
 import * as authenticationTypes from './graphql/components/authentication'
 import * as attendableTypes from './graphql/components/attendable'
+import * as adminTyoes from './graphql/components/admin'
 
 import * as middlewares from './middlewares'
 import * as passport from './graphql/passport'
@@ -40,6 +41,7 @@ const main = async () => {
       ...authorisationTypes,
       ...authenticationTypes,
       ...attendableTypes,
+      ...adminTyoes,
     },
     outputs: {
       schema: path.resolve(path.join(__dirname, 'generated/schema.graphql')),
