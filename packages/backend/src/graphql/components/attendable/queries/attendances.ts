@@ -22,6 +22,9 @@ export const AttendanceRecordsQuery = extendType({
           entity: AttendanceRecord,
           alias: 'AttendanceRecord',
           query: args.pagination,
+          paginationKeys: args.pagination
+            ? [args.pagination.orderBy || 'id']
+            : ['id'] as any,
         })
 
         return paginator.paginate(qb)

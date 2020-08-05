@@ -77,11 +77,8 @@ export const AttendablesQuery = extendType({
       resolve (root, args, context) {
         const qb = context.connection.getRepository(Attendable)
           .createQueryBuilder('Attendable')
-          .where('1 = 1')
+          // .where('1 = 1')
 
-        if (args.pagination?.orderBy) {
-          qb.orderBy(args.pagination?.orderBy)
-        }
 
         if (args.search) {
           qb.andWhere('"Attendable"."name" ILIKE :name', {
@@ -117,6 +114,9 @@ export const AttendablesQuery = extendType({
           entity: Attendable,
           alias: 'Attendable',
           query: args.pagination,
+          paginationKeys: args.pagination
+            ? [args.pagination.orderBy || 'id']
+            : ['id'] as any,
         })
 
         return paginator.paginate(qb)
