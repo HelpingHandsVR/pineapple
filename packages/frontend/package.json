@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "yarn concurrently 'env-cmd nuxt-ts --dotenv .env' 'yarn gen:watch'",
+    "dev": "yarn concurrently 'env-cmd nuxt-ts' 'yarn gen:watch'",
     "gen:watch": "graphql-codegen --config codegen.yml -w",
     "gen": "graphql-codegen --config codegen.yml",
-    "build": "nuxt-ts --dotenv .production.env build",
+    "build": "nuxt-ts build",
     "prebuild": "yarn gen",
-    "start": "nuxt-ts --dotenv .production.env start",
-    "generate": "nuxt-ts --dotenv .production.env generate",
+    "start": "nuxt-ts start",
+    "generate": "nuxt-ts generate",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint": "yarn lint:js"
   },

@@ -169,16 +169,11 @@ type PermissionPagination implements PaginationResult {
   data: [Permission]!
 }
 
-input PermissionQueryWhereInput {
-  id: ID
-}
-
 type Query {
   attendable(where: AttendableQueryWhereInput): Attendable
   attendables(pagination: PaginationInput, search: AttendablesQuerySearchInput, where: AttendablesQueryWhereInput): AttendablePagination!
   attendanceRecords(pagination: PaginationInput): AttendanceRecordPagination!
   discordOauthURL: String!
-  permission(where: PermissionQueryWhereInput!): Permission
   permissions(pagination: PaginationInput): PermissionPagination!
   role(where: RoleQueryWhereInput!): Role
   roles(pagination: PaginationInput): RolePagination!

@@ -7,7 +7,6 @@ export const rules = shield({
   Query: {
     viewer: isLoggedIn,
     permissions: allow,
-    permission: allow,
     roles: isLoggedIn,
     role: isLoggedIn,
   },

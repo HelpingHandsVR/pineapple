@@ -224,17 +224,12 @@ export type PermissionPagination = PaginationResult & {
   data: Array<Maybe<Permission>>;
 };
 
-export type PermissionQueryWhereInput = {
-  id?: Maybe<Scalars['ID']>;
-};
-
 export type Query = {
   __typename?: 'Query';
   attendable?: Maybe<Attendable>;
   attendables: AttendablePagination;
   attendanceRecords: AttendanceRecordPagination;
   discordOauthURL: Scalars['String'];
-  permission?: Maybe<Permission>;
   permissions: PermissionPagination;
   role?: Maybe<Role>;
   roles: RolePagination;
@@ -260,11 +255,6 @@ export type QueryAttendablesArgs = {
 
 export type QueryAttendanceRecordsArgs = {
   pagination?: Maybe<PaginationInput>;
-};
-
-
-export type QueryPermissionArgs = {
-  where: PermissionQueryWhereInput;
 };
 
 

@@ -3,7 +3,6 @@ build
 .env
 .*.env
 !.example.env
-!.production.env
 ormconfig.json
 
 ### Code ###

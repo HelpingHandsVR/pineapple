@@ -1,4 +1,4 @@
-import { extendType, inputObjectType, objectType } from '@nexus/schema'
+import { extendType, objectType } from '@nexus/schema'
 import { Permission } from '~/entity'
 import { buildPaginator } from 'typeorm-cursor-pagination'
 
@@ -35,36 +35,6 @@ export const PermissionsQuery = extendType({
         })
 
         return paginator.paginate(qb)
-      },
-    })
-  },
-})
-
-export const PermissionQueryWhereInput = inputObjectType({
-  name: 'PermissionQueryWhereInput',
-  definition (t) {
-    t.id('id')
-  },
-})
-
-export const PermissionQuery = extendType({
-  type: 'Query',
-  definition (t) {
-    t.field('permission', {
-      type: 'Permission',
-      nullable: true,
-      args: {
-        where: PermissionQueryWhereInput.asArg({
-          required: true,
-        }),
-      },
-      resolve (root, args, conetxt) {
-        return conetxt.connection.getRepository(Permission)
-          .find({
-            where: {
-              id: args.where.id,
-            },
-          })
       },
     })
   },
