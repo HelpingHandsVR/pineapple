@@ -12,8 +12,10 @@ export default Vue.extend({
   data () {
     return {
       valid: false,
-      selected: [],
       AdminRoleCrudPermissionsDocument,
+      formData: {
+        permissions: [],
+      }
     }
   },
   computed: {
@@ -34,6 +36,18 @@ export default Vue.extend({
 
       return data ? data.permissions : []
     },
+
+    handleItemAdd (item: any) {
+      this.formData.permissions.push(item)
+    },
+
+    getItemDisabled (item: any) {
+      const index = this.formData.permissions.findIndex((addedItem: any) => {
+        return addedItem.id === item.id
+      })
+
+      return index !== -1
+    }
   }
 })
 </script>
@@ -49,12 +63,21 @@ export default Vue.extend({
           title='Available permissions'
           :items-per-page-options='[10]'
         )
+          template(v-slot:item='{ item }')
+            v-list-item(@click.stop='handleItemAdd(item)', :disabled='getItemDisabled(item)')
+              | can
+              v-chip.ml-2(color='primary') {{item.action}}
+              v-chip.ml-2(color='secondary') {{item.subject}}
+            v-divider
       v-col
-        graphql-data-table(
-          :query='AdminRoleCrudPermissionsDocument'
+        v-data-table(
           :headers='headers'
-          :get-result='getResult'
-          title='Available permissions'
-          :items-per-page-options='[10]'
+          :items='formData.permissions'
         )
+          template(v-slot:item='{ item }')
+            v-list-item(@click.stop)
+              | can
+              v-chip.ml-2(color='primary') {{item.action}}
+              v-chip.ml-2(color='secondary') {{item.subject}}
+            v-divider
 </template>

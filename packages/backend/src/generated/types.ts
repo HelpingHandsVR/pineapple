@@ -321,7 +321,7 @@ export interface NexusGenFieldTypes {
     login: NexusGenRootTypes['User']; // User!
     logout: boolean; // Boolean!
     register: NexusGenRootTypes['User']; // User!
-    seed: string; // String!
+    seed: boolean; // Boolean!
     updateRole: NexusGenRootTypes['Role']; // Role!
     upsertAttendanceRecord: NexusGenRootTypes['AttendanceRecord']; // AttendanceRecord!
   }

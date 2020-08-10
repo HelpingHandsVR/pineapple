@@ -6,7 +6,7 @@
     "dev": "yarn concurrently 'env-cmd nuxt-ts' 'yarn gen:watch'",
     "gen:watch": "graphql-codegen --config codegen.yml -w",
     "gen": "graphql-codegen --config codegen.yml",
-    "build": "nuxt-ts build",
+    "build": "env-cmd -f .example.env nuxt-ts build",
     "prebuild": "yarn gen",
     "start": "nuxt-ts start",
     "generate": "nuxt-ts generate",

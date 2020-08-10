@@ -1,9 +1,11 @@
-import { getConfig } from '~/../lib/config/coerce'
 import { Context } from '@nuxt/types'
-import { Store } from 'vuex/types'
-
 import { ApolloClientConfig } from '@nuxtjs/apollo/types/nuxt'
+
+import { Store } from 'vuex/types'
 import { Toast } from '~/store/ui'
+
+import { AuthorisationErrorResolution } from '../../../backend/lib/permission/errors/authorisation-error'
+import { getConfig } from '~/../lib/config/coerce'
 
 import { ApolloLink } from 'apollo-link'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -13,7 +15,7 @@ import { setContext } from 'apollo-link-context'
 
 const config = getConfig()
 
-const httpLink = () => new BatchHttpLink({
+const makeHttpLink = () => new BatchHttpLink({
   batchInterval: 100,
   credentials: 'include',
   uri: config.graphql.endpoint,
@@ -45,28 +47,57 @@ const errorLink = (store: Store<unknown>) => onError(({ graphQLErrors, networkEr
   }
 })
 
-const passCookieLink = (cookieHeader: string) => setContext(() => ({
+const makePassCookieLink = (cookieHeader: string) => setContext(() => ({
   headers: {
     cookie: cookieHeader,
   },
 }))
 
-type MakeClientLinkInput = {
-  store: Store<unknown>
-}
+const makeApiErrorHandlerLink = (context: Context) => onError(({ graphQLErrors, forward, operation }) => {
+  if (graphQLErrors) {
+    graphQLErrors
+      .filter((graphQLError) => 'extensions' in graphQLError)
+      .filter((graphQLError) => 'resolution' in graphQLError.extensions)
+      .forEach((graphQLError) => {
+        switch (graphQLError.extensions.resolution) {
+          // If the API says so, we send the user back to the login screen
+          case AuthorisationErrorResolution.LOGOUT:
+            // Prevent infinite redirect loops
+            if (context.route.name === 'login') {
+              return null
+            }
 
-const makeClientLink = ({ store }: MakeClientLinkInput) => ApolloLink.from([
-  errorLink(store),
-  httpLink(),
+            return context.redirect(307, '/login?flash=unauthenticated')
+
+          // Apollo will retry the operation if it's forwarded
+          case AuthorisationErrorResolution.RETRY:
+            return forward(operation)
+
+          // If instructed to do so, or when we get an unknown resolution, we
+          // just drop the request and display an error to the user (with a
+          // different link).
+          case AuthorisationErrorResolution.ABANDON:
+          default:
+            break
+        }
+      })
+  }
+})
+
+const makeClientLink = (context: Context) => ApolloLink.from([
+  errorLink(context.store),
+  makeApiErrorHandlerLink(context),
+  makeHttpLink(),
 ])
 
 type MakeServerLinkInput = {
   cookie: string,
 }
 
-const makeServerLink = ({ cookie }: MakeServerLinkInput) => ApolloLink.from([
-  passCookieLink(cookie),
-  httpLink(),
+const makeServerLink = (context: Context, { cookie }: MakeServerLinkInput) => ApolloLink.from([
+  makePassCookieLink(cookie),
+  makeApiErrorHandlerLink(context),
+  makeHttpLink(),
 ])
 
 export default (context: Context): ApolloClientConfig => {
@@ -75,7 +106,7 @@ export default (context: Context): ApolloClientConfig => {
 
     return {
       defaultHttpLink: false,
-      link: makeServerLink({ cookie: cookieHeader }),
+      link: makeServerLink(context, { cookie: cookieHeader }),
       cache: false,
     }
   }

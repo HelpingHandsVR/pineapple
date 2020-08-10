@@ -1,5 +1,6 @@
 import { extendType, inputObjectType } from '@nexus/schema'
-import { Role, Permission } from '~/entity'
+import { Role } from '~/entity/role'
+import { Permission } from '~/entity/permission'
 import { In } from 'typeorm'
 
 export const UpdateRoleMutationWhereInput = inputObjectType({

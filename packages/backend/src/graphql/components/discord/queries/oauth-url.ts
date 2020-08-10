@@ -1,6 +1,6 @@
 import { randomBytes } from 'crypto'
 import { extendType } from '@nexus/schema'
-import { DiscordOauthRequest } from '~/entity'
+import { DiscordOauthRequest } from '~/entity/discord-oauth-request'
 
 export const DiscordOauthURLQuery = extendType({
   type: 'Query',
@@ -13,7 +13,7 @@ export const DiscordOauthURLQuery = extendType({
         request.state = state
         request.createdBy = context.authentication.getUser().id
 
-        await request.save()
+        await context.connection.getRepository(DiscordOauthRequest).save(request)
 
         return context.discord.oauth2.generateAuthUrl({
           state,

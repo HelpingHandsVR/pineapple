@@ -1,4 +1,3 @@
-import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
 import { LoggerOptions } from 'pino'
 import IORedis from 'ioredis'
 
@@ -9,7 +8,6 @@ export type Config = {
     playground: boolean,
     corsOrigin: string[],
   },
-  db: PostgresConnectionOptions,
   log: LoggerOptions,
   redis: IORedis.RedisOptions,
   discord: {

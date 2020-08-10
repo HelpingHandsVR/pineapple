@@ -5,9 +5,6 @@ import RegisterForm from '../components/containers/authentication/register-form/
 const cardBackground = require('~/assets/pineapple-bg.jpg')
 
 export default {
-  middleware: [
-    'no-auth',
-  ],
   layout: 'flush',
   components: {
     LoginForm,

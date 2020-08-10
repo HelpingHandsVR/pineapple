@@ -152,19 +152,19 @@ export default Vue.extend({
 // While this component is mounted, every other v-data-table
 // will also stretch (style isn't scoped), but that's fine as
 // this table should be the only one in use when it's shown
-.v-data-table {
+.graphql-data-table {
   height: 100%;
   max-height: calc(100vh - 4rem);
-}
 
-.v-data-table__wrapper {
-  height: calc(100% - 8rem);
-  overflow-y: scroll;
-}
+  .v-data-table__wrapper {
+    height: calc(100% - 8rem);
+    overflow-y: scroll;
+  }
 
-.v-data-footer {
-  > .v-data-footer__pagination {
-    display: none;
+  .v-data-footer {
+    > .v-data-footer__pagination {
+      display: none;
+    }
   }
 }
 </style>
@@ -179,7 +179,7 @@ export default Vue.extend({
     fetch-policy='cache-and-network'
   )
     template(v-slot='{result: {data, loading}}')
-      v-data-table(
+      v-data-table.graphql-data-table(
         :loading='loading'
         loadingText='Fetching data...'
         :server-items-length='serverItemsLength'
@@ -195,7 +195,7 @@ export default Vue.extend({
         @contextmenu:row='(event) => $emit("contextmenu:row", event)'
         @dblclick:row='(event) => $emit("dblclick:row", event)'
       )
-        template(v-slot:top)
+        template(v-slot:top, v-if='title')
           v-toolbar.pr-4.pl-4(flat, color='secondary', dark)
             v-toolbar-title {{title}}
             v-spacer

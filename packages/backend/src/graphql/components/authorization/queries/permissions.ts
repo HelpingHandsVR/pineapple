@@ -1,5 +1,5 @@
 import { extendType, objectType } from '@nexus/schema'
-import { Permission } from '~/entity'
+import { Permission } from '~/entity/permission'
 import { buildPaginator } from 'typeorm-cursor-pagination'
 
 export const PermissionPagination = objectType({

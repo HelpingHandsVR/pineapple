@@ -1,4 +1,4 @@
-import { Connection, createConnection } from 'typeorm'
+import { Connection, createConnection, getConnectionOptions } from 'typeorm'
 import { Request, Response } from 'express'
 import { Queue } from 'bull'
 import { Logger } from 'pino'
@@ -7,8 +7,6 @@ import { VRChatAPIContext, makeVRChatAPIContext } from '../components/vrchat-api
 import { Config } from '@/lib/config/type'
 
 import * as queues from '~/queues'
-import * as entities from '~/entity'
-import * as allMigrations from '~/db/all-migrations'
 
 import { DiscordContext, makeDiscordContext } from '../components/discord/context'
 import { AuthorisationContext, makeAuthorisationContext } from '../components/authorization/context'
@@ -41,6 +39,8 @@ export type Context =
   & VRChatAPIContext
   & ExpressContext
 
+// Static context is only made once, on application startup. Contains stuff like
+// the interactor for the system VRC account and database connection(s).
 const makeStaticContext = async (config: Config): Promise<StaticContext> => {
   const job = await queues.devonImporter.getJob('devon-importer')
 
@@ -53,6 +53,14 @@ const makeStaticContext = async (config: Config): Promise<StaticContext> => {
     })
   }
 
+  // Get connection options from environment variables, but override the logger.
+  // Connection replicas aren't possible this way, but that's not gonna be
+  // needed
+  const connectionOptions = {
+    ...await getConnectionOptions(),
+    logger: new TypeormPinoLogger(),
+  }
+
   return {
     config,
     queues,
@@ -60,12 +68,7 @@ const makeStaticContext = async (config: Config): Promise<StaticContext> => {
       component: 'graphql',
       chain: randomBytes(16).toString('hex'),
     }),
-    connection: await createConnection({
-      ...config.db,
-      entities: Object.values(entities),
-      migrations: Object.values(allMigrations),
-      logger: new TypeormPinoLogger(),
-    }),
+    connection: await createConnection(connectionOptions),
   }
 }
 
@@ -78,6 +81,8 @@ const makeExpressContext = (params: IntegrationContext) => ({
 
 type ContextCreator = (params: IntegrationContext) => Promise<Context>
 
+// The dynamic context __creator__ is only made once on startup to prepare the
+// static context.
 export const makeContextFactory = async (config: Config): Promise<ContextCreator> => {
   const staticContext = await makeStaticContext(config)
 
@@ -89,6 +94,8 @@ export const makeContextFactory = async (config: Config): Promise<ContextCreator
     makeVRChatAPIContext(staticContext.config, staticContext),
   ])
 
+  // The actual dynamic context is made on every request and contains stuff like
+  // user auth and IP address from Express.
   return async (params: IntegrationContext): Promise<Context> => {
     const authenticationContext = await makeAuthenticationContext(params.req, params.res)
 

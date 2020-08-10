@@ -43,8 +43,8 @@ export default {
         )
           v-avatar(size='40px')
             v-img(
-              v-if='!$apollo.queries.viewer.loading && viewer.user.vrchat'
-              :src='viewer.user.vrchat.currentAvatarThumbnailImageUrl'
+              v-if='!$apollo.queries.viewer.loading && viewer && viewer.user.vrchat'
+              :src='viewer ? viewer.user.vrchat.currentAvatarThumbnailImageUrl : null'
             )
             v-img(
               v-else
@@ -52,7 +52,7 @@ export default {
             )
 
     v-list(v-if='viewer')
-      v-list-item(@click.stop, v-if='!$apollo.queries.viewer.loading && viewer.user.vrchat')
+      v-list-item(@click.stop, v-if='!$apollo.queries.viewer.loading && viewer && viewer.user.vrchat')
         v-list-item-content
           v-list-item-title
             b {{viewer.user.vrchat.displayName}}

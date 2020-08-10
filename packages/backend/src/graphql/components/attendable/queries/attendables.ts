@@ -1,8 +1,7 @@
 import { extendType, inputObjectType } from '@nexus/schema'
 import { buildPaginator } from 'typeorm-cursor-pagination'
 
-import { Attendable } from '~/entity'
-// import { DateTime } from 'luxon'
+import { Attendable } from '~/entity/attendable'
 
 export const AttendablesQueryWhereInputDateConstraint = inputObjectType({
   name: 'AttendablesQueryWhereInputDateConstraint',
@@ -77,8 +76,6 @@ export const AttendablesQuery = extendType({
       resolve (root, args, context) {
         const qb = context.connection.getRepository(Attendable)
           .createQueryBuilder('Attendable')
-          // .where('1 = 1')
-
 
         if (args.search) {
           qb.andWhere('"Attendable"."name" ILIKE :name', {

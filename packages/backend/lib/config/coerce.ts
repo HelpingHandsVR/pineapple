@@ -7,17 +7,6 @@ export const getConfig = (env: NodeJS.ProcessEnv): Config => ({
     playground: env.GRAPHQL_PLAYGROUND === 'true',
     corsOrigin: env.CORS_ORIGIN.split(','),
   },
-  db: {
-    type: 'postgres',
-    host: env.DB_HOST,
-    password: env.DB_PASSWORD,
-    port: Number.parseInt(env.DB_PORT, 10),
-    username: env.DB_USERNAME,
-    database: env.DB_DATABASE,
-    synchronize: env.DB_SYNC === 'true',
-    logging: env.DB_LOGGING === 'true',
-    migrationsRun: env.DB_MIGRATIONS === 'true',
-  },
   log: {
     level: env.LOG_LEVEL,
     prettyPrint: env.NODE_ENV === 'development',

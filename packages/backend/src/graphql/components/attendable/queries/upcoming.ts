@@ -1,5 +1,5 @@
 import { extendType, inputObjectType } from '@nexus/schema'
-import { Attendable } from '~/entity'
+import { Attendable } from '~/entity/attendable'
 import { MoreThan } from 'typeorm'
 
 export const UpcomingAttendablesQueryInput = inputObjectType({

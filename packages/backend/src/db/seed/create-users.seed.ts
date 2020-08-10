@@ -1,5 +1,7 @@
 import { Seeder, Factory } from 'typeorm-seeding'
-import { User, Role } from '~/entity'
+
+import { User } from '~/entity/user'
+import { Role } from '~/entity/role'
 
 export default class CreateUsers implements Seeder {
   public async run (factory: Factory): Promise<void> {

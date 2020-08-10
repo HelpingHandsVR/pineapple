@@ -1,7 +1,10 @@
 import { MoreThan, LessThan } from 'typeorm'
 import { DateTime } from 'luxon'
 
-import { AttendanceRecord, User, Attendable } from '~/entity'
+import { AttendanceRecord } from '~/entity/attendance-record'
+import { User } from '~/entity/user'
+import { Attendable } from '~/entity/attendable'
+
 import { MessageProcessor } from '.'
 import { log as baseLog } from '@/lib/log'
 

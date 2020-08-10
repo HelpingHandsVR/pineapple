@@ -11,7 +11,7 @@
     "dev": "env-cmd nodemon --transpile-only -r tsconfig-paths/register src/index.ts",
     "build": "yarn env-cmd backpack build",
     "typeorm": "yarn env-cmd ts-node --transpile-only -r tsconfig-paths/register ./node_modules/.bin/typeorm",
-    "seeder": "ts-node --transpile-only -r tsconfig-paths/register ../../node_modules/typeorm-seeding/dist/cli.js",
+    "seeder": "env-cmd ts-node --transpile-only -r tsconfig-paths/register ../../node_modules/typeorm-seeding/dist/cli.js",
     "seed": "yarn seeder seed"
   },
   "devDependencies": {
@@ -81,6 +81,7 @@
     "pino-http": "^5.2.0",
     "pino-pretty": "^4.0.0",
     "reflect-metadata": "^0.1.13",
+    "ts-error": "^1.0.6",
     "typeorm": "^0.2.25",
     "typeorm-cursor-pagination": "^0.4.1",
     "typeorm-seeding": "^1.6.1",

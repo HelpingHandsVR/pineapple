@@ -13,7 +13,7 @@ export default Vue.extend({
 </style>
 
 <template lang="pug">
-  layout-base(logged-in)
+  layout-base
     v-container.main-container
       nuxt
 </template>

@@ -52,7 +52,7 @@ export default Vue.extend({
           (v: string) => !!v || 'Password confirmation is required',
           (v: string) => v === this.formData.password || 'Password confirmation doesn\'t match password',
         ],
-        username: [
+        display: [
           (v: string) => !!v || 'Username is required'
         ]
       }

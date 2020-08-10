@@ -6,6 +6,7 @@ import GraphQLSelect from '../components/shared/graphql-select/index.vue'
 import LayoutBase from '../components/shared/layout-base/index.vue'
 import DialogButton from '../components/shared/dialog-button/index.vue'
 import TimeRange from '../components/shared/time-range/index.vue'
+import ErrorBoundary from '../components/shared/error-boundary/index.vue'
 
 Vue.component('gradient-card', GradientCard)
 Vue.component('graphql-data-table', GraphQLDataTable)
@@ -13,3 +14,4 @@ Vue.component('graphql-select', GraphQLSelect)
 Vue.component('layout-base', LayoutBase)
 Vue.component('dialog-button', DialogButton)
 Vue.component('time-range', TimeRange)
+Vue.component('error-boundary', ErrorBoundary)

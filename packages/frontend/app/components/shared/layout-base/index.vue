@@ -16,6 +16,13 @@ flashMap.set('already-authenticated', `You're already logged in, you need to log
 
 export default Vue.extend({
   name: 'layout-base',
+  props: {
+    loggedIn: {
+      type: Boolean,
+      required: false,
+      default: false,
+    }
+  },
   components: {
     ProfileMenu,
     StoreToast,
@@ -31,7 +38,6 @@ export default Vue.extend({
     ...mapGetters({
       menuOpen: 'ui/menuOpen',
       dark: 'ui/isDark',
-      loggedIn: 'auth/loggedIn',
     }),
     flash () {
       return flashMap.get(this.$route.query.flash)
@@ -73,21 +79,23 @@ export default Vue.extend({
 
 <template lang="pug">
   v-app(:dark='dark')
-    store-toast
-    store-theme
+    error-boundary
+      store-toast(key='store-toast')
+      store-theme(key='store-theme')
 
-    navigation-drawer(:open='menuOpen', @close='toggleDrawer(false)')
+      navigation-drawer(:open='menuOpen', @close='toggleDrawer(false)', key='navigation-drawer')
 
-    v-app-bar(fixed, app, color='primary', dark)
-      v-btn(icon, @click.stop='toggleDrawer')
-        v-icon mdi-menu
-      v-toolbar-title(v-text='title')
-      v-spacer
-      profile-menu(v-if='loggedIn', @logout='handleLogout')
+      v-app-bar(fixed, app, color='primary', dark, key='app-bar')
+        v-btn(icon, @click.stop='toggleDrawer')
+          v-icon mdi-menu
+        v-toolbar-title(v-text='title')
+        v-spacer
+        profile-menu(v-if='loggedIn', @logout='handleLogout')
 
-    v-main
-      v-banner(color='secondary', light, v-if='flash')
-        v-icon(slot='icon') mdi-alert
-        | {{flash}}
-      slot(name='default')
+      v-main(key='main')
+        v-banner(color='secondary', light, v-if='flash')
+          v-icon(slot='icon') mdi-alert
+          | {{flash}}
+        error-boundary
+          slot(name='default')
 </template>

@@ -1,5 +1,5 @@
 import { extendType } from '@nexus/schema'
-import { User } from '~/entity'
+import { User } from '~/entity/user'
 
 export const UserOnVRCExtendedUser = extendType({
   type: 'VRChatExtendedUser',
@@ -7,12 +7,13 @@ export const UserOnVRCExtendedUser = extendType({
     t.field('user', {
       type: 'User',
       nullable: true,
-      resolve (root) {
-        return User.findOne({
-          where: {
-            vrcUserID: root.id,
-          },
-        })
+      resolve (root, args, context) {
+        return context.connection.getRepository(User)
+          .findOne({
+            where: {
+              vrcUserID: root.id,
+            },
+          })
       },
     })
   },
@@ -24,12 +25,13 @@ export const UserOnVRCUser = extendType({
     t.field('user', {
       type: 'User',
       nullable: true,
-      resolve (root) {
-        return User.findOne({
-          where: {
-            vrcUserID: root.id,
-          },
-        })
+      resolve (root, args, context) {
+        return context.connection.getRepository(User)
+          .findOne({
+            where: {
+              vrcUserID: root.id,
+            },
+          })
       },
     })
   },

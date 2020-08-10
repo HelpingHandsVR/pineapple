@@ -5,9 +5,10 @@ import { Connection } from 'typeorm'
 import createStore from 'connect-redis'
 import Redis from 'ioredis'
 
+import { User } from '~/entity/user'
+
 import { Config } from '@/lib/config/type'
 import { makeStrategy as graphqlLocalStrategy } from './strategies/graphql-local'
-import { User } from '~/entity'
 
 export const applyMiddleware = async (app: Express, config: Config, connection: Connection): Promise<void> => {
   const RedisStore = createStore(session)

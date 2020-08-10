@@ -80,7 +80,7 @@ WORKDIR /app
 RUN apk add supervisor
 
 COPY \
-  conf/supervisord.conf \
+  conf/ \
   ./
 
 FROM runtime-base as runtime

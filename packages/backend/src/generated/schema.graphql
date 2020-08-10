@@ -130,7 +130,7 @@ type Mutation {
   login(input: LoginInput!): User!
   logout: Boolean!
   register(input: RegisterInput!): User!
-  seed: String!
+  seed: Boolean!
   updateRole(input: UpdateRoleMutationInput!, where: UpdateRoleMutationWhereInput!): Role!
   upsertAttendanceRecord(input: UpsertAttendaceRecordMutationInput!): AttendanceRecord!
 }

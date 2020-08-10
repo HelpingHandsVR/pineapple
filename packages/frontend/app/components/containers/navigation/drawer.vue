@@ -105,7 +105,7 @@ export default Vue.extend({
     app
     :dark='dark'
   )
-    v-list
+    v-list(nav)
       //- Chevron down button for mobile view
       v-list-item(v-show='forceLarge')
         v-btn(text, block, @click='$emit("close")', color='primary')

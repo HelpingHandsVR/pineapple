@@ -27,7 +27,8 @@ query adminRoleCrudPermissions ($pagination: PaginationInput!) {
 
     data {
       id
-      name
+      action
+      subject
     }
   }
 }

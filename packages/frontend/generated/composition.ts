@@ -151,7 +151,7 @@ export type Mutation = {
   login: User;
   logout: Scalars['Boolean'];
   register: User;
-  seed: Scalars['String'];
+  seed: Scalars['Boolean'];
   updateRole: Role;
   upsertAttendanceRecord: AttendanceRecord;
 };
@@ -548,7 +548,7 @@ export type AdminRoleCrudPermissionsQuery = (
       & Pick<PaginationResultCursor, 'afterCursor' | 'beforeCursor'>
     ), data: Array<Maybe<(
       { __typename?: 'Permission' }
-      & Pick<Permission, 'id' | 'name'>
+      & Pick<Permission, 'id' | 'action' | 'subject'>
     )>> }
   ) }
 );
@@ -847,7 +847,8 @@ export const AdminRoleCrudPermissionsDocument = gql`
     }
     data {
       id
-      name
+      action
+      subject
     }
   }
 }

@@ -1,7 +1,8 @@
 import { Seeder, Factory } from 'typeorm-seeding'
 import { Connection } from 'typeorm'
 
-import { Permission, Role } from '~/entity'
+import { Permission } from '~/entity/permission'
+import { Role } from '~/entity/role'
 import { Action, Subject } from '@/lib/permission'
 
 const fullCrudFor = (subject: Subject) => [
