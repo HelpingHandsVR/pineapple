@@ -2,7 +2,7 @@ import { objectType } from '@nexus/schema'
 
 export const AttendanceRecordType = objectType({
   name: 'AttendanceRecord',
-  rootTyping: 'entity.AttendanceRecord',
+  rootTyping: 'AttendanceRecord.AttendanceRecord',
   definition (t) {
     t.id('id')
     t.dateTime('startsAt')

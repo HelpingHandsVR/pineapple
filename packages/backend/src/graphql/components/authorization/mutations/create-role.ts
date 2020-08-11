@@ -1,6 +1,6 @@
 import { extendType, inputObjectType } from '@nexus/schema'
-import { Role } from '~/entity/role'
-import { Permission } from '~/entity/permission'
+import { Role, Permission } from '~/entity'
+
 import { In } from 'typeorm'
 
 export const CreateRoleMutationInput = inputObjectType({

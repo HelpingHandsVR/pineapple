@@ -7,6 +7,7 @@ import { VRChatAPIContext, makeVRChatAPIContext } from '../components/vrchat-api
 import { Config } from '@/lib/config/type'
 
 import * as queues from '~/queues'
+import * as allEntities from '~/entity'
 
 import { DiscordContext, makeDiscordContext } from '../components/discord/context'
 import { AuthorisationContext, makeAuthorisationContext } from '../components/authorization/context'
@@ -59,6 +60,7 @@ const makeStaticContext = async (config: Config): Promise<StaticContext> => {
   const connectionOptions = {
     ...await getConnectionOptions(),
     logger: new TypeormPinoLogger(),
+    entities: Object.values(allEntities),
   }
 
   return {

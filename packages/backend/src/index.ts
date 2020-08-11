@@ -5,6 +5,8 @@ import { ApolloServer } from 'apollo-server-express'
 import { makeSchema } from '@nexus/schema'
 import { applyMiddleware } from 'graphql-middleware'
 import createHttpLogger from 'pino-http'
+import fs from 'fs'
+import { pascalCase } from 'change-case'
 
 import * as scalars from './graphql/scalars'
 import * as paginationTypes from './graphql/pagination'
@@ -29,6 +31,28 @@ import { log } from '@/lib/log'
 const main = async () => {
   const config = getConfig(process.env)
 
+  const typegenAutoConfig = {
+    debug: false,
+    sources: [
+      {
+        alias: 'ctx',
+        source: path.join(__dirname, 'graphql/context/index.ts'),
+      },
+    ],
+    contextType: 'ctx.Context',
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    const files = await fs.promises.readdir('./src/entity')
+
+    typegenAutoConfig.sources.push(...files.map((entityFile) => {
+      return {
+        alias: pascalCase(path.parse(entityFile).name),
+        source: path.join('./src/entity', entityFile),
+      }
+    }))
+  }
+
   const baseSchema = makeSchema({
     shouldGenerateArtifacts: process.env.NODE_ENV !== 'production',
     types: {
@@ -47,19 +71,7 @@ const main = async () => {
       schema: path.resolve(path.join(__dirname, 'generated/schema.graphql')),
       typegen: path.resolve(path.join(__dirname, 'generated/types.ts')),
     },
-    typegenAutoConfig: {
-      headers: [
-        "import * as entity from '../entity'",
-      ],
-      debug: false,
-      sources: [
-        {
-          alias: 'ctx',
-          source: path.join(__dirname, 'graphql/context/index.ts'),
-        },
-      ],
-      contextType: 'ctx.Context',
-    },
+    typegenAutoConfig,
   })
 
   let schema = null

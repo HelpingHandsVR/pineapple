@@ -1,4 +1,4 @@
-import { InternalEntity } from '~/db/entity-type/internal'
+import { InternalEntity } from '../db/entity-type/internal'
 import {
   Entity,
   Column,
@@ -6,8 +6,8 @@ import {
   JoinTable,
   OneToMany,
 } from 'typeorm'
-import { Permission } from './permission'
-import { User } from './user'
+import { Permission } from '~/entity/permission'
+import { User } from '~/entity/user'
 
 @Entity({ name: 'Role' })
 export class Role extends InternalEntity {

@@ -3,3 +3,5 @@
 /packages/*/build
 /packages/*/.nuxt
 /packages/*/dist
+
+/packages/*/.env

@@ -1,12 +1,12 @@
-import { InternalEntity } from '~/db/entity-type/internal'
+import { InternalEntity } from '../db/entity-type/internal'
 import {
   Entity,
   Column,
   ManyToOne,
 } from 'typeorm'
 
-import { User } from './user'
-import { Attendable } from './attendable'
+import { Attendable } from '~/entity/attendable'
+import { User } from '~/entity/user'
 
 @Entity({ name: 'AttendanceRecord' })
 export class AttendanceRecord extends InternalEntity {

@@ -5,7 +5,7 @@ import { Connection } from 'typeorm'
 import createStore from 'connect-redis'
 import Redis from 'ioredis'
 
-import { User } from '~/entity/user'
+import { User } from '~/entity'
 
 import { Config } from '@/lib/config/type'
 import { makeStrategy as graphqlLocalStrategy } from './strategies/graphql-local'

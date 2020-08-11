@@ -60,6 +60,7 @@
     "bcrypt": "^5.0.0",
     "bull": "^3.15.0",
     "bull-board": "^0.9.0",
+    "change-case": "^4.1.1",
     "connect-redis": "^4.0.4",
     "cookie": "^0.4.1",
     "discord-oauth2": "^2.2.0",

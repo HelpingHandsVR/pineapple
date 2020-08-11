@@ -3,8 +3,7 @@ import { getConnection } from 'typeorm'
 import pAll from 'p-all'
 import { DateTime } from 'luxon'
 
-import { Attendable } from '~/entity/attendable'
-import { User } from '~/entity/user'
+import { Attendable, User } from '~/entity'
 
 import { WithDevonAPI } from '~/data-sources/devon'
 import { AttendableType } from '~/db/enums'

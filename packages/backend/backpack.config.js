@@ -3,6 +3,7 @@
 const fs = require('fs')
 const path = require('path')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+// const { IgnorePlugin } = require('webpack')
 
 const entities = fs.readdirSync('./src/entity')
 const seeds = fs.readdirSync('./src/db/seed')
@@ -45,6 +46,9 @@ module.exports = {
 
     config.resolve = {
       extensions: ['.ts', '.js', '.mjs', '.json'],
+      alias: {
+        '~': path.resolve(__dirname, 'src'),
+      },
     }
 
     config.optimization.minimize = false

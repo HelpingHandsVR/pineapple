@@ -2,7 +2,7 @@ import { Express, Handler } from 'express'
 import { setQueues, UI } from 'bull-board'
 import { getConnection } from 'typeorm'
 
-import { User } from '~/entity/user'
+import { User } from '~/entity'
 import { defineAbilityForRole } from '@/lib/permission/helpers'
 import { Action, Subject } from '@/lib/permission'
 

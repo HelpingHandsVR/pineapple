@@ -5,9 +5,9 @@ import {
   OneToMany,
 } from 'typeorm'
 
-import { AttendableBase } from '~/db/entity-type/attendable-base'
-import { AttendableDefinition } from './attendable-definition'
-import { AttendanceRecord } from './attendance-record'
+import { AttendableBase } from '../db/entity-type/attendable-base'
+import { AttendableDefinition } from '~/entity/attendable-definition'
+import { AttendanceRecord } from '~/entity/attendance-record'
 
 @Entity({ name: 'Attendable' })
 export class Attendable extends AttendableBase {

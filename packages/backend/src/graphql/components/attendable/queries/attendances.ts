@@ -1,7 +1,7 @@
 import { extendType } from '@nexus/schema'
 import { buildPaginator } from 'typeorm-cursor-pagination'
 
-import { AttendanceRecord } from '~/entity/attendance-record'
+import { AttendanceRecord } from '~/entity'
 
 export const AttendanceRecordsQuery = extendType({
   type: 'Query',

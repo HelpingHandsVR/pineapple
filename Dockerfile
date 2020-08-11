@@ -51,21 +51,13 @@ RUN lerna bootstrap
 # BUILD
 ##
 
-FROM dependencysleketon as build
+FROM devdependencies as build
 
-COPY --from=devdependencies \
-  /app/node_modules \
-  /app/node_modules
-
-COPY --from=devdependencies \
-  /app/packages/frontend/node_modules \
-  /app/packages/frontend/node_modules
-
-COPY --from=devdependencies \
-  /app/packages/backend/node_modules \
-  /app/packages/backend/node_modules
+ENV NODE_ENV=production
 
 COPY . .
+
+RUN cp /app/packages/backend/.example.env /app/packages/backend/.env
 
 RUN lerna run build --stream
 
@@ -80,8 +72,12 @@ WORKDIR /app
 RUN apk add supervisor
 
 COPY \
-  conf/ \
+  conf/supervisord.conf \
   ./
+
+COPY \
+  conf/.profile \
+  /root/
 
 FROM runtime-base as runtime
 

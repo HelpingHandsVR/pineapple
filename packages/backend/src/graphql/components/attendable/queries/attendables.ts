@@ -1,7 +1,7 @@
 import { extendType, inputObjectType } from '@nexus/schema'
 import { buildPaginator } from 'typeorm-cursor-pagination'
 
-import { Attendable } from '~/entity/attendable'
+import { Attendable } from '~/entity'
 
 export const AttendablesQueryWhereInputDateConstraint = inputObjectType({
   name: 'AttendablesQueryWhereInputDateConstraint',

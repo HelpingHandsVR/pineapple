@@ -2,8 +2,7 @@ import { extendType, inputObjectType } from '@nexus/schema'
 import { AuthenticationError } from 'apollo-server-errors'
 import { DateTime } from 'luxon'
 
-import { DiscordAccount } from '~/entity/discord-account'
-import { DiscordOauthRequest } from '~/entity/discord-oauth-request'
+import { DiscordAccount, DiscordOauthRequest } from '~/entity'
 
 export const DiscordOauthMutationInput = inputObjectType({
   name: 'DiscordOauthMutationInput',

@@ -1,6 +1,6 @@
 import { objectType } from '@nexus/schema'
 import { defineAbilityForRole } from '@/lib/permission/helpers'
-import { Role } from '~/entity/role'
+import { Role } from '~/entity'
 
 export const RoleType = objectType({
   name: 'Role',

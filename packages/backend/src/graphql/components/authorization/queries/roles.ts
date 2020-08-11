@@ -1,5 +1,5 @@
 import { extendType, inputObjectType, objectType } from '@nexus/schema'
-import { Role } from '~/entity/role'
+import { Role } from '~/entity'
 import { buildPaginator } from 'typeorm-cursor-pagination'
 
 export const RolePagination = objectType({

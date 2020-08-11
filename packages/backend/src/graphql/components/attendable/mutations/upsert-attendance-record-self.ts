@@ -1,6 +1,6 @@
 import { extendType, inputObjectType } from '@nexus/schema'
-import { AttendanceRecord } from '~/entity/attendance-record'
-import { Attendable } from '~/entity/attendable'
+import { AttendanceRecord, Attendable } from '~/entity'
+
 import { DateTime } from 'luxon'
 import { LessThan } from 'typeorm'
 

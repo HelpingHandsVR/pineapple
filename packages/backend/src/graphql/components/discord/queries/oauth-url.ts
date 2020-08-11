@@ -1,6 +1,6 @@
 import { randomBytes } from 'crypto'
 import { extendType } from '@nexus/schema'
-import { DiscordOauthRequest } from '~/entity/discord-oauth-request'
+import { DiscordOauthRequest } from '~/entity'
 
 export const DiscordOauthURLQuery = extendType({
   type: 'Query',

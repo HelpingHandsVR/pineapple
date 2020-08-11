@@ -1,11 +1,11 @@
-import { InternalEntity } from '~/db/entity-type/internal'
+import { InternalEntity } from '../db/entity-type/internal'
 import {
   Entity,
   Column,
   AfterLoad,
 } from 'typeorm'
 
-import { Action, Subject } from '@/lib/permission'
+import { Action, Subject } from '../../lib/permission'
 
 @Entity({ name: 'Permission' })
 export class Permission extends InternalEntity {

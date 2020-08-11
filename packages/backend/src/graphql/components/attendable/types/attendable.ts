@@ -1,9 +1,9 @@
 import { objectType } from '@nexus/schema'
-import { User } from '~/entity/user'
+import { User } from '~/entity'
 
 export const AttendableType = objectType({
   name: 'Attendable',
-  rootTyping: 'entity.Attendable',
+  rootTyping: 'Attendable.Attendable',
   definition (t) {
     t.id('id')
     t.string('name')

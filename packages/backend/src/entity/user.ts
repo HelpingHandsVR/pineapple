@@ -1,4 +1,4 @@
-import { InternalEntity } from '~/db/entity-type/internal'
+import { InternalEntity } from '../db/entity-type/internal'
 import {
   Entity,
   Column,
@@ -9,10 +9,10 @@ import {
   BeforeInsert,
 } from 'typeorm'
 
-import bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt'
 
-import { DiscordAccount } from './discord-account'
-import { Role } from './role'
+import { DiscordAccount } from '~/entity/discord-account'
+import { Role } from '~/entity/role'
 
 @Entity({ name: 'User' })
 export class User extends InternalEntity {

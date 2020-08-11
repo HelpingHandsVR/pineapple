@@ -4,7 +4,7 @@ import { Request } from 'express'
 import bcrypt from 'bcrypt'
 
 import { Config } from '@/lib/config/type'
-import { User } from '~/entity/user'
+import { User } from '~/entity'
 import { log as baseLog } from '@/lib/log'
 
 const log = baseLog.child({

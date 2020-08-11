@@ -1,5 +1,5 @@
 import { extendType, inputObjectType } from '@nexus/schema'
-import { User } from '~/entity/user'
+import { User } from '~/entity'
 
 export const RegisterInput = inputObjectType({
   name: 'RegisterInput',

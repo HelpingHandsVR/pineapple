@@ -7,17 +7,17 @@ export const rules = shield({
   Mutation: {
     upsertAttendanceRecord: and(
       isLoggedIn,
-      can(Action.CREATE, Subject.ATTENDANCE_RECORD_SELF)
+      can(Action.CREATE, Subject.ATTENDANCE_RECORD_SELF),
     ),
   },
   Query: {
     attendanceRecords: and(
       isLoggedIn,
-      can(Action.READ, Subject.ATTENDANCE_RECORD_SELF)
+      can(Action.READ, Subject.ATTENDANCE_RECORD_SELF),
     ),
     upcomingAttendables: and(
       isLoggedIn,
-      can(Action.READ, Subject.ATTENDABLE_SELF), can(Action.READ, Subject.ATTENDABLE_OTHERS)
+      can(Action.READ, Subject.ATTENDABLE_SELF), can(Action.READ, Subject.ATTENDABLE_OTHERS),
     ),
   },
 })

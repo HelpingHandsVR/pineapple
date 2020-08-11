@@ -1,5 +1,5 @@
 import { extendType } from '@nexus/schema'
-import { User } from '~/entity/user'
+import { User } from '~/entity'
 
 export const UserOnVRCExtendedUser = extendType({
   type: 'VRChatExtendedUser',
