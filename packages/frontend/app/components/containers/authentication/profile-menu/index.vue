@@ -1,7 +1,11 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import {ProfileMenuViewerDocument, Viewer} from '../../../../../generated/composition'
+import {
+  ProfileMenuViewerDocument,
+  ProfileMenuViewerQuery,
+  Viewer
+} from '../../../../../generated/composition'
 
 const Anon = require('../../../../assets/anon.png')
 
@@ -15,7 +19,11 @@ export default {
   apollo: {
     viewer: {
       query: ProfileMenuViewerDocument,
-      result (result: any) {
+      result (result: {data: ProfileMenuViewerQuery}): void {
+        if (!result.data.viewer) {
+          return null
+        }
+
         this.$ability.update(result.data.viewer.user.role.ability)
       },
     }

@@ -3,9 +3,10 @@ import { Config } from './type'
 export const getConfig = (env: NodeJS.ProcessEnv): Config => ({
   features: {
     disableMiddleware: env.DISABLE_MIDDLEWARE === 'true',
-    sessionSecret: env.SESSION_SECRET,
     playground: env.GRAPHQL_PLAYGROUND === 'true',
     corsOrigin: env.CORS_ORIGIN.split(','),
+    sessionSecret: env.SESSION_SECRET,
+    sessionDomain: env.SESSION_DOMAIN,
   },
   log: {
     level: env.LOG_LEVEL,

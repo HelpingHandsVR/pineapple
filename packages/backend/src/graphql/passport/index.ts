@@ -50,9 +50,12 @@ export const applyMiddleware = async (app: Express, config: Config, connection: 
     resave: false,
     unset: 'destroy',
     cookie: {
-      httpOnly: false,
+      domain: config.features.sessionDomain,
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== 'development',
     },
   }))
+
   app.use(passport.initialize())
   app.use(passport.session())
 }

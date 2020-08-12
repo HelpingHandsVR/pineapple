@@ -1,8 +1,8 @@
-<script lang="typescript">
+<script lang="ts">
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'default-layout',
+  name: 'default-guest-layout',
 })
 </script>
 

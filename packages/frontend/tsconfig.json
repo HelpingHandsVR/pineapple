@@ -4,9 +4,9 @@
     "target": "esnext",
     "module": "esnext",
     "lib": [
-      "esnext",
-      "esnext.asynciterable",
-      "dom"
+      "ESNext",
+      "ESNext.AsyncIterable",
+      "DOM"
     ],
     "baseUrl": ".",
     "paths": {
@@ -27,7 +27,8 @@
     ],
     "typeRoots": [
       "./node_modules/@types",
-      "./node_modules/vuetify/types"
+      "./node_modules/vuetify/types",
+      "."
     ]
   },
   "exclude": [

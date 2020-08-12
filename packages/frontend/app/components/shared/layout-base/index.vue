@@ -1,4 +1,4 @@
-<script lang="typescript">
+<script lang="ts">
 import Vue from 'vue'
 import {mapGetters, mapMutations} from 'vuex'
 
@@ -60,7 +60,7 @@ export default Vue.extend({
       }
     },
 
-    toggleDrawer (input) {
+    toggleDrawer (input: boolean | unknown) {
       if (typeof input === 'boolean') {
         return this.setMenuOpen(input)
       }

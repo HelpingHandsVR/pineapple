@@ -4,9 +4,10 @@ import IORedis from 'ioredis'
 export type Config = {
   features: {
     disableMiddleware: boolean,
-    sessionSecret: string,
     playground: boolean,
     corsOrigin: string[],
+    sessionSecret: string,
+    sessionDomain: string,
   },
   log: LoggerOptions,
   redis: IORedis.RedisOptions,
