@@ -5,6 +5,12 @@ import { IMiddlewareGenerator } from 'graphql-middleware'
 import { Context } from '~/graphql/context'
 import { Action, Subject } from '.'
 
+import { log as logger } from '@/lib/log'
+
+const log = logger.child({
+  component: 'shield-can-rule',
+})
+
 const map = new Map<string, Rule>()
 
 const componentShield = (rules: IRules): IMiddlewareGenerator<any, any, any> => shield(rules, {
@@ -28,7 +34,15 @@ export const can = (action: Action, subject: Subject): Rule => {
   }
 
   const permission = rule(name)((root, args, context: Context) => {
-    return context.authorisation.ability.can(action.toString(), subject.toString()) || 'Permission denied'
+    const allowed = context.authorisation.ability.can(Action[action], Subject[subject])
+
+    log.debug({
+      action: Action[action],
+      subject: Subject[subject],
+      allowed,
+    }, 'permission check result')
+
+    return allowed || 'Permission denied'
   })
 
   map.set(name, permission)

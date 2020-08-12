@@ -10,6 +10,7 @@ const fullCrudFor = (subject: Subject) => [
   { action: Action.READ, subject },
   { action: Action.SOFT_DELETE, subject },
   { action: Action.DELETE, subject },
+  { action: Action.UPDATE, subject },
 ]
 
 const allPermissions = [

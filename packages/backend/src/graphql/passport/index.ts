@@ -9,6 +9,11 @@ import { User } from '~/entity'
 
 import { Config } from '@/lib/config/type'
 import { makeStrategy as graphqlLocalStrategy } from './strategies/graphql-local'
+import { log as logger } from '@/lib/log'
+
+const log = logger.child({
+  component: 'passport',
+})
 
 export const applyMiddleware = async (app: Express, config: Config, connection: Connection): Promise<void> => {
   const RedisStore = createStore(session)
@@ -27,13 +32,13 @@ export const applyMiddleware = async (app: Express, config: Config, connection: 
       })
 
     if (!user) {
-      console.error(new Error(`While deserialising: User not found with ID ${userId}`))
+      log.warn({ userId }, 'user not found while deserialising')
 
       return done(null, null)
     }
 
     if (user.disabled) {
-      console.error(new Error(`Disabled user tried to use session: ${user.email}`))
+      log.warn({ userId }, 'disabled user tried to use session')
 
       return done(null, null)
     }
@@ -52,7 +57,6 @@ export const applyMiddleware = async (app: Express, config: Config, connection: 
     cookie: {
       domain: config.features.sessionDomain,
       httpOnly: true,
-      secure: process.env.NODE_ENV !== 'development',
     },
   }))
 

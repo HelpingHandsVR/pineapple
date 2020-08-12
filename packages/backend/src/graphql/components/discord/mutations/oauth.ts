@@ -29,7 +29,7 @@ export const DiscordOauthMutation = extendType({
         })
 
         if (!request) {
-          console.error(new AuthenticationError(`Invalid request state: ${args.input.state}`))
+          context.log.warn(args.input, 'invalid request state')
 
           throw new AuthenticationError('Invalid request state')
         }

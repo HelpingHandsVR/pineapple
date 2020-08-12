@@ -19,7 +19,7 @@ export const defineAbilityForRole = async (role: Role): Promise<Ability> => {
   const permissions = await role.permissions
 
   permissions.forEach((permission) => {
-    can(permission.action.toString(), permission.subject.toString())
+    can(Action[permission.action], Subject[permission.subject])
   })
 
   return new Ability(rules)
