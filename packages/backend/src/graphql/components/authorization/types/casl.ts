@@ -18,7 +18,7 @@ export const Ability = objectType({
     t.field('action', {
       type: 'AbilityAction',
       resolve (root) {
-        return Action[(<any>Action)[root.action]] as unknown as Action
+        return Action[root.action] as unknown as Action
       },
     })
 
@@ -26,7 +26,7 @@ export const Ability = objectType({
       type: 'AbilitySubject',
       nullable: true,
       resolve (root) {
-        return Subject[(<any>Subject)[root.subject]] as unknown as Subject
+        return Subject[root.subject] as unknown as Subject
       },
     })
   },
