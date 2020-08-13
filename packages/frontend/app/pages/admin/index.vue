@@ -4,7 +4,7 @@ import Vue from 'vue'
 import AdminContainer from '../../components/containers/admin/index.vue'
 
 export default {
-  layout: 'flush',
+  layout: 'default',
   middleware: ['auth'],
   components: {
     AdminContainer,

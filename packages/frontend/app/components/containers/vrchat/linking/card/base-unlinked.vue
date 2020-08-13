@@ -40,6 +40,7 @@ export default Vue.extend({
             text
             to='/linking/vrchat'
             nuxt
+            disabled
           )
             | Link now
 </template>

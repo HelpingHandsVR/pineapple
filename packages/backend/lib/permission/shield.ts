@@ -34,7 +34,7 @@ export const can = (action: Action, subject: Subject): Rule => {
   }
 
   const permission = rule(name)((root, args, context: Context) => {
-    const allowed = context.authorisation.ability.can(Action[action], Subject[subject])
+    const allowed = context.authorisation.ability.can(action, subject)
 
     log.debug({
       action: Action[action],

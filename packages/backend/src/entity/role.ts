@@ -2,11 +2,8 @@ import { InternalEntity } from '../db/entity-type/internal'
 import {
   Entity,
   Column,
-  ManyToMany,
-  JoinTable,
   OneToMany,
 } from 'typeorm'
-import { Permission } from '~/entity/permission'
 import { User } from '~/entity/user'
 
 @Entity({ name: 'Role' })
@@ -16,12 +13,6 @@ export class Role extends InternalEntity {
     unique: true,
   })
   name: string
-
-  @ManyToMany(() => Permission, {
-    lazy: true,
-  })
-  @JoinTable()
-  permissions: Promise<Permission[]>
 
   @OneToMany(() => User, (user) => user.role, {
     lazy: true,

@@ -2,11 +2,11 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'flush-layout',
+  name: 'flush-guest-layout',
 })
 </script>
 
 <template lang="pug">
-  layout-base(logged-in)
+  layout-base
     nuxt
 </template>

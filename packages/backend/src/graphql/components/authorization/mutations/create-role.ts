@@ -1,7 +1,5 @@
 import { extendType, inputObjectType } from '@nexus/schema'
-import { Role, Permission } from '~/entity'
-
-import { In } from 'typeorm'
+import { Role } from '~/entity'
 
 export const CreateRoleMutationInput = inputObjectType({
   name: 'CreateRoleMutationInput',
@@ -25,15 +23,8 @@ export const CreateRoleMutation = extendType({
       },
       async resolve (root, args, context) {
         const role = new Role()
-        const permissions = await context.connection.getRepository(Permission)
-          .find({
-            where: {
-              id: In(args.input.permissions),
-            },
-          })
 
         role.name = args.input.name
-        role.permissions = Promise.resolve(permissions)
 
         return context.connection.getRepository(Role)
           .save(role)

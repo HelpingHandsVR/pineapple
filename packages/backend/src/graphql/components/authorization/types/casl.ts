@@ -17,16 +17,18 @@ export const Ability = objectType({
   definition (t) {
     t.field('action', {
       type: 'AbilityAction',
+      list: [false],
       resolve (root) {
-        return Action[root.action] as unknown as Action
+        return Array.isArray(root.action) ? root.action : [root.action]
       },
     })
 
     t.field('subject', {
       type: 'AbilitySubject',
+      list: [false],
       nullable: true,
       resolve (root) {
-        return Subject[root.subject] as unknown as Subject
+        return Array.isArray(root.subject) ? root.subject : [root.subject]
       },
     })
   },

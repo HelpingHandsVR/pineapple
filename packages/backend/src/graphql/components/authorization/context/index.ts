@@ -4,7 +4,7 @@ import { User } from '~/entity'
 
 export type AuthorisationContext = {
   authorisation: {
-    ability: Ability
+    ability: Ability<any>
   },
 }
 

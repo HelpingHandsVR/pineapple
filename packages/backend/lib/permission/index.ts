@@ -1,5 +1,4 @@
-// REMINDER: Always add new items to the bottom of the enum as the database
-// stores the index, not the string representation of the value
+import { Ability } from '@casl/ability'
 
 export enum Action {
   CREATE,
@@ -38,3 +37,12 @@ export enum Subject {
   SYSTEM_ROLE,
   SYSTEM_PERMISSION,
 }
+
+export type CaslRole = () => Ability
+
+export const crud = [
+  Action.CREATE,
+  Action.READ,
+  Action.UPDATE,
+  Action.SOFT_DELETE,
+]

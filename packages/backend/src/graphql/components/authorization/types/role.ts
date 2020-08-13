@@ -13,11 +13,15 @@ export const RoleType = objectType({
       list: [false],
       async resolve (root, args, context) {
         const role = await context.connection.getRepository(Role)
-          .findOneOrFail({
+          .findOne({
             where: {
               id: root.id,
             },
           })
+
+        if (!role) {
+          return []
+        }
 
         const ability = await defineAbilityForRole(role)
 

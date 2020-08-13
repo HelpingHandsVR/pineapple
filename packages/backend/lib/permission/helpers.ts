@@ -1,6 +1,15 @@
 import { Role } from '~/entity/role'
 import { Ability, AbilityBuilder } from '@casl/ability'
-import { Action, Subject } from '.'
+
+import { Action, Subject, CaslRole } from '.'
+
+import { rootAdmin } from './roles/root-admin'
+import { user } from './roles/user'
+
+const roleMap: Record<string, CaslRole> = {
+  ROOT_ADMIN: rootAdmin,
+  USER: user,
+}
 
 export const defineAbilityForGuest = (): Ability => {
   const { can, rules } = new AbilityBuilder<any>()
@@ -15,12 +24,11 @@ export const defineAbilityForRole = async (role: Role): Promise<Ability> => {
     return defineAbilityForGuest()
   }
 
-  const { can, rules } = new AbilityBuilder<any>()
-  const permissions = await role.permissions
+  if (role.name in roleMap) {
+    const ability = roleMap[role.name]
 
-  permissions.forEach((permission) => {
-    can(Action[permission.action], Subject[permission.subject])
-  })
+    return ability()
+  }
 
-  return new Ability(rules)
+  return defineAbilityForGuest()
 }

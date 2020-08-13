@@ -3,8 +3,8 @@
 
 
 type Ability {
-  action: AbilityAction!
-  subject: AbilitySubject
+  action: [AbilityAction]!
+  subject: [AbilitySubject]
 }
 
 enum AbilityAction {
@@ -157,24 +157,11 @@ type PaginationResultCursor {
   beforeCursor: String
 }
 
-type Permission {
-  action: AbilityAction!
-  id: ID!
-  name: String!
-  subject: AbilitySubject!
-}
-
-type PermissionPagination implements PaginationResult {
-  cursor: PaginationResultCursor!
-  data: [Permission]!
-}
-
 type Query {
   attendable(where: AttendableQueryWhereInput): Attendable
   attendables(pagination: PaginationInput, search: AttendablesQuerySearchInput, where: AttendablesQueryWhereInput): AttendablePagination!
   attendanceRecords(pagination: PaginationInput): AttendanceRecordPagination!
   discordOauthURL: String!
-  permissions(pagination: PaginationInput): PermissionPagination!
   role(where: RoleQueryWhereInput!): Role
   roles(pagination: PaginationInput): RolePagination!
   upcomingAttendables(input: UpcomingAttendablesQueryInput!): [Attendable]! @deprecated(reason: "Use the \"attendables\" query")
