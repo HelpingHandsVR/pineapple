@@ -1,7 +1,7 @@
 import { extendType, inputObjectType } from '@nexus/schema'
-import { buildPaginator } from 'typeorm-cursor-pagination'
 
-import { Attendable } from '~/entity'
+import { Attendable } from '~/db/entity'
+import { AttendableRepository } from '~/db/repository/attendable'
 
 export const AttendablesQueryWhereInputDateConstraint = inputObjectType({
   name: 'AttendablesQueryWhereInputDateConstraint',
@@ -74,49 +74,15 @@ export const AttendablesQuery = extendType({
         search: 'AttendablesQuerySearchInput',
       },
       resolve (root, args, context) {
-        const qb = context.connection.getRepository(Attendable)
-          .createQueryBuilder('Attendable')
-
-        if (args.search) {
-          qb.andWhere('"Attendable"."name" ILIKE :name', {
-            name: `%${args.search.name}%`,
+        return context.connection.getCustomRepository(AttendableRepository)
+          .paginate({
+            query: args.pagination,
+            search: args.search,
+            where: args.where,
+            paginationKeys: args.pagination
+              ? [args.pagination.orderBy || 'id']
+              : ['id'],
           })
-        }
-
-        if (args.where?.startsAt?.before) {
-          qb.andWhere('"Attendable"."startsAt" < :startsAtBeforeLimit', {
-            startsAtBeforeLimit: args.where.startsAt.before,
-          })
-        }
-
-        if (args.where?.startsAt?.after) {
-          qb.andWhere('"Attendable"."startsAt" > :startsAtAfterLimit', {
-            startsAtAfterLimit: args.where.startsAt.after,
-          })
-        }
-
-        if (args.where?.endsAt?.before) {
-          qb.andWhere('"Attendable"."endsAt" < :endsAtBeforeLimit', {
-            endsAtBeforeLimit: args.where.endsAt.before,
-          })
-        }
-
-        if (args.where?.endsAt?.after) {
-          qb.andWhere('"Attendable"."endsAt" > :endsAtAfterLimit', {
-            endsAtAfterLimit: args.where.endsAt.after,
-          })
-        }
-
-        const paginator = buildPaginator({
-          entity: Attendable,
-          alias: 'Attendable',
-          query: args.pagination,
-          paginationKeys: args.pagination
-            ? [args.pagination.orderBy || 'id']
-            : ['id'] as any,
-        })
-
-        return paginator.paginate(qb)
       },
     })
   },

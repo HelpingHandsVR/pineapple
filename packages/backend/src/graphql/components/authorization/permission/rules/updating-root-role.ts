@@ -1,7 +1,7 @@
 import { rule } from 'graphql-shield'
 
 import { Context } from '~/graphql/context'
-import { Role } from '~/entity'
+import { Role } from '~/db/entity'
 
 export const updatingRootRole = rule('updatingRootRole', { cache: 'no_cache' })(async (root, args, context: Context) => {
   const requestedRole = await context.connection.getRepository(Role)

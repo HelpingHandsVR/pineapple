@@ -1,8 +1,9 @@
 import { extendType, inputObjectType } from '@nexus/schema'
-import { AttendanceRecord, Attendable } from '~/entity'
+import { Attendable } from '~/db/entity'
 
 import { DateTime } from 'luxon'
 import { LessThan } from 'typeorm'
+import { AttendanceRecordRepository } from '~/db/repository/attendance-record'
 
 export const CreateAttendaceRecordMutationInput = inputObjectType({
   name: 'UpsertAttendaceRecordMutationInput',
@@ -48,49 +49,11 @@ export const CreateAttendaceRecordMutation = extendType({
           throw new Error('You can only log your time on the week the event happened, after it started.')
         }
 
-        const existing = await context.connection.getRepository(AttendanceRecord)
-          .findOne({
-            where: {
-              attendable: attendable.id,
-              user: context.authentication.getUser().id,
-            },
+        return context.connection.getCustomRepository(AttendanceRecordRepository)
+          .upsert(attendable, context.authentication.getUser(), {
+            endsAt: args.input.endsAt,
+            startsAt: args.input.endsAt,
           })
-
-        // Make sure that the user can only specify start and end times within
-        // the boundaries of the attendable
-        const boundaries = {
-          start: DateTime.fromJSDate(attendable.startsAt),
-          end: DateTime.fromJSDate(attendable.endsAt),
-        }
-
-        if (existing) {
-          existing.startsAt = args.input.startsAt
-            ? DateTime.max(boundaries.start, DateTime.fromJSDate(args.input.startsAt)).toJSDate()
-            : boundaries.start.toJSDate()
-
-          existing.endsAt = args.input.endsAt
-            ? DateTime.min(boundaries.end, DateTime.fromJSDate(args.input.endsAt)).toJSDate()
-            : boundaries.end.toJSDate()
-
-          return context.connection.getRepository(AttendanceRecord)
-            .save(existing)
-        }
-
-        const record = new AttendanceRecord()
-
-        record.attendable = Promise.resolve(attendable)
-        record.user = Promise.resolve(context.authentication.getUser())
-
-        record.startsAt = args.input.startsAt
-          ? DateTime.max(boundaries.start, DateTime.fromJSDate(args.input.startsAt)).toJSDate()
-          : boundaries.start.toJSDate()
-
-        record.endsAt = args.input.endsAt
-          ? DateTime.min(boundaries.end, DateTime.fromJSDate(args.input.endsAt)).toJSDate()
-          : boundaries.end.toJSDate()
-
-        return context.connection.getRepository(AttendanceRecord)
-          .save(record)
       },
     })
   },

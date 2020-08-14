@@ -1,5 +1,5 @@
 import { extendType, inputObjectType } from '@nexus/schema'
-import { User } from '~/entity'
+import { UserRepository } from '~/db/repository/user'
 
 export const RegisterInput = inputObjectType({
   name: 'RegisterInput',
@@ -27,38 +27,8 @@ export const RegisterMutation = extendType({
         }),
       },
       async resolve (root, args, context) {
-        const duplicate = await context.connection.getRepository(User)
-          .findOne({
-            where: {
-              email: args.input.email,
-            },
-          })
-
-        if (duplicate && duplicate.provisioned) {
-          // TODO: This could be used to enumerate users, so need to rate-limit
-          throw new Error('You already have an account, Please log in instead of registering.')
-        } else if (duplicate && !duplicate.provisioned) {
-          // We already have data stored for this account, but the user hasn't
-          // logged in yet
-
-          duplicate.provisioned = true
-          duplicate.email = args.input.email
-          duplicate.password = args.input.password
-          duplicate.display = args.input.display
-
-          return context.connection.getRepository(User)
-            .save(duplicate)
-        }
-
-        const user = new User()
-
-        user.email = args.input.email
-        user.password = args.input.password
-        user.display = args.input.display
-        user.provisioned = true
-
-        return context.connection.getRepository(User)
-          .save(user)
+        return context.connection.getCustomRepository(UserRepository)
+          .register(args.input.email, args.input.password, args.input.password)
       },
     })
   },

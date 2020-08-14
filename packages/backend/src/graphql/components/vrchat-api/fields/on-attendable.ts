@@ -1,5 +1,5 @@
 import { extendType } from '@nexus/schema'
-import { Attendable } from '~/entity'
+import { Attendable } from '~/db/entity'
 
 export const VRChatUsWorldOnAttendable = extendType({
   type: 'Attendable',

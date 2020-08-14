@@ -7,7 +7,7 @@ import { VRChatAPIContext, makeVRChatAPIContext } from '../components/vrchat-api
 import { Config } from '@/lib/config/type'
 
 import * as queues from '~/queues'
-import * as allEntities from '~/entity'
+import * as allEntities from '~/db/entity'
 
 import { DiscordContext, makeDiscordContext } from '../components/discord/context'
 import { AuthorisationContext, makeAuthorisationContext } from '../components/authorization/context'

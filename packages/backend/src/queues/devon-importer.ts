@@ -3,10 +3,10 @@ import { getConnection } from 'typeorm'
 import pAll from 'p-all'
 import { DateTime } from 'luxon'
 
-import { Attendable, User } from '~/entity'
+import { Attendable, User } from '~/db/entity'
 
 import { WithDevonAPI } from '~/data-sources/devon'
-import { AttendableType } from '~/db/enums'
+import { AttendableType } from '~/db/types'
 import { BetweenDates } from '@/lib/typeorm/helpers'
 import { log as logger } from '@/lib/log'
 import { getConfig } from '@/lib/config/coerce'

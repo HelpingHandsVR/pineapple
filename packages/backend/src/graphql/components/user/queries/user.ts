@@ -1,5 +1,5 @@
 import { extendType, inputObjectType } from '@nexus/schema'
-import { User } from '~/entity'
+import { User } from '~/db/entity'
 
 export const UserQueryWhereInput = inputObjectType({
   name: 'UserQueryWhereInput',

@@ -1,5 +1,5 @@
 import { extendType, inputObjectType } from '@nexus/schema'
-import { Role } from '~/entity'
+import { Role } from '~/db/entity'
 
 export const UpdateRoleMutationWhereInput = inputObjectType({
   name: 'UpdateRoleMutationWhereInput',

@@ -1,6 +1,6 @@
 import { Ability } from '@casl/ability'
 import { defineAbilityForGuest, defineAbilityForRole } from '@/lib/permission/helpers'
-import { User } from '~/entity'
+import { User } from '~/db/entity'
 
 export type AuthorisationContext = {
   authorisation: {

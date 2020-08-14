@@ -1,4 +1,4 @@
-import { InternalEntity } from '../db/entity-type/internal'
+import { InternalEntity } from '../entity-type/internal'
 import {
   Entity,
   Column,
@@ -11,8 +11,8 @@ import {
 
 import * as bcrypt from 'bcrypt'
 
-import { DiscordAccount } from '~/entity/discord-account'
-import { Role } from '~/entity/role'
+import { DiscordAccount } from './discord-account'
+import { Role } from './role'
 
 @Entity({ name: 'User' })
 export class User extends InternalEntity {

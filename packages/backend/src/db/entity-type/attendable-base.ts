@@ -1,6 +1,6 @@
 import { CrudEntity } from './crud'
 import { Column } from 'typeorm'
-import { AttendableType } from '../enums'
+import { AttendableType } from '../types'
 
 // These are columns that exist in both Attendable and AttendableDefinition.
 // This way single events can be changed by users (for example, the host can be

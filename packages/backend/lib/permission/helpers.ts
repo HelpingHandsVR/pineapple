@@ -1,4 +1,4 @@
-import { Role } from '~/entity/role'
+import { Role } from '~/db/entity/role'
 import { Ability, AbilityBuilder } from '@casl/ability'
 
 import { Action, Subject, CaslRole } from '.'

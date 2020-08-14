@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { buildContext } from 'graphql-passport'
 import { Context } from 'graphql-passport/lib/buildContext'
-import { User } from '~/entity'
+import { User } from '~/db/entity'
 
 export type AuthenticationContext = {
   passport: Context<User>,

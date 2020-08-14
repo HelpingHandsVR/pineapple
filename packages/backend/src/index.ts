@@ -43,12 +43,12 @@ const main = async () => {
   }
 
   if (process.env.NODE_ENV === 'development') {
-    const files = await fs.promises.readdir('./src/entity')
+    const files = await fs.promises.readdir('./src/db/entity')
 
     typegenAutoConfig.sources.push(...files.map((entityFile) => {
       return {
         alias: pascalCase(path.parse(entityFile).name),
-        source: path.join('./src/entity', entityFile),
+        source: path.join('./src/db/entity', entityFile),
       }
     }))
   }

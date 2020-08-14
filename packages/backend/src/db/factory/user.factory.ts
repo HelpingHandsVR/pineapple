@@ -1,5 +1,5 @@
 import { define } from 'typeorm-seeding'
-import { User } from '~/entity'
+import { User } from '~/db/entity'
 
 define(User, (faker): User => {
   const user = new User()

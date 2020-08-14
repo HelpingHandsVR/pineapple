@@ -1,6 +1,7 @@
 import { extendType, inputObjectType, objectType } from '@nexus/schema'
-import { Role } from '~/entity'
-import { buildPaginator } from 'typeorm-cursor-pagination'
+
+import { Role } from '~/db/entity'
+import { RoleRepository } from '~/db/repository/role'
 
 export const RolePagination = objectType({
   name: 'RolePagination',
@@ -22,19 +23,13 @@ export const RolesQuery = extendType({
         pagination: 'PaginationInput',
       },
       resolve (root, args, context) {
-        const qb = context.connection.getRepository(Role)
-          .createQueryBuilder('Role')
-
-        const paginator = buildPaginator({
-          entity: Role,
-          alias: 'Role',
-          query: args.pagination,
-          paginationKeys: args.pagination
-            ? [args.pagination.orderBy || 'id']
-            : ['id'] as any,
-        })
-
-        return paginator.paginate(qb)
+        return context.connection.getCustomRepository(RoleRepository)
+          .paginate({
+            query: args.pagination,
+            paginationKeys: args.pagination
+              ? [args.pagination.orderBy || 'id']
+              : ['id'],
+          })
       },
     })
   },

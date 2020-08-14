@@ -40,7 +40,7 @@ export const makeVRChatAPIContext = async (config: Config, staticContext: Static
 
   const url = `${config.vrchat.pipelineWsURL}/?authToken=${vrchat.authCookie}`
 
-  log.debug(`opening Websocket to VRC pipeline using URL: ${url}`)
+  log.debug('opening Websocket to VRC pipeline')
 
   const ws = new WebSocket(url, {
     headers: {

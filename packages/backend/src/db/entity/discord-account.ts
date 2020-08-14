@@ -1,4 +1,4 @@
-import { CrudEntity } from '../db/entity-type/crud'
+import { CrudEntity } from '../entity-type/crud'
 import {
   Entity,
   Column,
@@ -6,7 +6,7 @@ import {
   JoinColumn,
 } from 'typeorm'
 
-import { User } from '~/entity/user'
+import { User } from './user'
 
 @Entity({ name: 'DiscordAccount' })
 export class DiscordAccount extends CrudEntity {

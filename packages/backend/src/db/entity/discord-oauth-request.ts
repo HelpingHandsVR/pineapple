@@ -1,4 +1,4 @@
-import { CrudEntity } from '../db/entity-type/crud'
+import { CrudEntity } from '../entity-type/crud'
 import {
   Entity,
   Column,

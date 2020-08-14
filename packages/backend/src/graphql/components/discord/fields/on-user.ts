@@ -1,5 +1,5 @@
 import { extendType } from '@nexus/schema'
-import { DiscordAccount } from '~/entity'
+import { DiscordAccount } from '~/db/entity'
 
 export const DiscordAccountOnUser = extendType({
   type: 'User',

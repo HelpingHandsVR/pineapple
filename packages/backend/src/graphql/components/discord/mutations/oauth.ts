@@ -1,8 +1,8 @@
 import { extendType, inputObjectType } from '@nexus/schema'
 import { AuthenticationError } from 'apollo-server-errors'
-import { DateTime } from 'luxon'
 
-import { DiscordAccount, DiscordOauthRequest } from '~/entity'
+import { DiscordOauthRequestRepository } from '~/db/repository/discord-oauth-request'
+import { DiscordAccountRepository } from '~/db/repository/discord-account'
 
 export const DiscordOauthMutationInput = inputObjectType({
   name: 'DiscordOauthMutationInput',
@@ -22,21 +22,13 @@ export const DiscordOauthMutation = extendType({
         input: DiscordOauthMutationInput.asArg({ required: true }),
       },
       async resolve (root, args, context) {
-        const request = await DiscordOauthRequest.findOne({
-          where: {
+        // Attempt to use the given state. If a state doesn't exist, it means
+        // the user hasn't generated the state (usually happens while getting
+        // the linking URL)
+        await context.connection.getCustomRepository(DiscordOauthRequestRepository)
+          .useState({
             state: args.input.state,
-          },
-        })
-
-        if (!request) {
-          context.log.warn(args.input, 'invalid request state')
-
-          throw new AuthenticationError('Invalid request state')
-        }
-
-        // This request is now "used up". To try again, the user will need to
-        // re-request a new oauth URL
-        await request.softRemove()
+          })
 
         const discordUser = await context.discord.oauth2.getUser(args.input.accessToken)
 
@@ -48,36 +40,12 @@ export const DiscordOauthMutation = extendType({
 
         const user = context.authentication.getUser()
 
-        const expiresAt = DateTime
-          .local()
-          .plus({
-            seconds: args.input.expiresIn,
-          })
-          .toJSDate()
-
-        const account = await DiscordAccount.findOne({
-          where: {
+        await context.connection.getCustomRepository(DiscordAccountRepository)
+          .upsert(context.authentication.getUser(), {
+            user,
             accessToken: args.input.accessToken,
-          },
-        })
-
-        if (account) {
-          account.accessToken = args.input.accessToken
-          account.expiresAt = expiresAt
-          account.user = Promise.resolve(user)
-          account.updatedBy = user.id
-
-          return discordUser
-        }
-
-        const newAccount = new DiscordAccount()
-
-        newAccount.accessToken = args.input.accessToken
-        newAccount.expiresAt = expiresAt
-        newAccount.user = Promise.resolve(user)
-        newAccount.createdBy = user.id
-
-        await newAccount.save()
+            expiresInSeconds: args.input.expiresIn,
+          })
 
         return discordUser
       },

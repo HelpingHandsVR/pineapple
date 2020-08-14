@@ -4,8 +4,8 @@ import {
   OneToMany,
 } from 'typeorm'
 
-import { AttendableBase } from '../db/entity-type/attendable-base'
-import { Attendable } from '~/entity/attendable'
+import { AttendableBase } from '../entity-type/attendable-base'
+import { Attendable } from './attendable'
 
 @Entity({ name: 'AttendableDefinition' })
 export class AttendableDefinition extends AttendableBase {

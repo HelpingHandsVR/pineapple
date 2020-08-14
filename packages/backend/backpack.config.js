@@ -3,12 +3,11 @@
 const fs = require('fs')
 const path = require('path')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
-// const { IgnorePlugin } = require('webpack')
 
-const entities = fs.readdirSync('./src/entity')
+const entities = fs.readdirSync('./src/db/entity')
 const seeds = fs.readdirSync('./src/db/seed')
 const factories = fs.readdirSync('./src/db/factory')
-const migrations = fs.readdirSync('./src/migration')
+const migrations = fs.readdirSync('./src/db/migration')
 
 const entry = {
   main: [
@@ -19,7 +18,7 @@ const entry = {
 entities
   .map(path.parse)
   .forEach(({ name }) => {
-    entry[`entity/${name}`] = `./src/entity/${name}`
+    entry[`entity/${name}`] = `./src/db/entity/${name}`
   })
 
 seeds
@@ -37,7 +36,7 @@ factories
 migrations
   .map(path.parse)
   .forEach(({ name }) => {
-    entry[`migration/${name}`] = `./src/migration/${name}`
+    entry[`migration/${name}`] = `./src/db/migration/${name}`
   })
 
 module.exports = {

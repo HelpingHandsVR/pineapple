@@ -3,11 +3,11 @@
  * Do not make changes to this file directly
  */
 
-import * as Attendable from "src/entity/attendable"
-import * as AttendanceRecord from "src/entity/attendance-record"
-import * as DiscordAccount from "src/entity/discord-account"
-import * as Role from "src/entity/role"
-import * as User from "src/entity/user"
+import * as Attendable from "src/db/entity/attendable"
+import * as AttendanceRecord from "src/db/entity/attendance-record"
+import * as DiscordAccount from "src/db/entity/discord-account"
+import * as Role from "src/db/entity/role"
+import * as User from "src/db/entity/user"
 import * as ctx from "../graphql/context/index"
 import { core } from "@nexus/schema"
 declare global {
