@@ -84,6 +84,10 @@ type AttendanceRecordPagination implements PaginationResult {
   data: [AttendanceRecord]!
 }
 
+input AttendanceRecordsSubscriptionWhereInput {
+  records: [ID!]!
+}
+
 input CreateRoleMutationInput {
   name: String
   permissions: [ID]
@@ -189,6 +193,10 @@ type RolePagination implements PaginationResult {
 
 input RoleQueryWhereInput {
   id: ID
+}
+
+type Subscription {
+  attendanceRecords(where: AttendanceRecordsSubscriptionWhereInput!): [AttendanceRecord]!
 }
 
 input UpcomingAttendablesQueryInput {

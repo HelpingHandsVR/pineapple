@@ -10,7 +10,7 @@ export type AuthenticationContext = {
   }
 }
 
-export const makeAuthenticationContext = async (req: Request, res: Response): Promise<AuthenticationContext> => {
+export const makeAuthenticationContext = async (req: Request, res?: Response): Promise<AuthenticationContext> => {
   const passport = buildContext<User>({
     req,
     res,

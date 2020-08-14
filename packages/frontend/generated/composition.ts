@@ -113,6 +113,10 @@ export type AttendanceRecordPagination = PaginationResult & {
   data: Array<Maybe<AttendanceRecord>>;
 };
 
+export type AttendanceRecordsSubscriptionWhereInput = {
+  records: Array<Scalars['ID']>;
+};
+
 export type CreateRoleMutationInput = {
   name?: Maybe<Scalars['String']>;
   permissions?: Maybe<Array<Maybe<Scalars['ID']>>>;
@@ -288,6 +292,16 @@ export type RolePagination = PaginationResult & {
 
 export type RoleQueryWhereInput = {
   id?: Maybe<Scalars['ID']>;
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  attendanceRecords: Array<Maybe<AttendanceRecord>>;
+};
+
+
+export type SubscriptionAttendanceRecordsArgs = {
+  where: AttendanceRecordsSubscriptionWhereInput;
 };
 
 export type UpcomingAttendablesQueryInput = {

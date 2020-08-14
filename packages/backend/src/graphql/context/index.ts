@@ -2,12 +2,14 @@ import { Connection, createConnection, getConnectionOptions } from 'typeorm'
 import { Request, Response } from 'express'
 import { Queue } from 'bull'
 import { Logger } from 'pino'
+import { RedisPubSub } from 'graphql-redis-subscriptions'
 
 import { VRChatAPIContext, makeVRChatAPIContext } from '../components/vrchat-api/context'
 import { Config } from '@/lib/config/type'
 
 import * as queues from '~/queues'
 import * as allEntities from '~/db/entity'
+import * as allSubscribers from '~/db/subscribers'
 
 import { DiscordContext, makeDiscordContext } from '../components/discord/context'
 import { AuthorisationContext, makeAuthorisationContext } from '../components/authorization/context'
@@ -15,12 +17,14 @@ import { AuthenticationContext, makeAuthenticationContext } from '../components/
 import { log } from '@/lib/log'
 import { randomBytes } from 'crypto'
 import { TypeormPinoLogger } from '~/db/logger'
+import { createRedisPubsub } from '@/lib/redis-pubsub'
 
 export type StaticContext = {
   config: Config,
   connection: Connection,
   queues: Record<string, Queue>,
   log: Logger,
+  pubsub: RedisPubSub,
 }
 
 export type IntegrationContext = {
@@ -61,9 +65,15 @@ const makeStaticContext = async (config: Config): Promise<StaticContext> => {
     ...await getConnectionOptions(),
     logger: new TypeormPinoLogger(),
     entities: Object.values(allEntities),
+    subscribers: Object.values(allSubscribers),
   }
 
+  // Create a dedicated connection to Redis, while we use a different one
+  // outside GraphQL
+  const pubsub = createRedisPubsub()
+
   return {
+    pubsub,
     config,
     queues,
     log: log.child({
@@ -74,14 +84,29 @@ const makeStaticContext = async (config: Config): Promise<StaticContext> => {
   }
 }
 
-const makeExpressContext = (params: IntegrationContext) => ({
-  express: {
-    req: params.req,
-    res: params.res,
-  },
-})
+type SubscriptionContextParams = {
+  connection: {
+    context: {
+      request: Request,
+    }
+  }
+}
 
-type ContextCreator = (params: IntegrationContext) => Promise<Context>
+type MakeExpressContextInput = {
+  req: Request,
+  res?: Response,
+}
+
+const makeExpressContext = ({ req, res }: MakeExpressContextInput) => {
+  return {
+    express: {
+      req,
+      res,
+    },
+  }
+}
+
+type ContextCreator = (params: IntegrationContext | SubscriptionContextParams) => Promise<Context>
 
 // The dynamic context __creator__ is only made once on startup to prepare the
 // static context.
@@ -98,24 +123,49 @@ export const makeContextFactory = async (config: Config): Promise<ContextCreator
 
   // The actual dynamic context is made on every request and contains stuff like
   // user auth and IP address from Express.
-  return async (params: IntegrationContext): Promise<Context> => {
-    const authenticationContext = await makeAuthenticationContext(params.req, params.res)
-
-    const [
-      authorisationContext,
-      expressContext,
-    ] = await Promise.all([
-      makeAuthorisationContext(authenticationContext.authentication.getUser()),
-      makeExpressContext(params),
-    ])
-
-    return {
+  return async (params): Promise<Context> => {
+    const sharedContext = {
       ...staticContext,
       ...vrcContext,
       ...discordContext,
-      ...authorisationContext,
-      ...authenticationContext,
-      ...expressContext,
+    }
+
+    if ('connection' in params) {
+      const authenticationContext = await makeAuthenticationContext(params.connection.context.request)
+
+      const [
+        authorisationContext,
+        expressContext,
+      ] = await Promise.all([
+        makeAuthorisationContext(authenticationContext.authentication.getUser()),
+        makeExpressContext({
+          req: params.connection.context.request,
+        }),
+      ])
+
+      return {
+        ...sharedContext,
+        ...authorisationContext,
+        ...authenticationContext,
+        ...expressContext,
+      }
+    } else {
+      const authenticationContext = await makeAuthenticationContext(params.req, params.res)
+
+      const [
+        authorisationContext,
+        expressContext,
+      ] = await Promise.all([
+        makeAuthorisationContext(authenticationContext.authentication.getUser()),
+        makeExpressContext(params),
+      ])
+
+      return {
+        ...sharedContext,
+        ...authorisationContext,
+        ...authenticationContext,
+        ...expressContext,
+      }
     }
   }
 }

@@ -6,7 +6,7 @@ export const makeErrorHandlerMiddleware = (): IMiddlewareFunction => errorHandle
   captureReturnedErrors: true,
   forwardErrors: false,
   onError (error, context: Context) {
-    context.log.error('Runtime error forwarded to user', error)
+    context.log.error(error, 'runtime error forwarded to user')
 
     throw error
   },

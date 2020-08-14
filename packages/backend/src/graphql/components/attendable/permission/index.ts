@@ -1,6 +1,6 @@
 import { shield, can } from '@/lib/permission/shield'
 import { Action, Subject } from '@/lib/permission'
-import { and } from 'graphql-shield'
+import { and, allow } from 'graphql-shield'
 import { isLoggedIn } from '@/lib/permission/rules/is-logged-in'
 
 export const rules = shield({
@@ -19,5 +19,8 @@ export const rules = shield({
       isLoggedIn,
       can(Action.READ, Subject.ATTENDABLE_SELF), can(Action.READ, Subject.ATTENDABLE_OTHERS),
     ),
+  },
+  Subscription: {
+    attendanceRecords: allow,
   },
 })

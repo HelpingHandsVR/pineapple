@@ -1,12 +1,14 @@
 import 'reflect-metadata'
 import path from 'path'
 import express from 'express'
+import http from 'http'
 import { ApolloServer } from 'apollo-server-express'
 import { makeSchema } from '@nexus/schema'
 import { applyMiddleware } from 'graphql-middleware'
 import createHttpLogger from 'pino-http'
 import fs from 'fs'
 import { pascalCase } from 'change-case'
+import WebSocket from 'ws'
 
 import * as scalars from './graphql/scalars'
 import * as paginationTypes from './graphql/pagination'
@@ -105,10 +107,18 @@ const main = async () => {
   })
 
   const server = new ApolloServer({
+    debug: process.env.NODE_ENV === 'development',
     schema,
     context: await makeContextFactory(config),
     playground: {
       endpoint: '/graphql',
+      subscriptionEndpoint: '/graphql',
+    },
+    subscriptions: {
+      path: '/graphql',
+      onConnect (connectionParams: Record<string, unknown>, websocket: WebSocket, context: unknown) {
+        return context
+      },
     },
   })
 
@@ -118,6 +128,7 @@ const main = async () => {
 
   await passport.applyMiddleware(app, config, getConnection('default'))
   middlewares.applyAll(app, config)
+
   server.applyMiddleware({
     app,
     cors: {
@@ -131,7 +142,11 @@ const main = async () => {
     },
   })
 
-  app.listen({ port: config.api.port }, () => {
+  const httpServer = http.createServer(app)
+
+  server.installSubscriptionHandlers(httpServer)
+
+  httpServer.listen(config.api.port, '0.0.0.0', () => {
     log.info(`Server running: http://[::1]:${config.api.port}${server.graphqlPath}`)
   })
 }
