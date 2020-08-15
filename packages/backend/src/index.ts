@@ -76,15 +76,14 @@ const main = async () => {
     typegenAutoConfig,
   })
 
-  let schema = null
+  let schema = applyMiddleware(baseSchema, makeErrorHandlerMiddleware())
 
   if (config.features.disableMiddleware) {
-    log.warn('Middlewares are disabled, no permission checks will run!')
-    schema = applyMiddleware(baseSchema, makeErrorHandlerMiddleware())
+    log.warn('middlewares are disabled, no permission checks will run!')
   } else {
     const middleware = [...permissions, makeErrorHandlerMiddleware()]
 
-    schema = applyMiddleware(baseSchema, ...middleware)
+    schema = applyMiddleware(schema, ...middleware)
   }
 
   const httpLogger = createHttpLogger({
@@ -124,6 +123,7 @@ const main = async () => {
 
   const app = express()
 
+  app.set('trust proxy', config.features.trustProxy)
   app.use(httpLogger)
 
   await passport.applyMiddleware(app, config, getConnection('default'))

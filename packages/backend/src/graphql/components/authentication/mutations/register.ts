@@ -28,7 +28,7 @@ export const RegisterMutation = extendType({
       },
       async resolve (root, args, context) {
         return context.connection.getCustomRepository(UserRepository)
-          .register(args.input.email, args.input.password, args.input.password)
+          .register(args.input.email, args.input.password, args.input.display)
       },
     })
   },

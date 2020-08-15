@@ -7,6 +7,17 @@ export const getConfig = (env: NodeJS.ProcessEnv): Config => ({
     corsOrigin: env.CORS_ORIGIN.split(','),
     sessionSecret: env.SESSION_SECRET,
     sessionDomain: env.SESSION_DOMAIN,
+    trustProxy: env.TRUST_PROXY === 'true',
+    rateLimiting: {
+      mutation: {
+        max: Number.parseInt(env.RATE_LIMIT_MUTATION_MAX, 10),
+        window: env.RATE_LIMIT_MUTATION_WINDOW,
+      },
+      query: {
+        max: Number.parseInt(env.RATE_LIMIT_QUERY_MAX, 10),
+        window: env.RATE_LIMIT_QUERY_WINDOW,
+      },
+    },
   },
   log: {
     level: env.LOG_LEVEL,
