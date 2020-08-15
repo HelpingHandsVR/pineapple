@@ -19,6 +19,12 @@ export const getConfig = (env: NodeJS.ProcessEnv): Config => ({
       },
     },
   },
+  sentry: {
+    enabled: env.SENTRY_ENABLED === 'true',
+    options: {
+      dsn: env.SENTRY_DSN,
+    },
+  },
   log: {
     level: env.LOG_LEVEL,
     prettyPrint: env.NODE_ENV === 'development',

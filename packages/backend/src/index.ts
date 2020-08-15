@@ -9,6 +9,7 @@ import createHttpLogger from 'pino-http'
 import fs from 'fs'
 import { pascalCase } from 'change-case'
 import WebSocket from 'ws'
+import * as sentry from '@sentry/node'
 
 import * as scalars from './graphql/scalars'
 import * as paginationTypes from './graphql/pagination'
@@ -29,6 +30,8 @@ import { getConfig } from '@/lib/config/coerce'
 import { getConnection } from 'typeorm'
 import { makeErrorHandlerMiddleware } from './graphql/error-handler'
 import { log } from '@/lib/log'
+import { makeSentry } from '@/lib/sentry'
+import { SentryApolloServerPlugin } from '@/lib/sentry/apollo-server-plugin'
 
 const main = async () => {
   const config = getConfig(process.env)
@@ -105,10 +108,17 @@ const main = async () => {
     },
   })
 
+  const apolloPlugins = []
+
+  if (config.sentry.enabled) {
+    apolloPlugins.push(new SentryApolloServerPlugin())
+  }
+
   const server = new ApolloServer({
     debug: process.env.NODE_ENV === 'development',
     schema,
     context: await makeContextFactory(config),
+    plugins: apolloPlugins,
     playground: {
       endpoint: '/graphql',
       subscriptionEndpoint: '/graphql',
@@ -121,9 +131,12 @@ const main = async () => {
     },
   })
 
+  const sentryHandlers = makeSentry(config)
   const app = express()
 
   app.set('trust proxy', config.features.trustProxy)
+
+  sentryHandlers.requestHandler(app)
   app.use(httpLogger)
 
   await passport.applyMiddleware(app, config, getConnection('default'))
@@ -142,6 +155,8 @@ const main = async () => {
     },
   })
 
+  sentryHandlers.errorHandler(app)
+
   const httpServer = http.createServer(app)
 
   server.installSubscriptionHandlers(httpServer)
@@ -152,4 +167,8 @@ const main = async () => {
 }
 
 main()
-  .catch(console.error)
+  .catch((error) => {
+    log.error(error, 'error while starting server')
+
+    sentry.captureException(error)
+  })

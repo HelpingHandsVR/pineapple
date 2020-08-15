@@ -75,6 +75,7 @@ const config: Configuration = {
    */
   modules: [
     '@nuxtjs/apollo',
+    '@nuxtjs/sentry',
   ],
   /*
    ** vuetify module configuration

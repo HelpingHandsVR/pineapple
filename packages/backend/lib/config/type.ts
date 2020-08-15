@@ -1,5 +1,6 @@
 import { LoggerOptions } from 'pino'
 import IORedis from 'ioredis'
+import { NodeOptions } from '@sentry/node'
 
 export type Config = {
   features: {
@@ -20,6 +21,10 @@ export type Config = {
         max: number,
       },
     }
+  },
+  sentry: {
+    enabled: boolean,
+    options: NodeOptions,
   },
   log: LoggerOptions,
   redis: IORedis.RedisOptions,

@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:12 as dependencysleketon
+FROM mhart/alpine-node:12 as dependencyskeleton
 
 RUN mkdir -p /app/packages
 
@@ -31,7 +31,7 @@ RUN yarn global add lerna
 # SOURCES
 ##
 
-FROM dependencysleketon as proddependencies
+FROM dependencyskeleton as proddependencies
 
 ENV NODE_ENV=production
 

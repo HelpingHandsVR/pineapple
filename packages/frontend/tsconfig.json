@@ -21,6 +21,7 @@
       "@types/node",
       "@nuxt/types",
       "@nuxtjs/apollo",
+      "@nuxtjs/sentry/types",
       "vue-cli-plugin-apollo/types",
       "vuetify",
       "."
