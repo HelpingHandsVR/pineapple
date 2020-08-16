@@ -9,5 +9,27 @@
 		{
 			"path": "."
 		}
-	]
+  ],
+  "extensions": {
+    "recommendations": [
+      "apollographql.vscode-apollo",
+      "mgmcdermott.vscode-language-babel",
+      "aaron-bond.better-comments",
+      "ms-azuretools.vscode-docker",
+      "mikestead.dotenv",
+      "editorconfig.editorconfig",
+      "dbaeumer.vscode-eslint",
+      "codezombiech.gitignore",
+      "npxms.hide-gitignored",
+      "yzhang.markdown-all-in-one",
+      "christian-kohler.npm-intellisense",
+      "christian-kohler.path-intellisense",
+      "stkb.rewrap",
+      "foxundermoon.shell-format",
+      "timonwong.shellcheck",
+      "wayou.vscode-todo-highlight",
+      "shardulm94.trailing-spaces",
+      "octref.vetur"
+    ]
+  }
 }
