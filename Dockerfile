@@ -79,6 +79,10 @@ COPY \
   conf/.profile \
   /root/
 
+COPY \
+  bin/ \
+  /app/bin/
+
 FROM runtime-base as runtime
 
 COPY --from=proddependencies /app/node_modules /app/node_modules
