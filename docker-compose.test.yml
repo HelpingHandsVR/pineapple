@@ -3,4 +3,5 @@ version: "2.3"
 services:
   sut:
     build: .
+    entrypoint: ash
     command: /app/bin/test.sh
