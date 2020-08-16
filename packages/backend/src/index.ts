@@ -131,12 +131,12 @@ const main = async () => {
     },
   })
 
-  const sentryHandlers = makeSentry(config)
   const app = express()
+  const sentryHandlers = makeSentry(config, app)
 
   app.set('trust proxy', config.features.trustProxy)
 
-  sentryHandlers.requestHandler(app)
+  sentryHandlers.requestHandler()
   app.use(httpLogger)
 
   await passport.applyMiddleware(app, config, getConnection('default'))
@@ -155,7 +155,7 @@ const main = async () => {
     },
   })
 
-  sentryHandlers.errorHandler(app)
+  sentryHandlers.errorHandler()
 
   const httpServer = http.createServer(app)
 

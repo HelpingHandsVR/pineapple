@@ -1,12 +1,13 @@
 import { Express } from 'express'
 import * as sentry from '@sentry/node'
+import apm from '@sentry/apm'
 
 import { Config } from '../config/type'
 import { log as logger } from '../log'
 
 type SentryHandlers = {
-  requestHandler: (app: Express) => void,
-  errorHandler: (app: Express) => void,
+  requestHandler: () => void,
+  errorHandler: () => void,
   sentry?: typeof sentry
 }
 
@@ -19,7 +20,7 @@ const log = logger.child({
   component: 'sentry',
 })
 
-export const makeSentry = (config: Config): SentryHandlers => {
+export const makeSentry = (config: Config, app: Express): SentryHandlers => {
   if (!config.sentry.enabled) {
     log.info('sentry reporting disabled')
 
@@ -28,14 +29,20 @@ export const makeSentry = (config: Config): SentryHandlers => {
 
   log.info('sentry reporting enabled')
 
-  sentry.init(config.sentry.options)
+  sentry.init({
+    ...config.sentry.options,
+    integrations: [
+      new apm.Integrations.Tracing(),
+      new apm.Integrations.Express({ app }),
+    ],
+  })
 
   return {
     sentry,
-    requestHandler (app) {
+    requestHandler () {
       app.use(sentry.Handlers.requestHandler())
     },
-    errorHandler (app) {
+    errorHandler () {
       app.use(sentry.Handlers.errorHandler())
     },
   }

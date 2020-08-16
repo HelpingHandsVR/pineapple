@@ -23,6 +23,7 @@ export const getConfig = (env: NodeJS.ProcessEnv): Config => ({
     enabled: env.SENTRY_ENABLED === 'true',
     options: {
       dsn: env.SENTRY_DSN,
+      tracesSampleRate: Number.parseFloat(env.SENTRY_SAMPLE_RATE),
     },
   },
   log: {
