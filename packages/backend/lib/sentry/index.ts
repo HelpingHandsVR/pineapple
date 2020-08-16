@@ -1,6 +1,6 @@
 import { Express } from 'express'
 import * as sentry from '@sentry/node'
-import apm from '@sentry/apm'
+import * as Apm from '@sentry/apm'
 
 import { Config } from '../config/type'
 import { log as logger } from '../log'
@@ -32,8 +32,8 @@ export const makeSentry = (config: Config, app: Express): SentryHandlers => {
   sentry.init({
     ...config.sentry.options,
     integrations: [
-      new apm.Integrations.Tracing(),
-      new apm.Integrations.Express({ app }),
+      new Apm.Integrations.Tracing(),
+      new Apm.Integrations.Express({ app }),
     ],
   })
 
