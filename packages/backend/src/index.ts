@@ -117,6 +117,7 @@ const main = async () => {
   const server = new ApolloServer({
     debug: process.env.NODE_ENV === 'development',
     schema,
+    introspection: true,
     context: await makeContextFactory(config),
     plugins: apolloPlugins,
     playground: {
