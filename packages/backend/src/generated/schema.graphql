@@ -196,7 +196,9 @@ input RoleQueryWhereInput {
 }
 
 type Subscription {
-  attendanceRecords(where: AttendanceRecordsSubscriptionWhereInput!): [AttendanceRecord]!
+  attendanceRecordCreate: AttendanceRecord!
+  attendanceRecordRemove(where: AttendanceRecordsSubscriptionWhereInput!): String!
+  attendanceRecordUpdate(where: AttendanceRecordsSubscriptionWhereInput!): AttendanceRecord!
 }
 
 input UpcomingAttendablesQueryInput {

@@ -1,4 +1,5 @@
 import { objectType } from '@nexus/schema'
+import { AttendanceRecordRepository } from '~/db/repository/attendance-record'
 
 export const AttendanceRecordType = objectType({
   name: 'AttendanceRecord',
@@ -10,6 +11,20 @@ export const AttendanceRecordType = objectType({
 
     t.field('attendable', {
       type: 'Attendable',
+      async resolve (root, args, context) {
+        if (root.attendable) {
+          return root.attendable
+        }
+
+        const record = await context.connection.getCustomRepository(AttendanceRecordRepository)
+          .findOne({
+            where: {
+              id: root.id,
+            },
+          })
+
+        return record.attendable
+      },
     })
   },
 })

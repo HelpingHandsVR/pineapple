@@ -352,7 +352,9 @@ export interface NexusGenFieldTypes {
     data: Array<NexusGenRootTypes['Role'] | null>; // [Role]!
   }
   Subscription: { // field return type
-    attendanceRecords: Array<NexusGenRootTypes['AttendanceRecord'] | null>; // [AttendanceRecord]!
+    attendanceRecordCreate: NexusGenRootTypes['AttendanceRecord']; // AttendanceRecord!
+    attendanceRecordRemove: string; // String!
+    attendanceRecordUpdate: NexusGenRootTypes['AttendanceRecord']; // AttendanceRecord!
   }
   User: { // field return type
     discord: NexusGenRootTypes['DiscordAccount'] | null; // DiscordAccount
@@ -543,7 +545,10 @@ export interface NexusGenArgTypes {
     }
   }
   Subscription: {
-    attendanceRecords: { // args
+    attendanceRecordRemove: { // args
+      where: NexusGenInputs['AttendanceRecordsSubscriptionWhereInput']; // AttendanceRecordsSubscriptionWhereInput!
+    }
+    attendanceRecordUpdate: { // args
       where: NexusGenInputs['AttendanceRecordsSubscriptionWhereInput']; // AttendanceRecordsSubscriptionWhereInput!
     }
   }

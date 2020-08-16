@@ -21,6 +21,8 @@ export const rules = shield({
     ),
   },
   Subscription: {
-    attendanceRecords: allow,
+    attendanceRecordUpdate: allow,
+    attendanceRecordCreate: allow,
+    attendanceRecordRemove: allow,
   },
 })

@@ -296,11 +296,18 @@ export type RoleQueryWhereInput = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  attendanceRecords: Array<Maybe<AttendanceRecord>>;
+  attendanceRecordCreate: AttendanceRecord;
+  attendanceRecordRemove: Scalars['String'];
+  attendanceRecordUpdate: AttendanceRecord;
 };
 
 
-export type SubscriptionAttendanceRecordsArgs = {
+export type SubscriptionAttendanceRecordRemoveArgs = {
+  where: AttendanceRecordsSubscriptionWhereInput;
+};
+
+
+export type SubscriptionAttendanceRecordUpdateArgs = {
   where: AttendanceRecordsSubscriptionWhereInput;
 };
 

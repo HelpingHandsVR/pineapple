@@ -15,6 +15,7 @@ export const pubsub = createRedisPubsub()
 export enum PubsubTopic {
   EntityUpdate = 'ENTITY_UPDATE',
   EntityInsert = 'ENTITY_INSERT',
+  EntityRemove = 'ENTITY_REMOVE',
 }
 
 export const buildEntityTopic = (room: PubsubTopic, entity: typeof BaseEntity): string => {

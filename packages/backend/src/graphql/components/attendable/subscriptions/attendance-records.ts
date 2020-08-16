@@ -15,9 +15,8 @@ export const AttendanceRecordsSubscriptionWhereInput = inputObjectType({
   },
 })
 
-export const AttendanceRecordsSubscription = subscriptionField('attendanceRecords', {
+export const AttendanceRecordUpdateSubscription = subscriptionField('attendanceRecordUpdate', {
   type: 'AttendanceRecord',
-  list: [false],
   args: {
     where: AttendanceRecordsSubscriptionWhereInput.asArg({
       required: true,
@@ -31,6 +30,36 @@ export const AttendanceRecordsSubscription = subscriptionField('attendanceRecord
       return args.where.records.includes(payload.id)
     },
   ),
+  resolve (root) {
+    return root
+  },
+})
+
+export const AttendanceRecordRemoveSubscription = subscriptionField('attendanceRecordRemove', {
+  type: 'String',
+  args: {
+    where: AttendanceRecordsSubscriptionWhereInput.asArg({
+      required: true,
+    }),
+  },
+  subscribe: withFilter(
+    (root, args, context: Context) => {
+      return context.pubsub.asyncIterator(buildEntityTopic(PubsubTopic.EntityRemove, AttendanceRecord))
+    },
+    (payload, args) => {
+      return args.where.records.includes(payload)
+    },
+  ),
+  resolve (root) {
+    return root
+  },
+})
+
+export const AttendanceRecordCreateSubscription = subscriptionField('attendanceRecordCreate', {
+  type: 'AttendanceRecord',
+  subscribe: (root, args, context: Context) => {
+    return context.pubsub.asyncIterator(buildEntityTopic(PubsubTopic.EntityInsert, AttendanceRecord))
+  },
   resolve (root) {
     return root
   },
