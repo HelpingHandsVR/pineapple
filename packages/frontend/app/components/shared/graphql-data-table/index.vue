@@ -22,10 +22,6 @@ export default Vue.extend({
       type: Object,
       required: true,
     },
-    getResult: {
-      type: Function,
-      required: true,
-    },
     headers: {
       type: Array,
       required: true,
@@ -130,7 +126,7 @@ export default Vue.extend({
         return null
       }
 
-      const result = this.getResult(response.data)
+      const result = response.data.list
 
       if (!result) {
         return null
@@ -184,9 +180,9 @@ export default Vue.extend({
         loadingText='Fetching data...'
         :server-items-length='serverItemsLength'
         :items-per-page='15'
-        :items='data ? getResult(data).data : []'
+        :items='data ? data.list.data : []'
         :headers='headers'
-        @pagination='(info) => updatePagination(info, getResult(data))'
+        @pagination='(info) => updatePagination(info, data ? data.list : [])'
         fixed-header
         disable-sort
         :footer-props='footerProps'
@@ -194,6 +190,7 @@ export default Vue.extend({
         @click:row='(data) => $emit("click:row", data)'
         @contextmenu:row='(event) => $emit("contextmenu:row", event)'
         @dblclick:row='(event) => $emit("dblclick:row", event)'
+        @input='(item) => $emit("input", item)'
       )
         template(v-slot:top, v-if='title')
           v-toolbar.pr-4.pl-4(flat, color='secondary', dark)

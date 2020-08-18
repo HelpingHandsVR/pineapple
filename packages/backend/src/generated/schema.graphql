@@ -100,6 +100,10 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 """
 scalar DateTime
 
+input DeleteAttendanceRecordWhereInput {
+  id: ID!
+}
+
 type DiscordAccount {
   account: DiscordUser!
   id: ID!
@@ -130,6 +134,7 @@ input LoginInput {
 
 type Mutation {
   createRole(input: CreateRoleMutationInput!): Role!
+  deleteAttendanceRecord(where: DeleteAttendanceRecordWhereInput!): Boolean!
   discordOauthCallback(input: DiscordOauthMutationInput!): DiscordUser!
   login(input: LoginInput!): User!
   logout: Boolean!
@@ -216,8 +221,6 @@ input UpdateRoleMutationWhereInput {
 
 input UpsertAttendaceRecordMutationInput {
   attendableId: ID!
-  endsAt: DateTime
-  startsAt: DateTime
 }
 
 """

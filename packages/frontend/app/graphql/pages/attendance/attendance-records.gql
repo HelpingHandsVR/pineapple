@@ -1,5 +1,5 @@
 query attendancePageAttendanceRecords ($pagination: PaginationInput!) {
-  attendanceRecords (pagination: $pagination) {
+  list: attendanceRecords (pagination: $pagination) {
     cursor {
       afterCursor
       beforeCursor

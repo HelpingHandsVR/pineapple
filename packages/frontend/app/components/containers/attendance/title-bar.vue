@@ -9,6 +9,12 @@ import { DateTime } from 'luxon'
 
 export default Vue.extend({
   name: 'attendance-title-bar',
+  props: {
+    selected: {
+      type: Array,
+      required: true,
+    }
+  },
   components: {
     UpsertForm,
   },
@@ -16,6 +22,7 @@ export default Vue.extend({
     return {
       AttendanceUpsertFormSubmitDocument,
       dialog: false,
+      deleteDialog: false,
       formValue: null,
     }
   },
@@ -28,8 +35,6 @@ export default Vue.extend({
       return {
         input: {
           attendableId: this.formValue.attendable,
-          startsAt: this.formValue.timeRange ? DateTime.fromISO(this.formValue.timeRange.start).toISO() : null,
-          endsAt: this.formValue.timeRange ? DateTime.fromISO(this.formValue.timeRange.end).toISO() : null,
         }
       }
     }
@@ -37,61 +42,118 @@ export default Vue.extend({
   methods: {
     handleMutationDone () {
       this.dialog = false
+    },
+
+    relativeDate (datetime: string) {
+      return DateTime.fromISO(datetime).toRelative()
     }
   }
 })
 </script>
 
+<style lang="scss" scoped>
+  .titlebar-root {
+    display: contents
+  }
+</style>
+
 <template lang="pug">
-  dialog-button(
-    button-dark
-    button-colour='primary'
-    v-model='dialog'
-    text
-  )
-    template(v-slot:button)
-      v-icon.mr-2 mdi-clock-check
-      | Enter time
+  .titlebar-root
+    dialog-button(
+      button-dark
+      button-colour='primary'
+      v-model='dialog'
+      text
+    )
+      template(v-slot:button)
+        v-icon.mr-2 mdi-clock-check
+        | Enter time
 
-    template
-      v-card
-        v-card-title
-          | Record your attendance
-        v-card-subtitle
-          | If you want to edit an existing record, just select the same event
-        apollo-mutation(
-          :mutation='AttendanceUpsertFormSubmitDocument'
-          :variables='variables'
-          @done='handleMutationDone'
-        )
-          template(v-slot='{mutate, loading, error}')
-            v-card-text
-              upsert-form(
-                v-model='formValue',
-                @submit='mutate'
+      template
+        v-card
+          v-card-title
+            | Enter time for an event
+          v-card-subtitle
+            | Which event did you attend this week?
+          apollo-mutation(
+            :mutation='AttendanceUpsertFormSubmitDocument'
+            :variables='variables'
+            @done='handleMutationDone'
+          )
+            template(v-slot='{mutate, loading, error}')
+              v-card-text.pl-6.pr-6
+                upsert-form(
+                  v-model='formValue',
+                  @submit='mutate'
+                )
+
+              template(v-if='error')
+                v-banner(
+                  single-line
+                  color='error'
+                  dark
+                  v-for='(graphQLError, index) in error.graphQLErrors'
+                  :key='index'
+                )
+                  | {{graphQLError.message}}
+
+              v-card-actions
+                v-btn(
+                  text
+                  color='error',
+                  @click.stop='dialog = false'
+                ) Cancel
+
+                v-spacer
+
+                v-btn(
+                  text
+                  color='primary'
+                  @click.stop='mutate'
+                  :loading='loading'
+                ) Submit
+
+    dialog-button(
+      button-dark
+      button-colour='error'
+      v-model='deleteDialog'
+      v-if='selected.length !== 0'
+      icon
+    )
+      template(v-slot:button)
+        v-icon mdi-delete
+
+      template
+        v-card
+          v-card-title
+            | Delete {{selected.length}} item{{selected.length === 1 ? '' : 's'}}?
+          v-card-subtitle
+            | Please confirm that you want to delete these attendance records below:
+          v-card-text
+            v-list
+              v-list-item.pr-0.pl-0(
+                v-for='record in selected'
+                :key='record.id'
               )
+                v-list-item-avatar
+                  v-icon mdi-timeline-clock
+                v-list-item-content
+                  v-list-item-title
+                    | {{record.attendable.name}}
+                  v-list-item-subtitle
+                    | {{relativeDate(record.startsAt)}}
 
-            template(v-if='error')
-              v-banner(
-                single-line
-                color='error'
-                dark
-                v-for='(graphQLError, index) in error.graphQLErrors'
-                :key='index'
-              )
-                | {{graphQLError.message}}
+          v-card-actions
+            v-btn(
+              text
+              color='black',
+              @click.stop='deleteDialog = false'
+            ) Cancel
 
-            v-card-actions
-              v-btn(
-                text
-                color='error',
-                @click.stop='dialog = false'
-              ) Cancel
+            v-spacer
 
-              v-spacer
-
-              v-btn(
-                @click.stop='mutate'
-                :loading='loading'
-              ) Submit
+            v-btn(
+              text
+              color='error'
+            ) Delete
 </template>
