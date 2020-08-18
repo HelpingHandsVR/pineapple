@@ -16,32 +16,16 @@ export default Vue.extend({
       AttendanceUpsertFormAttendablesDocument,
       AttendanceUpsertFormAttendableDocument,
       attendable: null,
-      timeRange: null,
     }
   },
   watch: {
     attendable (newValue) {
       this.$emit('input', {
         attendable: newValue,
-        timeRange: this.timeRange,
-      })
-    },
-    timeRange (newValue) {
-      this.$emit('input', {
-        attendable: this.attendable,
-        timeRange: newValue,
       })
     },
   },
   methods: {
-    getResult (data: any) {
-      if (!data) {
-        return []
-      }
-
-      return data.attendables ? data.attendables.data : []
-    },
-
     updateSelected (newValue: string) {
       this.attendable = newValue
       this.timeRange = null
@@ -52,19 +36,6 @@ export default Vue.extend({
         weekday: 'long'
       })
     },
-
-    getTimeFromISO (iso: string) {
-      return DateTime.fromISO(iso).toLocaleString(DateTime.TIME_24_SIMPLE)
-    },
-
-    getBoundaries (attendable: Attendable) {
-      const result = {
-        start: this.getTimeFromISO(attendable.startsAt),
-        end: this.getTimeFromISO(attendable.endsAt),
-      }
-
-      return result
-    }
   }
 })
 </script>
@@ -75,7 +46,6 @@ export default Vue.extend({
       :value='attendable'
       @input='(value) => updateSelected(value)'
       :query='AttendanceUpsertFormAttendablesDocument'
-      :get-result='getResult'
       placeholder='Select an event to log time for'
       search
       auto-select-first
@@ -87,25 +57,4 @@ export default Vue.extend({
         span
           b {{item.text}}
           | &nbsp;on {{getDay(item.startsAt)}}
-
-    apollo-query(
-      :query='AttendanceUpsertFormAttendableDocument',
-      notify-on-network-change
-      :variables='{where: {id: attendable}}'
-      :skip='!attendable'
-    )
-      template(v-slot='{result: {data, loading}}')
-        v-skeleton-loader(
-          v-if='loading'
-          max-width='300px'
-          type='card'
-        )
-
-        time-range(
-          v-else-if='data'
-          :value='timeRange || getBoundaries(data.attendable)'
-          @input='(newValue) => timeRange = newValue'
-          :min='getTimeFromISO(data.attendable.startsAt)'
-          :max='getTimeFromISO(data.attendable.endsAt)'
-        )
 </template>

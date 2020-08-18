@@ -1,13 +1,27 @@
+import { and, allow, or } from 'graphql-shield'
+
 import { shield, can } from '@/lib/permission/shield'
 import { Action, Subject } from '@/lib/permission'
-import { and, allow } from 'graphql-shield'
 import { isLoggedIn } from '@/lib/permission/rules/is-logged-in'
+import { isCreatedByViewer } from '@/lib/permission/rules/is-created-by-viewer'
 
 export const rules = shield({
   Mutation: {
     upsertAttendanceRecord: and(
       isLoggedIn,
       can(Action.CREATE, Subject.ATTENDANCE_RECORD_SELF),
+    ),
+    deleteAttendanceRecord: or(
+      and(
+        isLoggedIn,
+        isCreatedByViewer,
+        can(Action.SOFT_DELETE, Subject.ATTENDANCE_RECORD_SELF),
+      ),
+
+      and(
+        isLoggedIn,
+        can(Action.SOFT_DELETE, Subject.ATTENDANCE_RECORD_OTHERS),
+      ),
     ),
   },
   Query: {
