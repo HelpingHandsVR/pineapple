@@ -48,19 +48,20 @@ install, please be patient.
 
 ### Running the project
 
-1. Clone the repository | `git clone https://github.com/HelpingHandsVR/pineapple
+0. Clone the repository | `git clone https://github.com/HelpingHandsVR/pineapple
    && cd pineapple`
-2. Install dependencies | `yarn --frozen-lockfile && yarn lerna bootstrap`
-3. Copy env files from `.example.env` to `.env` in both packages
+0. Install dependencies | `yarn --frozen-lockfile && yarn lerna bootstrap`
+0. Copy env files from `.example.env` to `.env` in both packages
    - `cd packages/backend && cp .example.env .env && cd -`
    - `cd packages/frontend && cp .example.env .env && cd -`
    > Change the values in your new `.env` files as you need. Pay attention that
    > the URL for the backend needs to match the API URL in the frontend .env
    > file
-4. For the backend, start Redis and Postgres | `cd packages/backend &&
+0. For the backend, start Redis and Postgres | `cd packages/backend &&
    docker-compose up -d && cd -`
    > This won't start the backend, only a Redis and a Postgres container, both
    > of which are a required dependency
-5. You should be able to start both the backend and the frontend now
+0. Set up / reset the database | `yarn typeorm migration:run && yarn seed`
+0. You should be able to start both the backend and the frontend now
    - `cd packages/backend && yarn dev`
    - `cd packages/frontend && yarn dev`
