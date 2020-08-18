@@ -9,8 +9,7 @@
   "private": true,
   "scripts": {
     "postinstall": "patch-package",
-    "snyk-protect": "snyk protect",
-    "prepare": "yarn run snyk-protect"
+    "snyk-protect": "snyk protect"
   },
   "workspaces": [
     "packages/*"
