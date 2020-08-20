@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "dev": "env-cmd nodemon --transpile-only -r tsconfig-paths/register src/index.ts",
-    "build": "yarn env-cmd backpack build",
+    "build": "NODE_ENV=production backpack build",
     "typeorm": "yarn env-cmd ts-node --transpile-only -r tsconfig-paths/register ./node_modules/.bin/typeorm",
     "seeder": "env-cmd ts-node --transpile-only -r tsconfig-paths/register ../../node_modules/typeorm-seeding/dist/cli.js",
     "seed": "yarn seeder seed"

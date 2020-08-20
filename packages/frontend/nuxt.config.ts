@@ -54,6 +54,7 @@ const config: Configuration = {
     { src: '~/plugins/vuex-persistedstate.ts' },
     { src: '~/plugins/components.ts' },
     { src: '~/plugins/casl.ts' },
+    { src: '~/plugins/asayer.ts', ssr: false },
   ],
   /*
    ** Nuxt.js dev-modules

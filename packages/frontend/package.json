@@ -6,7 +6,7 @@
     "dev": "yarn concurrently 'env-cmd nuxt-ts' 'yarn gen:watch'",
     "gen:watch": "graphql-codegen --config codegen.yml -w",
     "gen": "graphql-codegen --config codegen.yml",
-    "build": "env-cmd -f .example.env nuxt-ts build",
+    "build": "nuxt-ts build",
     "prebuild": "yarn gen",
     "start": "nuxt-ts start",
     "generate": "nuxt-ts generate",
@@ -17,6 +17,7 @@
     "*.{js,vue}": "eslint"
   },
   "dependencies": {
+    "@asayerio/tracker": "^5.5.9",
     "@babel/runtime-corejs2": "^7.10.3",
     "@casl/vue": "^1.1.1",
     "@nuxt/typescript-runtime": "^0.4.10",
