@@ -6,39 +6,77 @@ executors:
     docker:
       - image: circleci/buildpack-deps:stretch
     environment:
-      IMAGE_TAG: decentm/pineapple
+      IMAGE_NAME: decentm/pineapple
 
 jobs:
-  build-latest:
+  build:
     executor: docker-publisher
 
     steps:
       - checkout
+
       - setup_remote_docker:
           docker_layer_caching: true
+
       - run:
           name: Build Docker image
           command: |
-            docker build -t $IMAGE_TAG:latest .
+            docker build -t $IMAGE_NAME:latest .
 
-  # publish-latest:
-  #   executor: docker-publisher
+      - run:
+          name: Archive Docker image
+          command: docker save -o image.tar $IMAGE_NAME
 
-  #   steps:
-  #     - setup_remote_docker:
-  #         docker_layer_caching: true
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./image.tar
 
-  #     - run:
-  #         name: Publish latest tag to Docker Hub
-  #         command: |
-  #           echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-  #           docker push $IMAGE_TAG:latest
+  publish-tagged:
+    executor: docker-publisher
+
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      - run:
+          name: Load archived Docker image
+          command: docker load -i /tmp/workspace/image.tar
+
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker tag $IMAGE_NAME:latest $IMAGE_NAME:$CIRCLE_TAG
+            docker push $IMAGE_NAME:latest
+            docker push $IMAGE_NAME:$CIRCLE_TAG
 
 workflows:
   version: 2
-  build-master:
+  cd:
     jobs:
-      - build-latest:
+      - build:
+          name: build-master
           filters:
             branches:
               only: master
+
+      - build:
+          name: build-tagged
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+      - publish-tagged:
+          requires:
+            - build-tagged
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
