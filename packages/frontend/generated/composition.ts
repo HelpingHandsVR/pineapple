@@ -1,9 +1,6 @@
 import gql from 'graphql-tag';
-import * as VueApolloComposable from '@vue/apollo-composable';
-import * as VueCompositionApi from '@vue/composition-api';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type ReactiveFunction<TParam> = () => TParam;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -737,29 +734,6 @@ export const AttendanceUpsertFormAttendablesDocument = gql`
   }
 }
     `;
-
-/**
- * __useAttendanceUpsertFormAttendablesQuery__
- *
- * To run a query within a Vue component, call `useAttendanceUpsertFormAttendablesQuery` and pass it any options that fit your needs.
- * When your component renders, `useAttendanceUpsertFormAttendablesQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useAttendanceUpsertFormAttendablesQuery(
- *   {
- *      pagination: // value for 'pagination'
- *      where: // value for 'where'
- *      search: // value for 'search'
- *   }
- * );
- */
-export function useAttendanceUpsertFormAttendablesQuery(variables: AttendanceUpsertFormAttendablesQueryVariables | VueCompositionApi.Ref<AttendanceUpsertFormAttendablesQueryVariables> | ReactiveFunction<AttendanceUpsertFormAttendablesQueryVariables>, options: VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables>(AttendanceUpsertFormAttendablesDocument, variables, options);
-          }
-export type AttendanceUpsertFormAttendablesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<AttendanceUpsertFormAttendablesQuery, AttendanceUpsertFormAttendablesQueryVariables>;
 export const AttendanceUpsertFormAttendableDocument = gql`
     query attendanceUpsertFormAttendable($where: AttendableQueryWhereInput!) {
   attendable(where: $where) {
@@ -769,27 +743,6 @@ export const AttendanceUpsertFormAttendableDocument = gql`
   }
 }
     `;
-
-/**
- * __useAttendanceUpsertFormAttendableQuery__
- *
- * To run a query within a Vue component, call `useAttendanceUpsertFormAttendableQuery` and pass it any options that fit your needs.
- * When your component renders, `useAttendanceUpsertFormAttendableQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useAttendanceUpsertFormAttendableQuery(
- *   {
- *      where: // value for 'where'
- *   }
- * );
- */
-export function useAttendanceUpsertFormAttendableQuery(variables: AttendanceUpsertFormAttendableQueryVariables | VueCompositionApi.Ref<AttendanceUpsertFormAttendableQueryVariables> | ReactiveFunction<AttendanceUpsertFormAttendableQueryVariables>, options: VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables>(AttendanceUpsertFormAttendableDocument, variables, options);
-          }
-export type AttendanceUpsertFormAttendableQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<AttendanceUpsertFormAttendableQuery, AttendanceUpsertFormAttendableQueryVariables>;
 export const AttendanceUpsertFormSubmitDocument = gql`
     mutation attendanceUpsertFormSubmit($input: UpsertAttendaceRecordMutationInput!) {
   upsertAttendanceRecord(input: $input) {
@@ -799,28 +752,6 @@ export const AttendanceUpsertFormSubmitDocument = gql`
   }
 }
     `;
-
-/**
- * __useAttendanceUpsertFormSubmitMutation__
- *
- * To run a mutation, you first call `useAttendanceUpsertFormSubmitMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useAttendanceUpsertFormSubmitMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useAttendanceUpsertFormSubmitMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useAttendanceUpsertFormSubmitMutation(options: VueApolloComposable.UseMutationOptions<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables>>) {
-            return VueApolloComposable.useMutation<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables>(AttendanceUpsertFormSubmitDocument, options);
-          }
-export type AttendanceUpsertFormSubmitMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables>;
 export const LoginFormLoginDocument = gql`
     mutation loginFormLogin($email: String!, $password: String!) {
   loginFormLogin: login(input: {email: $email, password: $password}) {
@@ -836,55 +767,11 @@ export const LoginFormLoginDocument = gql`
   }
 }
     `;
-
-/**
- * __useLoginFormLoginMutation__
- *
- * To run a mutation, you first call `useLoginFormLoginMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useLoginFormLoginMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useLoginFormLoginMutation({
- *   variables: {
- *      email: // value for 'email'
- *      password: // value for 'password'
- *   },
- * });
- */
-export function useLoginFormLoginMutation(options: VueApolloComposable.UseMutationOptions<LoginFormLoginMutation, LoginFormLoginMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<LoginFormLoginMutation, LoginFormLoginMutationVariables>>) {
-            return VueApolloComposable.useMutation<LoginFormLoginMutation, LoginFormLoginMutationVariables>(LoginFormLoginDocument, options);
-          }
-export type LoginFormLoginMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<LoginFormLoginMutation, LoginFormLoginMutationVariables>;
 export const ProfileMenuLogoutDocument = gql`
     mutation profileMenuLogout {
   profileMenuLogout: logout
 }
     `;
-
-/**
- * __useProfileMenuLogoutMutation__
- *
- * To run a mutation, you first call `useProfileMenuLogoutMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useProfileMenuLogoutMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useProfileMenuLogoutMutation({
- *   variables: {
- *   },
- * });
- */
-export function useProfileMenuLogoutMutation(options: VueApolloComposable.UseMutationOptions<ProfileMenuLogoutMutation, ProfileMenuLogoutMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<ProfileMenuLogoutMutation, ProfileMenuLogoutMutationVariables>> = {}) {
-            return VueApolloComposable.useMutation<ProfileMenuLogoutMutation, ProfileMenuLogoutMutationVariables>(ProfileMenuLogoutDocument, options);
-          }
-export type ProfileMenuLogoutMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<ProfileMenuLogoutMutation, ProfileMenuLogoutMutationVariables>;
 export const ProfileMenuViewerDocument = gql`
     query profileMenuViewer {
   viewer {
@@ -903,26 +790,6 @@ export const ProfileMenuViewerDocument = gql`
   }
 }
     `;
-
-/**
- * __useProfileMenuViewerQuery__
- *
- * To run a query within a Vue component, call `useProfileMenuViewerQuery` and pass it any options that fit your needs.
- * When your component renders, `useProfileMenuViewerQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useProfileMenuViewerQuery(
- *   {
- *   }
- * );
- */
-export function useProfileMenuViewerQuery(options: VueApolloComposable.UseQueryOptions<ProfileMenuViewerQuery, ProfileMenuViewerQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<ProfileMenuViewerQuery, ProfileMenuViewerQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<ProfileMenuViewerQuery, ProfileMenuViewerQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<ProfileMenuViewerQuery, undefined>(ProfileMenuViewerDocument, undefined, options);
-          }
-export type ProfileMenuViewerQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<ProfileMenuViewerQuery, ProfileMenuViewerQueryVariables>;
 export const RegisterFormRegisterDocument = gql`
     mutation registerFormRegister($input: RegisterInput!) {
   registerFormRegister: register(input: $input) {
@@ -935,28 +802,6 @@ export const RegisterFormRegisterDocument = gql`
   }
 }
     `;
-
-/**
- * __useRegisterFormRegisterMutation__
- *
- * To run a mutation, you first call `useRegisterFormRegisterMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useRegisterFormRegisterMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useRegisterFormRegisterMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useRegisterFormRegisterMutation(options: VueApolloComposable.UseMutationOptions<RegisterFormRegisterMutation, RegisterFormRegisterMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<RegisterFormRegisterMutation, RegisterFormRegisterMutationVariables>>) {
-            return VueApolloComposable.useMutation<RegisterFormRegisterMutation, RegisterFormRegisterMutationVariables>(RegisterFormRegisterDocument, options);
-          }
-export type RegisterFormRegisterMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<RegisterFormRegisterMutation, RegisterFormRegisterMutationVariables>;
 export const DiscordLinkingCardQueryDocument = gql`
     query discordLinkingCardQuery($where: UserQueryWhereInput!) {
   user(where: $where) {
@@ -972,52 +817,11 @@ export const DiscordLinkingCardQueryDocument = gql`
   }
 }
     `;
-
-/**
- * __useDiscordLinkingCardQueryQuery__
- *
- * To run a query within a Vue component, call `useDiscordLinkingCardQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useDiscordLinkingCardQueryQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useDiscordLinkingCardQueryQuery(
- *   {
- *      where: // value for 'where'
- *   }
- * );
- */
-export function useDiscordLinkingCardQueryQuery(variables: DiscordLinkingCardQueryQueryVariables | VueCompositionApi.Ref<DiscordLinkingCardQueryQueryVariables> | ReactiveFunction<DiscordLinkingCardQueryQueryVariables>, options: VueApolloComposable.UseQueryOptions<DiscordLinkingCardQueryQuery, DiscordLinkingCardQueryQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<DiscordLinkingCardQueryQuery, DiscordLinkingCardQueryQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<DiscordLinkingCardQueryQuery, DiscordLinkingCardQueryQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<DiscordLinkingCardQueryQuery, DiscordLinkingCardQueryQueryVariables>(DiscordLinkingCardQueryDocument, variables, options);
-          }
-export type DiscordLinkingCardQueryQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<DiscordLinkingCardQueryQuery, DiscordLinkingCardQueryQueryVariables>;
 export const DiscordOauthUrlDocument = gql`
     query discordOauthURL {
   discordOauthURL
 }
     `;
-
-/**
- * __useDiscordOauthUrlQuery__
- *
- * To run a query within a Vue component, call `useDiscordOauthUrlQuery` and pass it any options that fit your needs.
- * When your component renders, `useDiscordOauthUrlQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useDiscordOauthUrlQuery(
- *   {
- *   }
- * );
- */
-export function useDiscordOauthUrlQuery(options: VueApolloComposable.UseQueryOptions<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<DiscordOauthUrlQuery, undefined>(DiscordOauthUrlDocument, undefined, options);
-          }
-export type DiscordOauthUrlQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<DiscordOauthUrlQuery, DiscordOauthUrlQueryVariables>;
 export const ProfileCardQueryDocument = gql`
     query profileCardQuery($vrcWhere: VRChatUserQueryWhereInput!, $where: UserQueryWhereInput!) {
   vrchatUser(where: $vrcWhere) {
@@ -1038,28 +842,6 @@ export const ProfileCardQueryDocument = gql`
   }
 }
     `;
-
-/**
- * __useProfileCardQueryQuery__
- *
- * To run a query within a Vue component, call `useProfileCardQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useProfileCardQueryQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useProfileCardQueryQuery(
- *   {
- *      vrcWhere: // value for 'vrcWhere'
- *      where: // value for 'where'
- *   }
- * );
- */
-export function useProfileCardQueryQuery(variables: ProfileCardQueryQueryVariables | VueCompositionApi.Ref<ProfileCardQueryQueryVariables> | ReactiveFunction<ProfileCardQueryQueryVariables>, options: VueApolloComposable.UseQueryOptions<ProfileCardQueryQuery, ProfileCardQueryQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<ProfileCardQueryQuery, ProfileCardQueryQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<ProfileCardQueryQuery, ProfileCardQueryQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<ProfileCardQueryQuery, ProfileCardQueryQueryVariables>(ProfileCardQueryDocument, variables, options);
-          }
-export type ProfileCardQueryQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<ProfileCardQueryQuery, ProfileCardQueryQueryVariables>;
 export const AttendancePageAttendanceRecordsDocument = gql`
     query attendancePageAttendanceRecords($pagination: PaginationInput!) {
   attendanceRecords(pagination: $pagination) {
@@ -1079,27 +861,6 @@ export const AttendancePageAttendanceRecordsDocument = gql`
   }
 }
     `;
-
-/**
- * __useAttendancePageAttendanceRecordsQuery__
- *
- * To run a query within a Vue component, call `useAttendancePageAttendanceRecordsQuery` and pass it any options that fit your needs.
- * When your component renders, `useAttendancePageAttendanceRecordsQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useAttendancePageAttendanceRecordsQuery(
- *   {
- *      pagination: // value for 'pagination'
- *   }
- * );
- */
-export function useAttendancePageAttendanceRecordsQuery(variables: AttendancePageAttendanceRecordsQueryVariables | VueCompositionApi.Ref<AttendancePageAttendanceRecordsQueryVariables> | ReactiveFunction<AttendancePageAttendanceRecordsQueryVariables>, options: VueApolloComposable.UseQueryOptions<AttendancePageAttendanceRecordsQuery, AttendancePageAttendanceRecordsQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<AttendancePageAttendanceRecordsQuery, AttendancePageAttendanceRecordsQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<AttendancePageAttendanceRecordsQuery, AttendancePageAttendanceRecordsQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<AttendancePageAttendanceRecordsQuery, AttendancePageAttendanceRecordsQueryVariables>(AttendancePageAttendanceRecordsDocument, variables, options);
-          }
-export type AttendancePageAttendanceRecordsQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<AttendancePageAttendanceRecordsQuery, AttendancePageAttendanceRecordsQueryVariables>;
 export const IndexPageViewerDocument = gql`
     query indexPageViewer {
   viewer {
@@ -1112,26 +873,6 @@ export const IndexPageViewerDocument = gql`
   }
 }
     `;
-
-/**
- * __useIndexPageViewerQuery__
- *
- * To run a query within a Vue component, call `useIndexPageViewerQuery` and pass it any options that fit your needs.
- * When your component renders, `useIndexPageViewerQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useIndexPageViewerQuery(
- *   {
- *   }
- * );
- */
-export function useIndexPageViewerQuery(options: VueApolloComposable.UseQueryOptions<IndexPageViewerQuery, IndexPageViewerQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<IndexPageViewerQuery, IndexPageViewerQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<IndexPageViewerQuery, IndexPageViewerQueryVariables>> = {}) {
-            return VueApolloComposable.useQuery<IndexPageViewerQuery, undefined>(IndexPageViewerDocument, undefined, options);
-          }
-export type IndexPageViewerQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<IndexPageViewerQuery, IndexPageViewerQueryVariables>;
 export const DiscordOauthCallbackDocument = gql`
     mutation discordOauthCallback($accessToken: String!, $state: String!, $expiresIn: Int!) {
   discordOauthCallback(input: {accessToken: $accessToken, state: $state, expiresIn: $expiresIn}) {
@@ -1139,27 +880,3 @@ export const DiscordOauthCallbackDocument = gql`
   }
 }
     `;
-
-/**
- * __useDiscordOauthCallbackMutation__
- *
- * To run a mutation, you first call `useDiscordOauthCallbackMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useDiscordOauthCallbackMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useDiscordOauthCallbackMutation({
- *   variables: {
- *      accessToken: // value for 'accessToken'
- *      state: // value for 'state'
- *      expiresIn: // value for 'expiresIn'
- *   },
- * });
- */
-export function useDiscordOauthCallbackMutation(options: VueApolloComposable.UseMutationOptions<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>>) {
-            return VueApolloComposable.useMutation<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>(DiscordOauthCallbackDocument, options);
-          }
-export type DiscordOauthCallbackMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>;
