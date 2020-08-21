@@ -42,8 +42,8 @@ export interface NexusGenInputs {
     startsAt?: NexusGenInputs['AttendablesQueryWhereInputDateConstraint'] | null; // AttendablesQueryWhereInputDateConstraint
   }
   AttendablesQueryWhereInputDateConstraint: { // input type
-    after?: any | null; // DateTime
-    before?: any | null; // DateTime
+    after?: NexusGenScalars['DateTime'] | null; // DateTime
+    before?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   AttendanceRecordsSubscriptionWhereInput: { // input type
     records: string[]; // [ID!]!
@@ -88,8 +88,8 @@ export interface NexusGenInputs {
   }
   UpsertAttendaceRecordMutationInput: { // input type
     attendableId: string; // ID!
-    endsAt?: any | null; // DateTime
-    startsAt?: any | null; // DateTime
+    endsAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    startsAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   UserQueryWhereInput: { // input type
     id?: string | null; // ID
@@ -105,6 +105,17 @@ export interface NexusGenEnums {
   AbilitySubject: 11 | 10 | 9 | 8 | 5 | 4 | 6 | 3 | 2 | 7 | 14 | 12 | 13 | 1 | 0
   PaginationInputOrder: "ASC" | "DESC"
   VRChatUserRole: 3 | 1 | 4 | 2 | 0
+}
+
+export interface NexusGenScalars {
+  String: string
+  Int: number
+  Float: number
+  Boolean: boolean
+  ID: string
+  DateTime: any
+  EmailAddress: any
+  URL: any
 }
 
 export interface NexusGenRootTypes {
@@ -213,26 +224,26 @@ export interface NexusGenRootTypes {
     authorId: string; // ID!
     authorName: string; // String!
     capacity: number; // Int!
-    created_at: any; // DateTime!
+    created_at: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
     favorites: number; // Int!
     featured: boolean; // Boolean!
     heat: number; // Int!
     id: string; // ID!
-    imageUrl: any; // URL!
+    imageUrl: NexusGenScalars['URL']; // URL!
     instances: Array<NexusGenRootTypes['VRChatWorldInstance'] | null>; // [VRChatWorldInstance]!
-    labsPublicationDate: any; // DateTime!
+    labsPublicationDate: NexusGenScalars['DateTime']; // DateTime!
     name: string; // String!
     occupants: number; // Int!
     organization: string; // String!
     popularity: number; // Int!
     privateOccupants: number; // Int!
-    publicationDate: any; // DateTime!
+    publicationDate: NexusGenScalars['DateTime']; // DateTime!
     publicOccupants: number; // Int!
     releaseStatus: string; // String!
     tags: Array<string | null>; // [String]!
-    thumbnailImageUrl: any; // URL!
-    updated_at: any; // DateTime!
+    thumbnailImageUrl: NexusGenScalars['URL']; // URL!
+    updated_at: NexusGenScalars['DateTime']; // DateTime!
     version: number; // Int!
     visits: number; // Int!
   }
@@ -243,14 +254,6 @@ export interface NexusGenRootTypes {
   }
   PaginationResult: NexusGenRootTypes['AttendablePagination'] | NexusGenRootTypes['AttendanceRecordPagination'] | NexusGenRootTypes['RolePagination'];
   VRChatUserBase: NexusGenRootTypes['VRChatUser'] | NexusGenRootTypes['VRChatLimitedUser'] | NexusGenRootTypes['VRChatExtendedUser'];
-  String: string;
-  Int: number;
-  Float: number;
-  Boolean: boolean;
-  ID: string;
-  DateTime: any;
-  EmailAddress: any;
-  URL: any;
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
@@ -275,6 +278,14 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   AbilitySubject: NexusGenEnums['AbilitySubject'];
   PaginationInputOrder: NexusGenEnums['PaginationInputOrder'];
   VRChatUserRole: NexusGenEnums['VRChatUserRole'];
+  String: NexusGenScalars['String'];
+  Int: NexusGenScalars['Int'];
+  Float: NexusGenScalars['Float'];
+  Boolean: NexusGenScalars['Boolean'];
+  ID: NexusGenScalars['ID'];
+  DateTime: NexusGenScalars['DateTime'];
+  EmailAddress: NexusGenScalars['EmailAddress'];
+  URL: NexusGenScalars['URL'];
 }
 
 export interface NexusGenFieldTypes {
@@ -283,13 +294,13 @@ export interface NexusGenFieldTypes {
     subject: Array<NexusGenEnums['AbilitySubject'] | null> | null; // [AbilitySubject]
   }
   Attendable: { // field return type
-    createdAt: any; // DateTime!
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     createdBy: NexusGenRootTypes['User']; // User!
-    endsAt: any; // DateTime!
+    endsAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
     name: string; // String!
-    startsAt: any; // DateTime!
-    updatedAt: any; // DateTime!
+    startsAt: NexusGenScalars['DateTime']; // DateTime!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
     updatedBy: NexusGenRootTypes['User']; // User!
     world: NexusGenRootTypes['VRChatWorld'] | null; // VRChatWorld
   }
@@ -299,9 +310,9 @@ export interface NexusGenFieldTypes {
   }
   AttendanceRecord: { // field return type
     attendable: NexusGenRootTypes['Attendable']; // Attendable!
-    endsAt: any; // DateTime!
+    endsAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // ID!
-    startsAt: any; // DateTime!
+    startsAt: NexusGenScalars['DateTime']; // DateTime!
   }
   AttendanceRecordPagination: { // field return type
     cursor: NexusGenRootTypes['PaginationResultCursor']; // PaginationResultCursor!
@@ -444,26 +455,26 @@ export interface NexusGenFieldTypes {
     authorId: string; // ID!
     authorName: string; // String!
     capacity: number; // Int!
-    created_at: any; // DateTime!
+    created_at: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
     favorites: number; // Int!
     featured: boolean; // Boolean!
     heat: number; // Int!
     id: string; // ID!
-    imageUrl: any; // URL!
+    imageUrl: NexusGenScalars['URL']; // URL!
     instances: Array<NexusGenRootTypes['VRChatWorldInstance'] | null>; // [VRChatWorldInstance]!
-    labsPublicationDate: any; // DateTime!
+    labsPublicationDate: NexusGenScalars['DateTime']; // DateTime!
     name: string; // String!
     occupants: number; // Int!
     organization: string; // String!
     popularity: number; // Int!
     privateOccupants: number; // Int!
-    publicationDate: any; // DateTime!
+    publicationDate: NexusGenScalars['DateTime']; // DateTime!
     publicOccupants: number; // Int!
     releaseStatus: string; // String!
     tags: Array<string | null>; // [String]!
-    thumbnailImageUrl: any; // URL!
-    updated_at: any; // DateTime!
+    thumbnailImageUrl: NexusGenScalars['URL']; // URL!
+    updated_at: NexusGenScalars['DateTime']; // DateTime!
     version: number; // Int!
     visits: number; // Int!
   }

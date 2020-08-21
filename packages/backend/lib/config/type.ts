@@ -35,6 +35,7 @@ export type Config = {
   },
   api: {
     port: number,
+    url: string,
   },
   vrchat: {
     pipelineWsURL: string,
