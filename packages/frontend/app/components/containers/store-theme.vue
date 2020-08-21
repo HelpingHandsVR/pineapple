@@ -28,6 +28,9 @@ export default Vue.extend({
   created () {
     this.updateTheme()
   },
+  mounted () {
+    this.updateTheme()
+  },
   watch: {
     theme (newValue) {
       this.updateTheme(newValue)
