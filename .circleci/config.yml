@@ -64,6 +64,14 @@ workflows:
             branches:
               only: /master|develop|GH-[0-9]{0,4}\/(fix|feat|chore|refactor|deps|build|ci|style|perf|test)\/.*/
 
+      - publish-tagged:
+          name: publish-latest
+          requires:
+            - build-branches
+          filters:
+            branches:
+              only: master
+
       - build:
           name: build-tagged
           filters:
