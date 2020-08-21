@@ -1,5 +1,5 @@
 diff --git a/node_modules/@nuxtjs/apollo/types/nuxt.d.ts b/node_modules/@nuxtjs/apollo/types/nuxt.d.ts
-index 50bce20..21e80e2 100644
+index 50bce20..5b7cef1 100644
 --- a/node_modules/@nuxtjs/apollo/types/nuxt.d.ts
 +++ b/node_modules/@nuxtjs/apollo/types/nuxt.d.ts
 @@ -8,7 +8,7 @@ import Vue, { ComponentOptions } from 'vue'

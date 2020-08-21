@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import * as VueApolloComposable from '@vue/apollo-composable';
 import * as VueCompositionApi from '@vue/composition-api';
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type ReactiveFunction<TParam> = () => TParam;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -817,7 +817,7 @@ export const AttendanceUpsertFormSubmitDocument = gql`
  *   },
  * });
  */
-export function useAttendanceUpsertFormSubmitMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables>) {
+export function useAttendanceUpsertFormSubmitMutation(options: VueApolloComposable.UseMutationOptions<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables>>) {
             return VueApolloComposable.useMutation<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables>(AttendanceUpsertFormSubmitDocument, options);
           }
 export type AttendanceUpsertFormSubmitMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<AttendanceUpsertFormSubmitMutation, AttendanceUpsertFormSubmitMutationVariables>;
@@ -855,7 +855,7 @@ export const LoginFormLoginDocument = gql`
  *   },
  * });
  */
-export function useLoginFormLoginMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<LoginFormLoginMutation, LoginFormLoginMutationVariables>) {
+export function useLoginFormLoginMutation(options: VueApolloComposable.UseMutationOptions<LoginFormLoginMutation, LoginFormLoginMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<LoginFormLoginMutation, LoginFormLoginMutationVariables>>) {
             return VueApolloComposable.useMutation<LoginFormLoginMutation, LoginFormLoginMutationVariables>(LoginFormLoginDocument, options);
           }
 export type LoginFormLoginMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<LoginFormLoginMutation, LoginFormLoginMutationVariables>;
@@ -881,7 +881,7 @@ export const ProfileMenuLogoutDocument = gql`
  *   },
  * });
  */
-export function useProfileMenuLogoutMutation(options: VueApolloComposable.UseMutationOptionsNoVariables<ProfileMenuLogoutMutation, ProfileMenuLogoutMutationVariables> = {}) {
+export function useProfileMenuLogoutMutation(options: VueApolloComposable.UseMutationOptions<ProfileMenuLogoutMutation, ProfileMenuLogoutMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<ProfileMenuLogoutMutation, ProfileMenuLogoutMutationVariables>> = {}) {
             return VueApolloComposable.useMutation<ProfileMenuLogoutMutation, ProfileMenuLogoutMutationVariables>(ProfileMenuLogoutDocument, options);
           }
 export type ProfileMenuLogoutMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<ProfileMenuLogoutMutation, ProfileMenuLogoutMutationVariables>;
@@ -953,7 +953,7 @@ export const RegisterFormRegisterDocument = gql`
  *   },
  * });
  */
-export function useRegisterFormRegisterMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<RegisterFormRegisterMutation, RegisterFormRegisterMutationVariables>) {
+export function useRegisterFormRegisterMutation(options: VueApolloComposable.UseMutationOptions<RegisterFormRegisterMutation, RegisterFormRegisterMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<RegisterFormRegisterMutation, RegisterFormRegisterMutationVariables>>) {
             return VueApolloComposable.useMutation<RegisterFormRegisterMutation, RegisterFormRegisterMutationVariables>(RegisterFormRegisterDocument, options);
           }
 export type RegisterFormRegisterMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<RegisterFormRegisterMutation, RegisterFormRegisterMutationVariables>;
@@ -1159,7 +1159,7 @@ export const DiscordOauthCallbackDocument = gql`
  *   },
  * });
  */
-export function useDiscordOauthCallbackMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>) {
+export function useDiscordOauthCallbackMutation(options: VueApolloComposable.UseMutationOptions<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>>) {
             return VueApolloComposable.useMutation<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>(DiscordOauthCallbackDocument, options);
           }
 export type DiscordOauthCallbackMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<DiscordOauthCallbackMutation, DiscordOauthCallbackMutationVariables>;

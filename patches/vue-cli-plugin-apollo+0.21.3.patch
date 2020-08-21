@@ -1,5 +1,5 @@
 diff --git a/node_modules/vue-cli-plugin-apollo/types.d.ts b/node_modules/vue-cli-plugin-apollo/types.d.ts
-index 0c50299..b2d3041 100644
+index 0c50299..a35a547 100644
 --- a/node_modules/vue-cli-plugin-apollo/types.d.ts
 +++ b/node_modules/vue-cli-plugin-apollo/types.d.ts
 @@ -1,6 +1,6 @@
@@ -15,7 +15,7 @@ index 0c50299..b2d3041 100644
      // Custom starting link.
      // If you want to replace the default HttpLink, set `defaultHttpLink` to false
 -    link?: string
-+    link?: ApolloLink,
++    link?: ApolloLink
      // If true, add the default HttpLink.
      // Disable it if you want to replace it with a terminating link using `link` option.
      defaultHttpLink?: boolean
