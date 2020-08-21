@@ -1,5 +1,5 @@
 diff --git a/node_modules/apollo-datasource-rest/dist/RESTDataSource.js b/node_modules/apollo-datasource-rest/dist/RESTDataSource.js
-index c6102d3..9c48e42 100644
+index c6102d3..daba8e3 100644
 --- a/node_modules/apollo-datasource-rest/dist/RESTDataSource.js
 +++ b/node_modules/apollo-datasource-rest/dist/RESTDataSource.js
 @@ -65,7 +65,13 @@ class RESTDataSource extends apollo_datasource_1.DataSource {
