@@ -1,7 +1,18 @@
 import colors from 'vuetify/es5/util/colors'
 import { VuetifyThemeVariant } from 'vuetify/types/services/theme'
 
-const themes = new Map<string, VuetifyThemeVariant>()
+export enum PineappleTheme {
+  PINEAPPLE,
+  GREYSCALE,
+  PAN_FLAG,
+  TRANS_FLAG,
+  LEMON,
+  MELON,
+
+  DEFAULT = PineappleTheme.PINEAPPLE,
+}
+
+const themes = new Map<PineappleTheme, VuetifyThemeVariant>()
 
 const status = {
   success: colors.green.base,
@@ -10,7 +21,7 @@ const status = {
   warning: colors.orange.accent1,
 }
 
-themes.set('pineapple', {
+themes.set(PineappleTheme.PINEAPPLE, {
   ...status,
 
   primary: '#F29F05',
@@ -18,7 +29,7 @@ themes.set('pineapple', {
   accent: '#590202',
 })
 
-themes.set('greyscale', {
+themes.set(PineappleTheme.GREYSCALE, {
   ...status,
 
   primary: colors.grey.darken2,
@@ -31,7 +42,7 @@ themes.set('greyscale', {
   warning: colors.grey.darken1,
 })
 
-themes.set('pan-flag', {
+themes.set(PineappleTheme.PAN_FLAG, {
   ...status,
 
   primary: '#FF218C',
@@ -40,7 +51,7 @@ themes.set('pan-flag', {
   info: '#21B1FF',
 })
 
-themes.set('trans-flag', {
+themes.set(PineappleTheme.TRANS_FLAG, {
   ...status,
 
   primary: '#59C8F3',
@@ -48,7 +59,7 @@ themes.set('trans-flag', {
   accent: '#FFFFFF',
 })
 
-themes.set('lemon', {
+themes.set(PineappleTheme.LEMON, {
   ...status,
 
   primary: '#618C03',
@@ -56,7 +67,7 @@ themes.set('lemon', {
   accent: '#F2E085',
 })
 
-themes.set('melon', {
+themes.set(PineappleTheme.MELON, {
   ...status,
 
   primary: '#013A27',
@@ -64,8 +75,8 @@ themes.set('melon', {
   accent: '#216E36',
 })
 
-export const getTheme = (key: string): VuetifyThemeVariant => {
-  return themes.get(key) || themes.get('pineapple')
+export const getTheme = (key: PineappleTheme): VuetifyThemeVariant => {
+  return themes.get(key) || themes.get(PineappleTheme.DEFAULT)
 }
 
 export {

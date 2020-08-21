@@ -1,6 +1,6 @@
 import { VuetifyThemeVariant } from 'vuetify/types/services/theme'
 
-import { getTheme } from '~/themes'
+import { getTheme, PineappleTheme } from '~/themes'
 
 export type Toast = {
   type: string,
@@ -15,7 +15,7 @@ type State = {
   menuOpen: boolean,
   menuSmall: boolean,
   toasts: Toast[]
-  theme: string,
+  theme: PineappleTheme,
 }
 
 export const state = (): State => ({
@@ -23,7 +23,7 @@ export const state = (): State => ({
   menuOpen: false,
   menuSmall: true,
   toasts: [],
-  theme: 'pineapple',
+  theme: PineappleTheme.DEFAULT,
 })
 
 export const mutations = {
@@ -55,7 +55,7 @@ export const mutations = {
   dismissToast (state: State): void {
     state.toasts.shift()
   },
-  setTheme (state: State, theme: string): void {
+  setTheme (state: State, theme: PineappleTheme): void {
     state.theme = theme
   },
 }
@@ -82,7 +82,7 @@ export const getters = {
   theme (state: State): VuetifyThemeVariant {
     return getTheme(state.theme)
   },
-  themeName (state: State): string {
+  themeName (state: State): PineappleTheme {
     return state.theme
   },
 }
