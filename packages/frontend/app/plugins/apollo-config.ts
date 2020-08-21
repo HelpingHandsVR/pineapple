@@ -58,7 +58,7 @@ const makeSentryLink = (sentry: Context['$sentry']) => onError(({ graphQLErrors,
 
   if (graphQLErrors) {
     graphQLErrors.forEach((error) => {
-      sentry.captureException(error)
+      sentry.captureEvent(error)
     })
   }
 })
