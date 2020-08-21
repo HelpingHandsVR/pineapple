@@ -20,7 +20,7 @@ export default {
     viewer: {
       query: ProfileMenuViewerDocument,
       result (result: {data: ProfileMenuViewerQuery}): void {
-        if (!result.data.viewer) {
+        if (!result.data?.viewer || !this.$ability) {
           return null
         }
 
