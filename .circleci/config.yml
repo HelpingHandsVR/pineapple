@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  discord: antonioned/discord@0.1.0
+
 executors:
   docker-publisher:
     working_directory: ~/project/pineapple
@@ -20,11 +23,14 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            docker build --cache-from $IMAGE_NAME:latest -t $IMAGE_NAME:latest .
+            docker build --cache-from $IMAGE_NAME:latest -t $IMAGE_NAME:$CIRCLE_SHA1 .
+
+      - discord/status:
+          fail_only: false
 
       - run:
           name: Archive Docker image
-          command: docker save -o image.tar $IMAGE_NAME
+          command: docker save -o image.tar $IMAGE_NAME:$CIRCLE_SHA1
 
       - persist_to_workspace:
           root: .
@@ -47,10 +53,11 @@ jobs:
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
+            IMAGE_TAG=${$CIRCLE_TAG:-latest}
+
             echo "$DOCKERHUB_PASS" | docker login --username $DOCKERHUB_USERNAME --password-stdin
-            docker tag $IMAGE_NAME:latest $IMAGE_NAME:$CIRCLE_TAG
-            docker push $IMAGE_NAME:latest
-            docker push $IMAGE_NAME:$CIRCLE_TAG
+            docker tag $IMAGE_NAME:$CIRCLE_SHA1 $IMAGE_NAME:$IMAGE_TAG
+            docker push $IMAGE_NAME:$IMAGE_TAG
 
 workflows:
   version: 2
