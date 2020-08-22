@@ -40,7 +40,8 @@ workflows:
             branches:
               only: master
 
-          image: $IMAGE_NAME:latest
+          image: $IMAGE_NAME
+          tag: latest
           cache_from: $IMAGE_NAME:latest
           update-description: true
           after_build:
@@ -58,7 +59,8 @@ workflows:
             branches:
               ignore: /.*/
 
-          image: $IMAGE_NAME:$CIRCLE_TAG
+          image: $IMAGE_NAME
+          tag: $CIRCLE_TAG
           cache_from: $IMAGE_NAME:latest
           update-description: true
           after_build:
