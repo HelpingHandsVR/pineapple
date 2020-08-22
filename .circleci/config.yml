@@ -32,6 +32,8 @@ workflows:
   cd:
     jobs:
       - docker/publish:
+          executor: docker-publisher
+
           name: publish-latest
           filters:
             branches:
@@ -45,6 +47,8 @@ workflows:
               fail_only: false
 
       - docker/publish:
+          executor: docker-publisher
+
           name: publish-tagged
           filters:
             tags:
