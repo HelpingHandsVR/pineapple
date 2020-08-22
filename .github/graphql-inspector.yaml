@@ -1,3 +1,3 @@
 branch: 'master'
 schema: 'packages/backend/src/generated/schema.graphql'
-failOnBreaking: false
+fail-on-breaking: false
