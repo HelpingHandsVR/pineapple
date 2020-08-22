@@ -33,6 +33,7 @@ workflows:
     jobs:
       - docker/publish:
           executor: docker-publisher
+          use-remote-docker: true
 
           name: publish-latest
           filters:
@@ -48,6 +49,7 @@ workflows:
 
       - docker/publish:
           executor: docker-publisher
+          use-remote-docker: true
 
           name: publish-tagged
           filters:
