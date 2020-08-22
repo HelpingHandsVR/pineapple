@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   discord: antonioned/discord@0.1.0
+  docker: circleci/docker@1.4.0
 
 executors:
   docker-publisher:
@@ -16,82 +17,52 @@ jobs:
     executor: docker-publisher
 
     steps:
+      - setup_remote_docker
       - checkout
 
-      - setup_remote_docker
-
-      - run:
-          name: Build Docker image
-          command: |
-            docker build --cache-from $IMAGE_NAME:latest -t $IMAGE_NAME:$CIRCLE_SHA1 .
+      - docker/build:
+          cache_from: $IMAGE_NAME:latest
+          image: $IMAGE_NAME
 
       - discord/status:
           fail_only: false
-
-      - run:
-          name: Archive Docker image
-          command: docker save -o image.tar $IMAGE_NAME:$CIRCLE_SHA1
-
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ./image.tar
-
-  publish-tagged:
-    executor: docker-publisher
-
-    steps:
-      - attach_workspace:
-          at: /tmp/workspace
-
-      - setup_remote_docker
-
-      - run:
-          name: Load archived Docker image
-          command: docker load -i /tmp/workspace/image.tar
-
-      - run:
-          name: Publish Docker Image to Docker Hub
-          command: |
-            IMAGE_TAG=${CIRCLE_TAG:-latest}
-
-            echo "$DOCKERHUB_PASS" | docker login --username $DOCKERHUB_USERNAME --password-stdin
-            docker tag $IMAGE_NAME:$CIRCLE_SHA1 $IMAGE_NAME:$IMAGE_TAG
-            docker push $IMAGE_NAME:$IMAGE_TAG
 
 workflows:
   version: 2
   cd:
     jobs:
+      - docker/publish:
+          name: publish-latest
+          filters:
+            branches:
+              only: master
+
+          image: $IMAGE_NAME:latest
+          cache_from: $IMAGE_NAME:latest
+          update-description: true
+          after_build:
+            - discord/status:
+              fail_only: false
+
+      - docker/publish:
+          name: publish-tagged
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+          image: $IMAGE_NAME:$CIRCLE_TAG
+          cache_from: $IMAGE_NAME:latest
+          update-description: true
+          after_build:
+            - discord/status:
+              fail_only: false
+
       - build:
           name: build-branches
           filters:
             tags:
               ignore: /.*/
             branches:
-              only: /master|develop|GH-[0-9]{0,4}\/(fix|feat|chore|refactor|deps|build|ci|style|perf|test)\/.*/
-
-      - publish-tagged:
-          name: publish-latest
-          requires:
-            - build-branches
-          filters:
-            branches:
-              only: master
-
-      - build:
-          name: build-tagged
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-
-      - publish-tagged:
-          requires:
-            - build-tagged
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+              only: /develop|GH-[0-9]{0,4}\/(fix|feat|chore|refactor|deps|build|ci|style|perf|test)\/.*/
