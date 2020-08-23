@@ -32,25 +32,25 @@ workflows:
   version: 2
   cd:
     jobs:
-      #
-      # Docker rolling release from master
-      #
-      - docker/publish:
-          executor: docker-publisher
-          use-remote-docker: true
-
-          name: publish-latest
+      # Load source code and determine release commits
+      - sentry-cli/checkout-to-workspace:
           filters:
             branches:
-              only: master
+              ignore: /.*/
+            tags:
+              only: /^v.*/
 
-          image: $IMAGE_NAME
-          tag: $CIRCLE_SHA1
-          cache_from: $IMAGE_NAME:latest
-          update-description: true
-          after_build:
-            - discord/status:
-              fail_only: false
+      - sentry-cli/set-version:
+          requires:
+            - sentry-cli/checkout-to-workspace
+
+      - sentry-cli/create-release:
+          requires:
+            - sentry-cli/set-version
+
+      - sentry-cli/finalize-release-set-commits:
+          requires:
+            - sentry-cli/create-release
 
       #
       # Docker production release from tags
@@ -74,6 +74,32 @@ workflows:
             - discord/status:
               fail_only: false
 
+      - sentry-cli/create-deployment:
+          env: production
+          requires:
+            - sentry-cli/finalize-release-set-commits
+            - publish-tagged
+
+      #
+      # Docker rolling release from master
+      #
+      - docker/publish:
+          executor: docker-publisher
+          use-remote-docker: true
+
+          name: publish-latest
+          filters:
+            branches:
+              only: master
+
+          image: $IMAGE_NAME
+          tag: $CIRCLE_SHA1
+          cache_from: $IMAGE_NAME:latest
+          update-description: true
+          after_build:
+            - discord/status:
+              fail_only: false
+
       #
       # Try to build every branch matching conventions
       # Branches: develop, and branches fitting this example: GH-12/feat/create-magic
@@ -86,55 +112,3 @@ workflows:
             branches:
               only: /develop|snyk-.*|GH-[0-9]{0,4}\/(fix|feat|chore|refactor|deps|build|ci|style|perf|test)\/.*/
 
-  #
-  # Sentry production release
-  # (this will run parallel, even if the build fails)
-  #
-  sentry-tagged:
-    jobs:
-      # Load source code and determine release commits
-      - sentry-cli/checkout-to-workspace:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
-      - sentry-cli/set-version:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
-          requires:
-            - sentry-cli/checkout-to-workspace
-
-      # Send release to Sentry
-      - sentry-cli/create-release:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
-          requires:
-            - sentry-cli/set-version
-
-      # Finalise and send release data
-      - sentry-cli/finalize-release-set-commits:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
-          requires:
-            - sentry-cli/create-release
-
-      - sentry-cli/create-deployment:
-          name: create-backend-deployment
-          env: production
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
-          requires:
-            - sentry-cli/finalize-release-set-commits
