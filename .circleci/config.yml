@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   discord: antonioned/discord@0.1.0
   docker: circleci/docker@1.4.0
+  sentry-cli: picturepipe/sentry-cli@1.1.1
 
 executors:
   docker-publisher:
@@ -31,6 +32,9 @@ workflows:
   version: 2
   cd:
     jobs:
+      #
+      # Docker rolling release from master
+      #
       - docker/publish:
           executor: docker-publisher
           use-remote-docker: true
@@ -48,6 +52,9 @@ workflows:
             - discord/status:
               fail_only: false
 
+      #
+      # Docker production release from tags
+      #
       - docker/publish:
           executor: docker-publisher
           use-remote-docker: true
@@ -67,10 +74,90 @@ workflows:
             - discord/status:
               fail_only: false
 
+      #
+      # Try to build every branch matching conventions
+      # Branches: develop, and branches fitting this example: GH-12/feat/create-magic
+      #
       - build:
-          name: build-branches
+          name: build-develop-branch
           filters:
             tags:
               ignore: /.*/
             branches:
               only: /develop|GH-[0-9]{0,4}\/(fix|feat|chore|refactor|deps|build|ci|style|perf|test)\/.*/
+
+  #
+  # Sentry production release
+  # (this will run parallel, even if the build fails)
+  #
+  sentry-tagged:
+    jobs:
+      # Load source code and determine release commits
+      - sentry-cli/checkout-to-workspace:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+      - sentry-cli/set-version:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+          requires:
+            - sentry-cli/checkout-to-workspace
+      - sentry-cli/finalize-release-set-commits:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+          requires:
+            - sentry-cli/create-release
+
+      # Send backend release to Sentry
+      - sentry-cli/create-release:
+          name: create-backend-release
+          project: $SENTRY_PROJECT_BACKEND
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+          requires:
+            - sentry-cli/set-version
+      - sentry-cli/create-deployment:
+          name: create-backend-deployment
+          env: production
+          project: $SENTRY_PROJECT_BACKEND
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+          requires:
+            - sentry-cli/finalize-release-set-commits
+
+      # Send frontend release to Sentry
+      - sentry-cli/create-release:
+          name: create-frontend-release
+          project: $SENTRY_PROJECT_FRONTEND
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+          requires:
+            - sentry-cli/set-version
+      - sentry-cli/create-deployment:
+          name: create-frontend-deployment
+          env: production
+          project: $SENTRY_PROJECT_FRONTEND
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+          requires:
+            - sentry-cli/finalize-release-set-commits
