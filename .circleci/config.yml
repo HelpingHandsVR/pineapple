@@ -45,7 +45,7 @@ workflows:
               only: master
 
           image: $IMAGE_NAME
-          tag: latest
+          tag: $CIRCLE_SHA1
           cache_from: $IMAGE_NAME:latest
           update-description: true
           after_build:
