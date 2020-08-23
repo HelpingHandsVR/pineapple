@@ -21,7 +21,7 @@ const makeHttpLink = () => new BatchHttpLink({
   uri: config.graphql.endpoint,
 })
 
-const errorLink = (store: Store<unknown>) => onError(({ graphQLErrors, networkError }) => {
+const makeErrorLink = (store: Store<unknown>) => onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach((graphQLError) => {
       const toast: Toast = {
@@ -54,7 +54,9 @@ const makePassCookieLink = (cookieHeader: string) => setContext(() => ({
 }))
 
 const makeRemoveErrorsLink = () => onError(({ response }) => {
-  response.errors = undefined
+  if (response) {
+    response.errors = undefined
+  }
 })
 
 const makeSentryLink = (sentry: Context['$sentry']) => onError(({ graphQLErrors, operation }) => {
@@ -67,7 +69,7 @@ const makeSentryLink = (sentry: Context['$sentry']) => onError(({ graphQLErrors,
   }
 })
 
-const makeApiErrorHandlerLink = (context: Context) => onError(({ graphQLErrors, forward, operation, response }) => {
+const makeApiErrorHandlerLink = (context: Context) => onError(({ graphQLErrors, forward, operation }) => {
   if (graphQLErrors) {
     graphQLErrors
       .filter((graphQLError) => 'extensions' in graphQLError)
@@ -100,7 +102,7 @@ const makeApiErrorHandlerLink = (context: Context) => onError(({ graphQLErrors, 
 
 const makeClientLink = (context: Context) => ApolloLink.from([
   makeSentryLink(context.$sentry),
-  errorLink(context.store),
+  makeErrorLink(context.store),
   makeApiErrorHandlerLink(context),
   makeHttpLink(),
 ])
@@ -110,10 +112,10 @@ type MakeServerLinkInput = {
 }
 
 const makeServerLink = (context: Context, { cookie }: MakeServerLinkInput) => ApolloLink.from([
-  makeRemoveErrorsLink(),
   makeSentryLink(context.$sentry),
   makePassCookieLink(cookie),
   makeApiErrorHandlerLink(context),
+  makeRemoveErrorsLink(),
   makeHttpLink(),
 ])
 

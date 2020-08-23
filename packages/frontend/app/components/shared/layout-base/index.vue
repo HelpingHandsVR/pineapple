@@ -2,8 +2,6 @@
 import Vue from 'vue'
 import {mapGetters, mapMutations} from 'vuex'
 
-import {withAsayerSentry} from '../../../mixins/asayer-sentry'
-
 import {ProfileMenuLogoutDocument} from '../../../../generated/composition'
 
 import ProfileMenu from '../../containers/authentication/profile-menu/index.vue'
@@ -45,9 +43,6 @@ export default Vue.extend({
       return flashMap.get(this.$route.query.flash)
     },
   },
-  mixins: [
-    withAsayerSentry(),
-  ],
   methods: {
     ...mapMutations({
       setMenuOpen: 'ui/setMenuOpen',
