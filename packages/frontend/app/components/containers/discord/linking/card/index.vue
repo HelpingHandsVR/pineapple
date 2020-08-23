@@ -50,12 +50,12 @@ export default Vue.extend({
       v-fade-transition(mode='out-in')
         v-sheet(
           :color='`grey ${theme.isDark ? "darken-2" : "lighten-4"}`'
-          v-if='loading'
+          v-if='loading || !data'
         )
           v-skeleton-loader(type='card', height='160', elevation='2')
 
         discord-linking-card-base-linked(
-          v-else-if='data.user.discord'
+          v-else-if='data.user && data.user.discord'
           :loading='loading'
           :user='data.user'
         )
@@ -65,11 +65,11 @@ export default Vue.extend({
           :query='urlQuery'
           notify-on-network-status-change
           tag=''
+          :skip='!data.user'
         )
           template(v-slot='{result: {loading, error, data}}')
             discord-linking-card-base-unlinked(
               :loading='loading'
-              :user='loading ? null : data.user'
-              :discordOauthURL='loading ? null : data.discordOauthURL'
+              :discordOauthURL='data ? data.discordOauthURL : null'
             )
 </template>

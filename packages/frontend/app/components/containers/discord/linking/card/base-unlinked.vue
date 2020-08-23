@@ -21,7 +21,7 @@ export default Vue.extend({
     loading: {
       type: Boolean,
       required: true,
-    }
+    },
   },
 })
 </script>

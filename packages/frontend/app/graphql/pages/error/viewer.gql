@@ -1,0 +1,9 @@
+query errorPageViewer {
+  viewer {
+    user {
+      id
+      display
+      email
+    }
+  }
+}

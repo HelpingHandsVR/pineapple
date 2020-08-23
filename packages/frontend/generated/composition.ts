@@ -14,13 +14,13 @@ export type Scalars = {
    * 8601 standard for representation of dates and times using the Gregorian calendar.
    */
   DateTime: any;
-  /** A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt. */
-  URL: any;
   /**
    * A field whose value conforms to the standard internet email address format as
    * specified in RFC822: https://www.w3.org/Protocols/rfc822/.
    */
   EmailAddress: any;
+  /** A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt. */
+  URL: any;
 };
 
 export type Ability = {
@@ -332,6 +332,7 @@ export type User = {
   __typename?: 'User';
   discord?: Maybe<DiscordAccount>;
   display: Scalars['String'];
+  email: Scalars['EmailAddress'];
   id: Scalars['ID'];
   role: Role;
   vrchat?: Maybe<VrChatUser>;
@@ -687,6 +688,20 @@ export type AttendancePageAttendanceRecordsQuery = (
   ) }
 );
 
+export type ErrorPageViewerQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ErrorPageViewerQuery = (
+  { __typename?: 'Query' }
+  & { viewer?: Maybe<(
+    { __typename?: 'Viewer' }
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'display' | 'email'>
+    ) }
+  )> }
+);
+
 export type IndexPageViewerQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -857,6 +872,17 @@ export const AttendancePageAttendanceRecordsDocument = gql`
         id
         name
       }
+    }
+  }
+}
+    `;
+export const ErrorPageViewerDocument = gql`
+    query errorPageViewer {
+  viewer {
+    user {
+      id
+      display
+      email
     }
   }
 }

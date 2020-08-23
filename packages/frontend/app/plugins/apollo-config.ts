@@ -53,6 +53,10 @@ const makePassCookieLink = (cookieHeader: string) => setContext(() => ({
   },
 }))
 
+const makeRemoveErrorsLink = () => onError(({ response }) => {
+  response.errors = undefined
+})
+
 const makeSentryLink = (sentry: Context['$sentry']) => onError(({ graphQLErrors, operation }) => {
   sentry.setTag('operationName', operation.operationName)
 
@@ -63,7 +67,7 @@ const makeSentryLink = (sentry: Context['$sentry']) => onError(({ graphQLErrors,
   }
 })
 
-const makeApiErrorHandlerLink = (context: Context) => onError(({ graphQLErrors, forward, operation }) => {
+const makeApiErrorHandlerLink = (context: Context) => onError(({ graphQLErrors, forward, operation, response }) => {
   if (graphQLErrors) {
     graphQLErrors
       .filter((graphQLError) => 'extensions' in graphQLError)
@@ -106,6 +110,7 @@ type MakeServerLinkInput = {
 }
 
 const makeServerLink = (context: Context, { cookie }: MakeServerLinkInput) => ApolloLink.from([
+  makeRemoveErrorsLink(),
   makeSentryLink(context.$sentry),
   makePassCookieLink(cookie),
   makeApiErrorHandlerLink(context),

@@ -370,6 +370,7 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     discord: NexusGenRootTypes['DiscordAccount'] | null; // DiscordAccount
     display: string; // String!
+    email: NexusGenScalars['EmailAddress']; // EmailAddress!
     id: string; // ID!
     role: NexusGenRootTypes['Role']; // Role!
     vrchat: NexusGenRootTypes['VRChatUser'] | null; // VRChatUser

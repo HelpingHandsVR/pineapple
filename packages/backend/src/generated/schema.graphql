@@ -228,6 +228,7 @@ scalar URL
 type User {
   discord: DiscordAccount
   display: String!
+  email: EmailAddress!
   id: ID!
   role: Role!
   vrchat: VRChatUser

@@ -22,9 +22,11 @@ export default Vue.extend({
 
 <template lang="pug">
   .slotholder
-    slot(name='default', v-if='!error')
+    slot(name='default')
 
-    v-card(v-else, key='error')
-      pre
-        | {{error.stack}}
+    v-card(v-if='error', key='error')
+      v-card-title
+        | AAAAH there's an error!
+      v-card-text
+        | {{error.message}}
 </template>
