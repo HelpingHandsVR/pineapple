@@ -63,7 +63,7 @@
     "change-case": "^4.1.1",
     "connect-redis": "^5.0.0",
     "cookie": "^0.4.1",
-    "discord-oauth2": "2.2.0",
+    "discord-oauth2": "2.3.0",
     "express-session": "^1.17.1",
     "graphql-middleware": "^4.0.2",
     "graphql-middleware-error-handler": "^0.4.1",
