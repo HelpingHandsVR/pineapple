@@ -127,17 +127,6 @@ workflows:
               only: /^v.*/
           requires:
             - sentry-cli/set-version
-      - sentry-cli/create-deployment:
-          name: create-backend-deployment
-          env: production
-          project: SENTRY_PROJECT_BACKEND
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
-          requires:
-            - sentry-cli/finalize-release-set-commits
 
       # Send frontend release to Sentry
       - sentry-cli/create-release:
@@ -150,14 +139,15 @@ workflows:
               only: /^v.*/
           requires:
             - sentry-cli/set-version
+
       - sentry-cli/create-deployment:
-          name: create-frontend-deployment
+          name: create-backend-deployment
           env: production
-          project: SENTRY_PROJECT_FRONTEND
           filters:
             branches:
               ignore: /.*/
             tags:
               only: /^v.*/
           requires:
-            - sentry-cli/finalize-release-set-commits
+            - create-backend-release
+            - create-frontend-release
