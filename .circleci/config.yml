@@ -108,22 +108,8 @@ workflows:
           requires:
             - sentry-cli/checkout-to-workspace
 
-      # Send backend release to Sentry
+      # Send release to Sentry
       - sentry-cli/create-release:
-          name: create-backend-release
-          project: pineapple-backend
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
-          requires:
-            - sentry-cli/set-version
-
-      # Send frontend release to Sentry
-      - sentry-cli/create-release:
-          name: create-frontend-release
-          project: pineapple-frontend
           filters:
             branches:
               ignore: /.*/
@@ -140,8 +126,7 @@ workflows:
             tags:
               only: /^v.*/
           requires:
-            - create-backend-release
-            - create-frontend-release
+            - sentry-cli/create-release
 
       - sentry-cli/create-deployment:
           name: create-backend-deployment
