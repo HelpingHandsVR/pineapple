@@ -41,14 +41,29 @@ workflows:
               only: /^v.*/
 
       - sentry-cli/set-version:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
           requires:
             - sentry-cli/checkout-to-workspace
 
       - sentry-cli/create-release:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
           requires:
             - sentry-cli/set-version
 
       - sentry-cli/finalize-release-set-commits:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
           requires:
             - sentry-cli/create-release
 
@@ -76,6 +91,11 @@ workflows:
 
       - sentry-cli/create-deployment:
           env: production
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
           requires:
             - sentry-cli/finalize-release-set-commits
             - publish-tagged
