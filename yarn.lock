@@ -8717,10 +8717,10 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-discord-oauth2@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/discord-oauth2/-/discord-oauth2-2.3.0.tgz#67a071c5ce763b819661df9af2b73861aba60464"
-  integrity sha512-dsNf4x99aa8BELWERwKtYG36RD6mEHwWR/nExP3sRGi5VOsEIZu0vhGj81lvwNLw0kMypF5rJH7oZJElngnnbg==
+discord-oauth2@2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/discord-oauth2/-/discord-oauth2-2.2.0.tgz#2135a4ec5142a08bd0d927e8e17c41b2392f236d"
+  integrity sha512-lLlY1nC/05NuOHOGfWqKlrF0RKIgRazQ6e6TdfqNJ41K3ftaVpcfVWZoJlzKXeADuvoK3CpEFkm2UeX/vRSqkw==
 
 docker-modem@2.1.3:
   version "2.1.3"
