@@ -111,7 +111,7 @@ workflows:
       # Send backend release to Sentry
       - sentry-cli/create-release:
           name: create-backend-release
-          project: SENTRY_PROJECT_BACKEND
+          project: pineapple-backend
           filters:
             branches:
               ignore: /.*/
@@ -123,7 +123,7 @@ workflows:
       # Send frontend release to Sentry
       - sentry-cli/create-release:
           name: create-frontend-release
-          project: SENTRY_PROJECT_FRONTEND
+          project: pineapple-frontend
           filters:
             branches:
               ignore: /.*/
