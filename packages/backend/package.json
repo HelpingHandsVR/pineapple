@@ -52,7 +52,7 @@
   "dependencies": {
     "@casl/ability": "^4.1.5",
     "@drdgvhbh/postgres-error-codes": "^0.0.6",
-    "@nexus/schema": "^0.15.0",
+    "@nexus/schema": "^0.16.0",
     "@sentry/node": "^5.21.1",
     "apollo-datasource-rest": "^0.9.3",
     "apollo-server-cache-redis": "^1.2.2",
