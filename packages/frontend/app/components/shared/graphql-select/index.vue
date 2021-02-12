@@ -12,10 +12,6 @@ export default Vue.extend({
       type: Object,
       required: true,
     },
-    getResult: {
-      type: Function,
-      required: true,
-    },
     disableEmpty: {
       type: Boolean,
       required: false,
@@ -86,9 +82,9 @@ export default Vue.extend({
       // If the autoSelectFirst prop is set and we have data, set our current
       // value to the first result for better UX
 
-      const result = this.getResult(response.data)
+      const result = response.data.list?.data
 
-      if (result.length === 0) {
+      if (!result || result.length === 0) {
         return null
       }
 
@@ -163,9 +159,9 @@ export default Vue.extend({
     template(v-slot='{result: {data, loading}}')
       v-select.select-root(
         v-bind='$attrs'
-        :items='getResult(data)'
+        :items='data ? data.list.data : []'
         :loading='loading'
-        :disabled='loading || shouldDisable(getResult(data))'
+        :disabled='loading || shouldDisable(data ? data.list : [])'
         no-data-text='No data'
         :menu-props='menuProps'
         @input='(value) => $emit("input", value)'

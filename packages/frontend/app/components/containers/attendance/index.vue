@@ -17,6 +17,7 @@ export default Vue.extend({
   data () {
     return {
       AttendancePageAttendanceRecordsDocument,
+      selected: [],
     }
   },
   computed: {
@@ -38,10 +39,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    getResult (data: Record<string, any>) {
-      return data ? data.attendanceRecords : null
-    },
-
     formatDate (date: string) {
       return DateTime.fromISO(date).toRelative()
     },
@@ -51,10 +48,12 @@ export default Vue.extend({
 
 <template lang="pug">
   graphql-data-table(
+    v-model='selected'
     :query='AttendancePageAttendanceRecordsDocument'
     :headers='headers'
-    :get-result='getResult'
     title='Your attendances'
+    show-select
+    item-key='id'
   )
     template(v-slot:item.startsAt='{item}')
       span {{formatDate(item.startsAt)}}
@@ -63,5 +62,5 @@ export default Vue.extend({
       span {{formatDate(item.endsAt)}}
 
     template(v-slot:crud-actions)
-      title-bar
+      title-bar(:selected='selected')
 </template>

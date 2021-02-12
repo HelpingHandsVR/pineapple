@@ -120,6 +120,10 @@ export type CreateRoleMutationInput = {
 };
 
 
+export type DeleteAttendanceRecordWhereInput = {
+  id: Scalars['ID'];
+};
+
 export type DiscordAccount = {
   __typename?: 'DiscordAccount';
   account: DiscordUser;
@@ -148,6 +152,7 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createRole: Role;
+  deleteAttendanceRecord: Scalars['Boolean'];
   discordOauthCallback: DiscordUser;
   login: User;
   logout: Scalars['Boolean'];
@@ -160,6 +165,11 @@ export type Mutation = {
 
 export type MutationCreateRoleArgs = {
   input: CreateRoleMutationInput;
+};
+
+
+export type MutationDeleteAttendanceRecordArgs = {
+  where: DeleteAttendanceRecordWhereInput;
 };
 
 
@@ -323,8 +333,6 @@ export type UpdateRoleMutationWhereInput = {
 
 export type UpsertAttendaceRecordMutationInput = {
   attendableId: Scalars['ID'];
-  endsAt?: Maybe<Scalars['DateTime']>;
-  startsAt?: Maybe<Scalars['DateTime']>;
 };
 
 
@@ -510,7 +518,7 @@ export type AttendanceUpsertFormAttendablesQueryVariables = Exact<{
 
 export type AttendanceUpsertFormAttendablesQuery = (
   { __typename?: 'Query' }
-  & { attendables: (
+  & { list: (
     { __typename?: 'AttendablePagination' }
     & { data: Array<Maybe<(
       { __typename?: 'Attendable' }
@@ -672,7 +680,7 @@ export type AttendancePageAttendanceRecordsQueryVariables = Exact<{
 
 export type AttendancePageAttendanceRecordsQuery = (
   { __typename?: 'Query' }
-  & { attendanceRecords: (
+  & { list: (
     { __typename?: 'AttendanceRecordPagination' }
     & { cursor: (
       { __typename?: 'PaginationResultCursor' }
@@ -738,7 +746,7 @@ export type DiscordOauthCallbackMutation = (
 
 export const AttendanceUpsertFormAttendablesDocument = gql`
     query attendanceUpsertFormAttendables($pagination: PaginationInput!, $where: AttendablesQueryWhereInput!, $search: String!) {
-  attendables(pagination: $pagination, where: $where, search: {name: $search}) {
+  list: attendables(pagination: $pagination, where: $where, search: {name: $search}) {
     data {
       id
       value: id
@@ -859,7 +867,7 @@ export const ProfileCardQueryDocument = gql`
     `;
 export const AttendancePageAttendanceRecordsDocument = gql`
     query attendancePageAttendanceRecords($pagination: PaginationInput!) {
-  attendanceRecords(pagination: $pagination) {
+  list: attendanceRecords(pagination: $pagination) {
     cursor {
       afterCursor
       beforeCursor

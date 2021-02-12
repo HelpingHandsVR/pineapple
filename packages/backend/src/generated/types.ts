@@ -52,6 +52,9 @@ export interface NexusGenInputs {
     name?: string | null; // String
     permissions?: Array<string | null> | null; // [ID]
   }
+  DeleteAttendanceRecordWhereInput: { // input type
+    id: string; // ID!
+  }
   DiscordOauthMutationInput: { // input type
     accessToken?: string | null; // String
     expiresIn?: number | null; // Int
@@ -88,8 +91,6 @@ export interface NexusGenInputs {
   }
   UpsertAttendaceRecordMutationInput: { // input type
     attendableId: string; // ID!
-    endsAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    startsAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   UserQueryWhereInput: { // input type
     id?: string | null; // ID
@@ -263,6 +264,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   AttendablesQueryWhereInputDateConstraint: NexusGenInputs['AttendablesQueryWhereInputDateConstraint'];
   AttendanceRecordsSubscriptionWhereInput: NexusGenInputs['AttendanceRecordsSubscriptionWhereInput'];
   CreateRoleMutationInput: NexusGenInputs['CreateRoleMutationInput'];
+  DeleteAttendanceRecordWhereInput: NexusGenInputs['DeleteAttendanceRecordWhereInput'];
   DiscordOauthMutationInput: NexusGenInputs['DiscordOauthMutationInput'];
   LoginInput: NexusGenInputs['LoginInput'];
   PaginationInput: NexusGenInputs['PaginationInput'];
@@ -329,6 +331,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createRole: NexusGenRootTypes['Role']; // Role!
+    deleteAttendanceRecord: boolean; // Boolean!
     discordOauthCallback: NexusGenRootTypes['DiscordUser']; // DiscordUser!
     login: NexusGenRootTypes['User']; // User!
     logout: boolean; // Boolean!
@@ -511,6 +514,9 @@ export interface NexusGenArgTypes {
     createRole: { // args
       input: NexusGenInputs['CreateRoleMutationInput']; // CreateRoleMutationInput!
     }
+    deleteAttendanceRecord: { // args
+      where: NexusGenInputs['DeleteAttendanceRecordWhereInput']; // DeleteAttendanceRecordWhereInput!
+    }
     discordOauthCallback: { // args
       input: NexusGenInputs['DiscordOauthMutationInput']; // DiscordOauthMutationInput!
     }
@@ -575,7 +581,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "Ability" | "Attendable" | "AttendablePagination" | "AttendanceRecord" | "AttendanceRecordPagination" | "DiscordAccount" | "DiscordUser" | "Mutation" | "PaginationResultCursor" | "Query" | "Role" | "RolePagination" | "Subscription" | "User" | "VRChatConfig" | "VRChatConfigAnnouncement" | "VRChatConfigDynamicWorldRow" | "VRChatExtendedUser" | "VRChatLimitedUser" | "VRChatUser" | "VRChatWorld" | "VRChatWorldInstance" | "Viewer";
 
-export type NexusGenInputNames = "AttendableQueryWhereInput" | "AttendablesQuerySearchInput" | "AttendablesQueryWhereInput" | "AttendablesQueryWhereInputDateConstraint" | "AttendanceRecordsSubscriptionWhereInput" | "CreateRoleMutationInput" | "DiscordOauthMutationInput" | "LoginInput" | "PaginationInput" | "RegisterInput" | "RoleQueryWhereInput" | "UpcomingAttendablesQueryInput" | "UpdateRoleMutationInput" | "UpdateRoleMutationWhereInput" | "UpsertAttendaceRecordMutationInput" | "UserQueryWhereInput" | "VRChatUserQueryWhereInput";
+export type NexusGenInputNames = "AttendableQueryWhereInput" | "AttendablesQuerySearchInput" | "AttendablesQueryWhereInput" | "AttendablesQueryWhereInputDateConstraint" | "AttendanceRecordsSubscriptionWhereInput" | "CreateRoleMutationInput" | "DeleteAttendanceRecordWhereInput" | "DiscordOauthMutationInput" | "LoginInput" | "PaginationInput" | "RegisterInput" | "RoleQueryWhereInput" | "UpcomingAttendablesQueryInput" | "UpdateRoleMutationInput" | "UpdateRoleMutationWhereInput" | "UpsertAttendaceRecordMutationInput" | "UserQueryWhereInput" | "VRChatUserQueryWhereInput";
 
 export type NexusGenEnumNames = "AbilityAction" | "AbilitySubject" | "PaginationInputOrder" | "VRChatUserRole";
 

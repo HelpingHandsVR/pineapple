@@ -5,30 +5,22 @@ import { DateTime } from 'luxon'
 import { LessThan } from 'typeorm'
 import { AttendanceRecordRepository } from '~/db/repository/attendance-record'
 
-export const CreateAttendaceRecordMutationInput = inputObjectType({
+export const UpsertAttendaceRecordMutationInput = inputObjectType({
   name: 'UpsertAttendaceRecordMutationInput',
   definition (t) {
     t.id('attendableId', {
       required: true,
     })
-
-    t.dateTime('startsAt', {
-      required: false,
-    })
-
-    t.dateTime('endsAt', {
-      required: false,
-    })
   },
 })
 
-export const CreateAttendaceRecordMutation = extendType({
+export const UpsertAttendaceRecordMutation = extendType({
   type: 'Mutation',
   definition (t) {
     t.field('upsertAttendanceRecord', {
       type: 'AttendanceRecord',
       args: {
-        input: CreateAttendaceRecordMutationInput.asArg({
+        input: UpsertAttendaceRecordMutationInput.asArg({
           required: true,
         }),
       },
@@ -50,10 +42,7 @@ export const CreateAttendaceRecordMutation = extendType({
         }
 
         return context.connection.getCustomRepository(AttendanceRecordRepository)
-          .upsert(attendable, context.authentication.getUser(), {
-            endsAt: args.input.endsAt,
-            startsAt: args.input.endsAt,
-          })
+          .upsert(attendable, context.authentication.getUser())
       },
     })
   },
