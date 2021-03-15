@@ -15,7 +15,7 @@
     "packages/*"
   ],
   "dependencies": {
-    "lerna": "^3.22.1",
+    "lerna": "^4.0.0",
     "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0",
     "snyk": "^1.378.0"
