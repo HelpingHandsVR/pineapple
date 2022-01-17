@@ -76,7 +76,7 @@
     "helmet": "^4.1.0",
     "ioredis": "^4.17.3",
     "luxon": "^1.24.1",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.1.1",
     "node-mailjet": "^3.3.1",
     "p-all": "^3.0.0",
     "passport": "^0.4.1",
