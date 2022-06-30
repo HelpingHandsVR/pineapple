@@ -79,7 +79,7 @@
     "node-fetch": "^2.6.0",
     "node-mailjet": "^3.3.1",
     "p-all": "^3.0.0",
-    "passport": "^0.4.1",
+    "passport": "^0.6.0",
     "pg": "^8.3.2",
     "pino": "^6.5.1",
     "pino-http": "^5.2.0",
