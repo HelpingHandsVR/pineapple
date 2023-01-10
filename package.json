@@ -18,7 +18,7 @@
     "lerna": "^3.22.1",
     "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0",
-    "snyk": "^1.378.0"
+    "snyk": "^1.518.0"
   },
   "snyk": true
 }
